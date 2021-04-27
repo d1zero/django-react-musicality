@@ -30,17 +30,27 @@ const TrackDetail = (props: any) => {
     })
 
     interface artist {
-        [index: number]: {id: number, nickname: string}
+        [index: number]: { id: number, nickname: string }
     }
 
-    const [artists, setArtists] = useState<artist>([{id: 0, nickname: ''}, {id: 0, nickname: ''}, {id: 0, nickname: ''}])
+    const [artists, setArtists] = useState<artist>([
+        {id: 0, nickname: ''},
+        {id: 0, nickname: ''},
+        {id: 0, nickname: ''},
+        {id: 0, nickname: ''}
+    ])
 
     interface genre {
-        [index: number]: {id: number, name: string}
+        [index: number]: { id: number, name: string }
 
     }
 
-    const [genres, setGenres] = useState<genre>([{id: 0, name: ''}, {id: 0, name: ''}, {id: 0, name: ''}])
+    const [genres, setGenres] = useState<genre>([
+        {id: 0, name: ''},
+        {id: 0, name: ''},
+        {id: 0, name: ''},
+        {id: 0, name: ''}
+    ])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -97,12 +107,12 @@ const TrackDetail = (props: any) => {
             Дата выхода: {data.date_of_release}<br/>
             Артисты: {data.artists.map((id: number) => {
             return <span key={id}>
-                <Link to={'/artists/' + id.toString()}>{artists[id-1].nickname}</Link>&nbsp;
+                <Link to={'/artists/' + id.toString()}>{artists[id - 1].nickname}</Link>&nbsp;
             </span>
         })}<br/>
             Жанры: {data.genres.map((id: number) => {
             return <span key={id}>
-                    <Link to={'/genres/' + id.toString()}>{genres[id-1].name}</Link>&nbsp;
+                    <Link to={'/genres/' + id.toString()}>{genres[id - 1].name}</Link>&nbsp;
                 </span>
         })}
             <br/>
