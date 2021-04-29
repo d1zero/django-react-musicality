@@ -2,7 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {AppBar, Container, Toolbar, IconButton, Typography, Box, Button} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
-import {makeStyles, Dialog, DialogTitle} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -21,18 +23,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const Nav = () => {
+const Nav = (props: { setUsername: (username: any) => void, username: any }) => {
     const logout = async () => {
-        await fetch('http://localhost:8000/user/logout', {
+        await axios('http://localhost:8000/user/logout', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include'
-        });
+            headers: {'Content-Type': 'application/json', 'X-CSRFToken': ''+Cookies.get('csrftoken')},
+            withCredentials: true
+        })
+        await props.setUsername('')
     }
 
     let menu;
 
-    if (1) {
+
+    if (props.username === '') {
         menu = (
             <>
                 <Box mr={3}>
@@ -47,6 +51,7 @@ const Nav = () => {
             <Button color="secondary" variant="contained" onClick={logout}>Log out</Button>
         )
     }
+
     const classes = useStyles()
     return (
         <AppBar position="fixed">

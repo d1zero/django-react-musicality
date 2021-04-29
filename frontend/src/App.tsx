@@ -10,37 +10,42 @@ import TrackDetail from "./Pages/TrackDetail";
 import TrackList from "./Pages/TrackList";
 
 function App() {
-    // const [username, setUsername] = useState('')
-    //
-    // useEffect(() => {
-    //     (
-    //         async () => {
-    //             const response = await fetch('http://localhost:8000/user/profile', {
-    //                 headers: {'Content-Type': 'application/json'},
-    //                 credentials: 'include'
-    //             })
-    //
-    //             const content = await response.json();
-    //             if (content.detail !== 'Unauthenticated!') {
-    //                 setUsername(content.username)
-    //             }
-    //         }
-    //     )();
-    // }, [])
+    const [username, setUsername]: any = useState('')
+
+    useEffect(() => {
+        (
+            async () => {
+                const response = await fetch('http://localhost:8000/user/profile', {
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include'
+                })
+
+                const content = await response.json();
+                console.log(content)
+                if (content.detail !== 'Unauthenticated!') {
+                    setUsername(content.username)
+                }
+            }
+        )();
+    }, [])
 
     return (
         <Router>
             <div className="App">
                 <Container>
-                    <Nav/>
+                    <Nav setUsername={setUsername} username={username} />
                     <Switch>
-                        <Route path="/" exact component={Home}/>
-                        {/*<Route path="/login" component={() => <Login setUsername={setUsername}/>}/>*/}
-                        {/*<Route path="/register" component={Register}/>*/}
+                        <Route path="/" exact component={() => <Home username={username} />}/>
+                        <Route path="/login" component={() => <Login setUsername={setUsername} />}/>
+                        <Route path="/register" component={Register}/>
                         <Route path="/tracks/:trackId" component={TrackDetail}/>
                         <Route exact path="/tracks" component={TrackList}/>
                     </Switch>
                 </Container>
+                <br />
+                <br />
+                <br />
+                <br />
             </div>
         </Router>
     );

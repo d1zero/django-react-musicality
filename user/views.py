@@ -21,9 +21,9 @@ class LoginView(APIView):
         email = request.data['email']
         password = request.data['password']
 
-        user = User.objects.get(email=email)
-
-        if user is None:
+        try:
+            user = User.objects.get(email=email)
+        except Exception:
             raise AuthenticationFailed('User not found')
 
         if not user.check_password(password):
@@ -41,7 +41,8 @@ class LoginView(APIView):
 
         response.set_cookie(key='jwt', value=token, httponly=True)
         response.data = {
-            'jwt': token
+            'message': 'success',
+            'username': user.username
         }
 
         return response
@@ -73,5 +74,5 @@ class LogoutView(APIView):
         response.data = {
             'message': 'success'
         }
-
+        print(response)
         return response
