@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.html import mark_safe
 
 
 class MyUserManager(BaseUserManager):
@@ -35,12 +36,24 @@ class MyUserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='Email', max_length=60, unique=True)
-    username = models.CharField(verbose_name='Username', max_length=30, unique=True)
-    date_joined = models.DateTimeField(verbose_name='Date joined', auto_now_add=True)
-    last_login = models.DateTimeField(verbose_name='Last login', auto_now=True)
-    is_admin = models.BooleanField(default=False)
+    username = models.CharField(verbose_name='Имя пользователя', max_length=30, unique=True)
+    date_joined = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name='Последний вход', auto_now=True)
+    avatar = models.ImageField(upload_to='images/users_avatars/', verbose_name='Аваратка', blank=True)
+
+    def get_image(self):
+        if self.avatar:
+            return mark_safe(u'<img src="{0}" height="100" width="100"/>'.format(self.avatar.url))
+        else:
+            return '(Нет изображения)'
+
+    get_image.short_description = 'Аватар'
+    get_image.allow_tags = True
+
+
+    is_admin = models.BooleanField(default=False, verbose_name='Администратор?')
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False, verbose_name='Персонал')
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'

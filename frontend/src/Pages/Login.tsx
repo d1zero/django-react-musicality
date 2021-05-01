@@ -8,7 +8,7 @@ function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const Login = (props: { setUsername: (username: any) => void }) => {
+const Login = (props: { setUsername: (username: any) => void}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [open, setOpen] = useState(false)

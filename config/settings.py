@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     # My apps
     'api',
     'user',
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +143,80 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
+DATETIME_FORMAT = "%H:%M:%S %d-%m-%Y"
+
+BATON = {
+    'SITE_HEADER': 'Musicality',
+    'SITE_TITLE': 'Musicality',
+    'INDEX_TITLE': 'Панель Администратора Musicality',
+    'SUPPORT_HREF': 'https://t.me/d1z3ro',
+    'COPYRIGHT': 'copyright © 2021 <a href="https://t.me/d1z3ro">d1zero code</a>',  # noqa
+    'POWERED_BY': '<a href="https://t.me/d1z3ro">d1zero</a>',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'SHOW_MULTIPART_UPLOADING': True,
+    'ENABLE_IMAGES_PREVIEW': True,
+    'CHANGELIST_FILTERS_IN_MODAL': True,
+    'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
+    'CHANGELIST_FILTERS_FORM': True,
+    'COLLAPSABLE_USER_AREA': False,
+    'MENU_ALWAYS_COLLAPSED': False,
+    'MENU_TITLE': 'Menu',
+    'MESSAGES_TOASTS': False,
+    'GRAVATAR_DEFAULT_IMG': 'blank',
+    'LOGIN_SPLASH': '/media/images/admin-bg.jpg',
+    'MENU': (
+        {
+            'type': 'app',
+            'name': 'user',
+            'label': 'Пользователь',
+            'icon': 'fa fa-user',
+            'default_open': False,
+            'models': (
+                {
+                    'name': 'user',
+                    'label': 'Пользователи'
+                },
+            )
+        },
+        {
+            'type': 'app',
+            'name': 'api',
+            'label': 'API',
+            'icon': 'fa fa-link',
+            'default_open': False,
+            'models': (
+                {
+                    'name': 'track',
+                    'label': 'Треки'
+                },
+                                {
+                    'name': 'album',
+                    'label': 'Альбомы'
+                },
+                                {
+                    'name': 'artist',
+                    'label': 'Исполнители'
+                },
+                {
+                    'name': 'playlist',
+                    'label': 'Плейлисты'
+                },
+                {
+                    'name': 'genre',
+                    'label': 'Жанры'
+                },
+            )
+        },
+        # { 'type': 'title', 'label': 'Contents', 'apps': ('flatpages', ) },
+        # { 'type': 'model', 'label': 'Pages', 'name': 'flatpage', 'app': 'flatpages' },
+        # { 'type': 'free', 'label': 'Custom Link', 'url': 'http://www.google.it', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },
+        # { 'type': 'free', 'label': 'My parent voice', 'children': [
+        #     { 'type': 'model', 'label': 'A Model', 'name': 'mymodelname', 'app': 'myapp', 'icon': 'fa fa-gavel' },
+        #     { 'type': 'free', 'label': 'Another custom link', 'url': 'http://www.google.it' },
+        # ] },
+    ),
+    # 'ANALYTICS': {
+    #     'CREDENTIALS': os.path.join(BASE_DIR, 'credentials.json'),
+    #     'VIEW_ID': '12345678',
+    # }
+}

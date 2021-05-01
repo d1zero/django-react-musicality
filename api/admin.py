@@ -9,8 +9,8 @@ class ArtistsInline(admin.TabularInline):
 
 @admin.register(Track)
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ('title', 'get_artists', 'date_of_release')
-    list_filter = ('title', 'date_of_release')
+    list_display = ('id', 'title', 'get_artists', 'date_of_release')
+    list_filter = ('id', 'title', 'date_of_release')
     search_fields = ('title',)
     list_display_links = ('title', )
 

@@ -13,7 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+# from django.contrib import admin
+from baton.autodiscover import admin
 from django.urls import path, include
 from api.views import index, index_pk
 from django.conf.urls.static import static
@@ -21,11 +22,13 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('baton/', include('baton.urls')),
     path('', index),
     path('tracks/', index),
-    path('tracks/<int:pk>', index_pk),
+    path('track/<int:pk>', index_pk),
     path('user/', include('user.urls')),
     path('api/', include('api.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
