@@ -8,7 +8,7 @@ const GenreList = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response1 = await axios(
-                `http://localhost:8000/api/genres`, {
+                `http://localhost:8000/api/genres/`, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }

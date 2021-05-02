@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Login from "./Pages/Login";
+import Login from "./Pages/Profile/Login";
 import Nav from "./Components/Nav";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from "./Pages/Home";
-import Register from "./Pages/Register";
+import Register from "./Pages/Profile/Register";
 import { Container } from '@material-ui/core'
-import TrackDetail from "./Pages/TrackDetail";
-import TrackList from "./Pages/TrackList";
-import Profile from './Pages/Profile';
-import GenreList from './Pages/GenreList';
-import GenreDetail from './Pages/GenreDetail';
+import TrackDetail from "./Pages/Tracks/TrackDetail";
+import TrackList from "./Pages/Tracks/TrackList";
+import Profile from './Pages/Profile/Profile';
+import GenreList from './Pages/Genres/GenreList';
+import GenreDetail from './Pages/Genres/GenreDetail';
+import PlaylistList from './Pages/Playlists/PlaylistList';
+import PlaylistDetail from './Pages/Playlists/PlaylistDetail';
 
 function App() {
     const [username, setUsername]: any = useState('')
@@ -46,11 +48,14 @@ function App() {
                         <Route path="/register" component={Register} />
                         <Route path="/profile" component={Profile} />
 
-                        <Route exact path="/tracks" component={TrackList} />
+                        <Route path="/tracks" component={TrackList} />
                         <Route path="/track/:trackId" component={TrackDetail} />
 
-                        <Route exact path="/genres" component={GenreList} />
-                        <Route exact path="/genre/:genreId" component={GenreDetail} />
+                        <Route path="/genres" component={GenreList} />
+                        <Route path="/genre/:genreId" component={GenreDetail} />
+
+                        <Route path="/playlists" component={PlaylistList} />
+                        <Route path="/playlist/:playlistId" component={PlaylistDetail} />
                     </Switch>
                 </Container>
                 <br />

@@ -82,8 +82,8 @@ class ArtistDetail(APIView):
 
 class PlaylistList(APIView):
     def get(self, request):
-        playlsits = Playlist.objects.all()
-        data = PlaylistSerializer(playlsits, many=True).data
+        playlists = Playlist.objects.all()
+        data = PlaylistSerializer(playlists, many=True).data
         return Response(data)
 
 

@@ -28,6 +28,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
+    tracks = TrackSerializer(source='track', many=True)
     class Meta:
         model = Playlist
-        fields = '__all__'
+        fields = ['id', 'tracks', 'name', 'description', 'photo']
