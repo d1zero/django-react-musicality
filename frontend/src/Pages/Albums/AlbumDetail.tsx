@@ -57,14 +57,14 @@ const AlbumDetail = (props: any) => {
                 {data.artists_info.map((artist: art) => {
                     return (
                         <span key={artist.id}>
-                            <Link to={'artist/' + artist.id}>{artist.nickname}</Link>
+                            <Link to={'/artist/' + artist.id}>{artist.nickname}</Link>&nbsp;
                         </span>
                     );
                 })}<br />
                 {data.tracks_info.map((track: trc) => {
                     return (
                         <div key={track.id}>
-                            <h5>{track.title}</h5>
+                            <Link to={'/track/'+track.id}><h5>{track.title}</h5></Link>
                             <img src={'http://localhost:8000' + track.cover} alt={track.title} height="100px" width="100px" />&nbsp;
                             <ReactAudioPlayer controls src={'http://localhost:8000' + track.soundtrack} />
                         </div>
