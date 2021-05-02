@@ -33,50 +33,31 @@ const useStyles = makeStyles((theme) => ({
 const TrackDetail = (props: any) => {
     const trackId = props.match.params.trackId;
 
+    interface gen {
+        id: number,
+        name: string
+    }
+
+    interface art {
+        id: number,
+        nickname: string,
+        first_name: string,
+        last_name: string,
+        photo: string,
+    }
+
+
     interface obj {
         id: number,
         title: string,
         soundtrack: string,
         cover: string,
         date_of_release: string,
-        artists: any[],
-        genres: any[],
-        artists_ids: number[]
+        artists_info: art[],
+        genres_info: gen[]
     }
 
-    const [data, setData] = useState<obj>({
-        id: 0,
-        title: '',
-        soundtrack: '',
-        cover: '',
-        date_of_release: '',
-        artists: [],
-        genres: [],
-        artists_ids: [0]
-    })
-
-    interface artist {
-        [index: number]: { id: number, nickname: string }
-    }
-
-    const [artists, setArtists] = useState<artist>([
-        { id: 0, nickname: '' },
-        { id: 0, nickname: '' },
-        { id: 0, nickname: '' },
-        { id: 0, nickname: '' }
-    ])
-
-    interface genre {
-        [index: number]: { id: number, name: string }
-
-    }
-
-    const [genres, setGenres] = useState<genre>([
-        { id: 0, name: '' },
-        { id: 0, name: '' },
-        { id: 0, name: '' },
-        { id: 0, name: '' }
-    ])
+    const [data, setData] = useState<obj>()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,81 +73,63 @@ const TrackDetail = (props: any) => {
             response1.data.artists_ids = response1.data.artists
         }
         fetchData()
-
-        const fetchData2 = async () => {
-            const response2 = await axios(
-                'http://localhost:8000/api/artists', {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-
-            await setArtists(response2.data)
-        }
-        fetchData2()
-
-        const fetchData3 = async () => {
-            const response3 = await axios(
-                'http://localhost:8000/api/genres', {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-
-            await setGenres(response3.data)
-        }
-        fetchData3()
     }, [trackId])
 
-    // production
-    // let imgSrc = data.cover
-    // let trackSrc = data.soundtrack
 
-    // development
-    let imgSrc = 'http://localhost:8000' + data.cover
-    let trackSrc = 'http://localhost:8000' + data.soundtrack
 
     const classes = useStyles();
 
-    return (
-        <Grid container spacing={3} className={classes.container}>
-            <br /><br /><br />
-            <Grid item xs={6} className={classes.trackImageDiv}>
-                <img className={classes.trackImage} src={imgSrc} alt={data.title} />
+    if (typeof (data) !== 'undefined') {
+        // production
+        // let imgSrc = data.cover
+        // let trackSrc = data.soundtrack
+
+        // development
+        let imgSrc = 'http://localhost:8000' + data.cover
+        let trackSrc = 'http://localhost:8000' + data.soundtrack
+
+        return (
+            <Grid container spacing={3} className={classes.container}>
+                <br /><br /><br />
+                <Grid item xs={6} className={classes.trackImageDiv}>
+                    <img className={classes.trackImage} src={imgSrc} alt={data.title} />
+                </Grid>
+                <Grid item xs={6} className={classes.trackInfo}>
+                    <Grid item>
+                        Название трека: {data.title}
+                    </Grid>
+                    <Grid item>
+                        Дата выхода: {data.date_of_release}
+                    </Grid>
+                    <Grid item>
+                        Артисты: {data.artists_info.map((artist: art) => {
+                            return <span key={artist.id}>
+                                <Link to={'/artist/' + artist.id.toString()}>{artist.nickname}</Link>&nbsp;
+                            </span>
+                        })}
+                    </Grid>
+                    <Grid item>
+                        Жанры: {data.genres_info.map((genre: gen) => {
+                            return <span key={genre.id}>
+                                <Link to={'/genre/' + genre.id.toString()}>{genre.name}</Link>&nbsp;
+                            </span>
+                        })}
+                    </Grid>
+                    <Grid item>
+                        <ReactAudioPlayer src={trackSrc} controls />
+                    </Grid>
+                </Grid>
+                <Grid item xs={4} className={classes.trackDescription}>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut a veniam incidunt ipsa sequi laborum animi velit
+                    exercitationem facere excepturi, consequuntur id vitae quasi labore aut, aperiam nisi sapiente ex quidem.
+                    Eveniet accusamus quasi harum? Suscipit laudantium commodi distinctio ea esse? Deserunt, iusto culpa vel
+                    dolorum error qui! Mollitia, rerum!
+                </Grid>
             </Grid>
-            <Grid item xs={6} className={classes.trackInfo}>
-                <Grid item>
-                    Название трека: {data.title}
-                </Grid>
-                <Grid item>
-                    Дата выхода: {data.date_of_release}
-                </Grid>
-                <Grid item>
-                    Артисты: {data.artists.map((id: number) => {
-                        return <span key={id}>
-                            <Link to={'/artists/' + id.toString()}>{artists[id - 1].nickname}</Link>&nbsp;
-                        </span>
-                    })}
-                </Grid>
-                <Grid item>
-                    Жанры: {data.genres.map((id: number) => {
-                        return <span key={id}>
-                            <Link to={'/genre/' + id.toString()}>{genres[id - 1].name}</Link>&nbsp;
-                        </span>
-                    })}
-                </Grid>
-                <Grid item>
-                    <ReactAudioPlayer src={trackSrc} controls />
-                </Grid>
-            </Grid>
-            <Grid item xs={4} className={classes.trackDescription}>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut a veniam incidunt ipsa sequi laborum animi velit
-                 exercitationem facere excepturi, consequuntur id vitae quasi labore aut, aperiam nisi sapiente ex quidem.
-                 Eveniet accusamus quasi harum? Suscipit laudantium commodi distinctio ea esse? Deserunt, iusto culpa vel
-                 dolorum error qui! Mollitia, rerum!
-            </Grid>
-        </Grid>
-    );
+        );
+    } else {
+        return (<div></div>)
+    }
 };
 
 export default TrackDetail;

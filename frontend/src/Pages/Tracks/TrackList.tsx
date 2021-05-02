@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TrackList = () => {
     const [data, setData]: any[] = useState([])
-    const [artists, setArtists]: any[] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,38 +31,29 @@ const TrackList = () => {
 
             await setData(response1.data)
 
-
-
             for (let i = 0; i < response1.data.length; i++) {
                 response1.data[i].artists_ids = []
             }
 
         }
         fetchData()
-
-
-
-
-        const fetchData2 = async () => {
-            const response2 = await axios(
-                'http://localhost:8000/api/artists', {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-
-            await setArtists(response2.data)
-        }
-        fetchData2()
-
     }, [])
+
+    console.log(data);
+
+    interface art {
+        id: number,
+        nickname: string,
+        first_name: string,
+        last_name: string,
+        photo: string,
+    }
 
     interface obj {
         id: number,
         title: string,
-        artists: any[],
         cover: string,
-        artists_ids: number[]
+        artists_info: art[]
     }
 
     const classes = useStyles();
@@ -84,7 +74,6 @@ const TrackList = () => {
             <Container maxWidth="md" >
                 <Grid container spacing={4}>
                     {data.map((item: obj) => {
-                        item.artists_ids = item.artists
 
                         let trackHref = '/track/' + item.id
 
@@ -108,13 +97,13 @@ const TrackList = () => {
                                                 {item.title}
                                             </Typography>
                                             <Typography variant="body2" component="h5">
-                                                Исполнители: {item.artists_ids.map((id: number) => {
+                                                Исполнители: {item.artists_info.map((artist: art) => {
                                                     return (
-                                                        <>
-                                                            <Link to={'/artists/' + id.toString()} key={id}>
-                                                                {'' + artists[id - 1].nickname + ''}
+                                                        <span key={artist.id}>
+                                                            <Link to={'/artist/' + artist.id.toString()} key={artist.id}>
+                                                                {artist.nickname}
                                                             </Link>&nbsp;
-                                                        </>
+                                                        </span>
                                                     )
                                                 })}
                                             </Typography>
