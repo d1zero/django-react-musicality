@@ -72,6 +72,7 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
                     <Typography variant="h6" className={classes.title} component={Link} to='/tracks'>Track list</Typography>
                     <Typography variant="h6" className={classes.title} component={Link} to='/genres'>Genres list</Typography>
                     <Typography variant="h6" className={classes.title} component={Link} to='/playlists'>Playlists</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/albums'>Albums</Typography>
 
                     {menu}
 

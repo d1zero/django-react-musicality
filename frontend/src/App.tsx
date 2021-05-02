@@ -13,6 +13,8 @@ import GenreList from './Pages/Genres/GenreList';
 import GenreDetail from './Pages/Genres/GenreDetail';
 import PlaylistList from './Pages/Playlists/PlaylistList';
 import PlaylistDetail from './Pages/Playlists/PlaylistDetail';
+import AlbumList from './Pages/Albums/AlbumList'
+import AlbumDetail from './Pages/Albums/AlbumDetail'
 
 function App() {
     const [username, setUsername]: any = useState('')
@@ -56,6 +58,9 @@ function App() {
 
                         <Route path="/playlists" component={PlaylistList} />
                         <Route path="/playlist/:playlistId" component={PlaylistDetail} />
+
+                        <Route path="/albums" component={AlbumList} />
+                        <Route path="/album/:albumId" component={AlbumDetail} />
                     </Switch>
                 </Container>
                 <br />
