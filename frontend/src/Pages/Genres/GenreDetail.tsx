@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core/styles';
+import { Helmet } from 'react-helmet'
+
+const useStyles = makeStyles((theme) => ({
+
+}))
 
 interface track {
     id: number,
@@ -39,16 +45,19 @@ const GenreDetail = (props: any) => {
 
     var iter = 0
 
+    // const classes = useStyles();
+
     return (
         <div>
+            <Helmet><title>Жанры: {data.name}</title></Helmet>
             <br /><br /><br /><br />
             <h1>{data.name}</h1><br />
             {data.description}<br />
             {data.tracks.map((trackId: track) => {
-                iter+=1;
+                iter += 1;
                 return (
                     <div key={iter}>
-                        <Link to={'/track/' + trackId.id}>{data.tracks[iter-1].title}</Link><br />
+                        <Link to={'/track/' + trackId.id}>{data.tracks[iter - 1].title}</Link><br />
                     </div>
                 )
             })}<br />

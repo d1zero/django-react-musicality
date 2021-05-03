@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 interface art {
     id: number,
@@ -37,6 +38,9 @@ const AlbumList = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Альбомы</title>
+            </Helmet>
             <br /><br /><br /><br />
             <h1>Albums list</h1>
             {data.map((album: alb) => {
@@ -51,7 +55,7 @@ const AlbumList = () => {
                             )
                         })}
                         <p>{album.description}</p>
-                        <img src={'http://localhost:8000' + album.cover} /><br />
+                        <img src={'http://localhost:8000' + album.cover} alt={album.name} /><br />
                     </div>
                 );
 

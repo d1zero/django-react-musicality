@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Grid, CardActions, CardMedia, CardActionArea, CardContent, Typography, Button } from '@material-ui/core';
-import { Container } from '@material-ui/core';
+import { Container, Card, Grid, CardActions, CardMedia, CardActionArea, CardContent, Typography, Button } from '@material-ui/core';
+import { Helmet } from 'react-helmet'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,13 +28,7 @@ const TrackList = () => {
                 withCredentials: true
             }
             )
-
             await setData(response1.data)
-
-            for (let i = 0; i < response1.data.length; i++) {
-                response1.data[i].artists_ids = []
-            }
-
         }
         fetchData()
     }, [])
@@ -61,6 +55,7 @@ const TrackList = () => {
 
     return (
         <main>
+            <Helmet><title>Треки</title></Helmet>
             <div className={classes.mainContent}>
                 <Container maxWidth="md">
                     <Typography variant="h1" align="center" color="textPrimary" gutterBottom>

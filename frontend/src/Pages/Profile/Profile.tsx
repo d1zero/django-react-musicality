@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet'
 
 interface datas {
     id: any,
@@ -52,6 +53,7 @@ const Profile = () => {
             <br />
             {data.id ?
                 <div>
+                    <Helmet><title>Профиль</title></Helmet>
                     Никнейм: {data.username}<br />
                     Email: {data.email}<br />
                     Аватар профиля: <img src={avatarLink} alt={data.username} /><br />

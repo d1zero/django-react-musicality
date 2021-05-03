@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import ReactAudioPlayer from 'react-audio-player';
+import {Helmet} from 'react-helmet'
 
 interface art {
     id: number,
@@ -49,11 +50,14 @@ const AlbumDetail = (props: any) => {
     if (typeof (data) !== 'undefined') {
         return (
             <div>
+                <Helmet>
+                    <title>Альбомы: {data.name}</title>
+                </Helmet>
                 <br /><br /><br /><br />
                 {data.name}<br />
                 {data.description}<br />
                 {data.date_of_release}<br />
-                <img src={'http://localhost:8000' + data.cover} /><br />
+                <img src={'http://localhost:8000' + data.cover} alt={data.name} /><br />
                 {data.artists_info.map((artist: art) => {
                     return (
                         <span key={artist.id}>
@@ -64,7 +68,7 @@ const AlbumDetail = (props: any) => {
                 {data.tracks_info.map((track: trc) => {
                     return (
                         <div key={track.id}>
-                            <Link to={'/track/'+track.id}><h5>{track.title}</h5></Link>
+                            <Link to={'/track/' + track.id}><h5>{track.title}</h5></Link>
                             <img src={'http://localhost:8000' + track.cover} alt={track.title} height="100px" width="100px" />&nbsp;
                             <ReactAudioPlayer controls src={'http://localhost:8000' + track.soundtrack} />
                         </div>

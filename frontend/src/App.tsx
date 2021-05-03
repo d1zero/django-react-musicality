@@ -47,7 +47,8 @@ function App() {
                 <Container>
                     <Nav setUsername={setUsername} username={username} />
                     <Switch>
-                        <Route path="/" exact component={() => <Home username={username} />} />
+                        <Route path="/" exact component={Home} />
+
                         <Route path="/login" component={() => <Login setUsername={setUsername} />} />
                         <Route path="/register" component={Register} />
                         <Route path="/profile" component={Profile} />

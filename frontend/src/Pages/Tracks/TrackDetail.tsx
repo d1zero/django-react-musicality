@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Helmet } from 'react-helmet'
 
 const useStyles = makeStyles((theme) => ({
     trackInfo: {
@@ -90,6 +91,7 @@ const TrackDetail = (props: any) => {
 
         return (
             <Grid container spacing={3} className={classes.container}>
+                <Helmet><title>Трек: {data.title}</title></Helmet>
                 <br /><br /><br />
                 <Grid item xs={6} className={classes.trackImageDiv}>
                     <img className={classes.trackImage} src={imgSrc} alt={data.title} />

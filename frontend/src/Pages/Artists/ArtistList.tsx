@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 interface art {
     id: number,
@@ -28,6 +29,7 @@ const ArtistList = () => {
 
     return (
         <div>
+            <Helmet><title>Исполнители</title></Helmet>
             <br /><br /><br /><br />
             <h1>Artist list</h1>
             {data.map((artist: art) => {

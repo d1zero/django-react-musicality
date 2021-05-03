@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 const PlaylistList = () => {
     const [data, setData]: any[] = useState([])
@@ -30,6 +31,7 @@ const PlaylistList = () => {
 
     return (
         <div>
+            <Helmet><title>Плейлисты</title></Helmet>
             <br /><br /><br /><br />
             <h1>Playlists</h1>
             {data.map((playlist: obj) => {

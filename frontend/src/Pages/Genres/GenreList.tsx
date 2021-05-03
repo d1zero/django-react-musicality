@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core'
+import { Helmet } from 'react-helmet'
+
+const useStyles = makeStyles((theme) => ({
+
+}))
 
 const GenreList = () => {
     const [data, setData]: any[] = useState([])
@@ -25,9 +31,11 @@ const GenreList = () => {
         description: string,
     }
 
+    // const classes = useStyles()
 
     return (
         <div>
+            <Helmet><title>Жанры</title></Helmet>
             <br /><br /><br /><br />
             <h1>Все жанры</h1>
             <ol>

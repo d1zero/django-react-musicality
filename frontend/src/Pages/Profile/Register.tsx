@@ -2,6 +2,7 @@ import React, { SyntheticEvent, useState } from 'react';
 import { Redirect } from 'react-router-dom'
 import { Button, Input, Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
+import { Helmet } from 'react-helmet'
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -75,6 +76,7 @@ const Register = () => {
 
     return (
         <form onSubmit={submit}>
+            <Helmet><title>Регистрация</title></Helmet>
             <br />
             <br />
             <br />

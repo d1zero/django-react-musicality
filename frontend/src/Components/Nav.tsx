@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Container, Toolbar, IconButton, Typography, Box, Button } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Container, Toolbar, Typography, Box, Button } from '@material-ui/core'
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -63,17 +62,12 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
         <AppBar position="fixed">
             <Container fixed>
                 <Toolbar>
-                    {/* <IconButton edge="start" color="inherit"
-                        aria-label="menu" className={classes.menuButton}>
-                        <MenuIcon />
-                    </IconButton> */}
-
-                    <Typography variant="h6" className={classes.title} component={Link} to='/'>Home</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/tracks'>Track list</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/genres'>Genres list</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/playlists'>Playlists</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/albums'>Albums</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/artists'>Artists</Typography>
+                    <Typography variant="h4" className={classes.title} component={Link} to='/'><strong>Musicality</strong></Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/tracks'>Треки</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/genres'>Жанры</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/playlists'>Плейлисты</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/albums'>Альбомы</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/artists'>Исполнители</Typography>
 
                     {menu}
 

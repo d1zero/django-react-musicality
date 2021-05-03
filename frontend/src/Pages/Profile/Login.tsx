@@ -3,6 +3,7 @@ import {Redirect} from "react-router-dom";
 import {Input, Button, Snackbar} from '@material-ui/core';
 import Cookies from 'js-cookie'
 import MuiAlert from "@material-ui/lab/Alert";
+import { Helmet } from 'react-helmet'
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -51,6 +52,7 @@ const Login = (props: { setUsername: (username: any) => void}) => {
 
     return (
         <form onSubmit={submit}>
+            <Helmet><title>Авторизация</title></Helmet>
             <br/>
             <br/>
             <br/>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ReactAudioPlayer from 'react-audio-player';
+import { Helmet } from 'react-helmet'
 
 interface track {
     id: number,
@@ -60,6 +61,7 @@ const PlaylistDetail = (props: any) => {
 
     return (
         <div><br /><br /><br /><br />
+            <Helmet><title>Плейлист: {data.name}</title></Helmet>
             <h1>Playlist detail {playlistId}</h1>
             {data.id}<br />
             {data.name}<br />
