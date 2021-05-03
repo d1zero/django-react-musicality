@@ -82,9 +82,30 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # SQLITE
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+
+    # POSTGRES
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'musicality_db',
+    #     'USER': 'musicality',
+    #     'PASSWORD': 'devpass',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': 5432,
+    # }
+
+    # MySQL
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'std_1578_musicality',
+        'HOST': 'std-mysql',
+        'PORT': 3306,
+        'USER': 'std_1578_musicality',
+        'PASSWORD': '123238759',
     }
 }
 
