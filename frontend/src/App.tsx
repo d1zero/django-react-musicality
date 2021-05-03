@@ -49,23 +49,23 @@ function App() {
                     <Switch>
                         <Route path="/" exact component={Home} />
 
-                        <Route path="/login" component={() => <Login setUsername={setUsername} />} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/profile" component={Profile} />
+                        <Route path="/login/" component={() => <Login setUsername={setUsername} />} />
+                        <Route path="/register/" component={Register} />
+                        <Route path="/profile/" component={Profile} />
 
-                        <Route path="/tracks" component={TrackList} />
+                        <Route path="/tracks/" component={TrackList} />
                         <Route path="/track/:trackId" component={TrackDetail} />
 
-                        <Route path="/genres" component={GenreList} />
+                        <Route path="/genres/" component={GenreList} />
                         <Route path="/genre/:genreId" component={GenreDetail} />
 
-                        <Route path="/playlists" component={PlaylistList} />
+                        <Route path="/playlists/" component={PlaylistList} />
                         <Route path="/playlist/:playlistId" component={PlaylistDetail} />
 
-                        <Route path="/albums" component={AlbumList} />
+                        <Route path="/albums/" component={AlbumList} />
                         <Route path="/album/:albumId" component={AlbumDetail} />
 
-                        <Route path="/artists" component={ArtistList} />
+                        <Route path="/artists/" component={ArtistList} />
                         <Route path="/artist/:artistId" component={ArtistDetail} />
                     </Switch>
                 </Container>

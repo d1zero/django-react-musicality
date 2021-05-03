@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 interface art {
@@ -33,10 +33,15 @@ const ArtistList = () => {
             <br /><br /><br /><br />
             <h1>Artist list</h1>
             {data.map((artist: art) => {
+                // Production
+                let imgSrc = artist.photo
+
+                // Development
+                // let imgSrc = 'http://localhost:8000'+artist.photo
                 return (
                     <div key={artist.id}>
-                        <Link to={'artist/'+artist.id}>{artist.first_name} "{artist.nickname}" {artist.last_name}</Link><br />
-                        <img src={'http://localhost:8000'+artist.photo} alt={artist.nickname} height="200px" width="200px" />
+                        <Link to={'/artist/' + artist.id}>{artist.first_name} "{artist.nickname}" {artist.last_name}</Link><br />
+                        <img src={imgSrc} alt={artist.nickname} height="200px" width="200px" />
                     </div>
                 )
             })}

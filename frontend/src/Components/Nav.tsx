@@ -39,9 +39,9 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
         menu = (
             <>
                 <Box mr={3}>
-                    <Button color="inherit" variant="outlined" component={Link} to='/login'>Войти</Button>
+                    <Button color="inherit" variant="outlined" component={Link} to='/login/'>Войти</Button>
                 </Box>
-                <Button color="secondary" variant="contained" component={Link} to='/register'>Зарегистрироваться</Button>
+                <Button color="secondary" variant="contained" component={Link} to='/register/'>Зарегистрироваться</Button>
             </>
         )
     } else {
@@ -63,11 +63,11 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
             <Container fixed>
                 <Toolbar>
                     <Typography variant="h4" className={classes.title} component={Link} to='/'><strong>Musicality</strong></Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/tracks'>Треки</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/genres'>Жанры</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/playlists'>Плейлисты</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/albums'>Альбомы</Typography>
-                    <Typography variant="h6" className={classes.title} component={Link} to='/artists'>Исполнители</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/tracks/'>Треки</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/genres/'>Жанры</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/playlists/'>Плейлисты</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/albums/'>Альбомы</Typography>
+                    <Typography variant="h6" className={classes.title} component={Link} to='/artists/'>Исполнители</Typography>
 
                     {menu}
 

@@ -28,14 +28,18 @@ const Profile = () => {
                 await setData(content)
                 if (typeof (data.avatar) !== 'object') {
                     // production
-                    // await setAvatarLink(data.avatar)
+                    await setAvatarLink(data.avatar)
 
                     // development
-                    let link = "http://localhost:8000/" + data.avatar
-                    await setAvatarLink(link)
+                    // let link = "http://localhost:8000/" + data.avatar
+                    // await setAvatarLink(link)
                 } else {
-                    let link = "http://localhost:8000/media/images/users_avatars/d1zero.jpg"
-                    await setAvatarLink(link)
+                    // production
+                    await setAvatarLink('/media/images/users_avatars/d1zero.jpg')
+
+                    // development
+                    // let link = "http://localhost:8000/media/images/users_avatars/d1zero.jpg"
+                    // await setAvatarLink(link)
                 }
             } else {
                 console.log(222)
@@ -43,7 +47,6 @@ const Profile = () => {
         }
         fetchData()
     }, [data.date_joined, data.avatar])
-
 
     return (
         <div>

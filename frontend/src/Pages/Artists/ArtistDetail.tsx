@@ -60,23 +60,35 @@ const ArtistDetail = (props: any) => {
                 <img src={'http://localhost:8000' + data.photo} alt={data.nickname} height="300px" width="300px" /><br />
                 <h3>Треки:</h3>
                 {data.tracks.map((track: trc) => {
+                    // Production
+                    let imgSrc = track.cover
+                    let soundtrackSrc = track.soundtrack
+                    // Development
+                    // let imgSrc = 'http://localhost:8000' + track.cover
+                    // let soundtrackSrc = 'http://localhost:8000' + soundtrack.cover
+
                     return (
                         <div key={track.id}>
                             <Link to={'/track/' + track.id}><h5>{track.title}</h5></Link>
                             {track.date_of_release}<br />
-                            <img src={'http://localhost:8000' + track.cover} alt={track.title} height="100px" width="100px" />&nbsp;
-                            <ReactAudioPlayer controls src={'http://localhost:8000' + track.soundtrack} />
+                            <img src={imgSrc} alt={track.title} height="100px" width="100px" />&nbsp;
+                            <ReactAudioPlayer controls src={soundtrackSrc} />
                         </div>
                     )
                 })}
                 <br /><br />
                 <h3>Альбомы:</h3>
                 {data.albums.map((album: alb) => {
+                    // Production
+                    let imgSrc = album.cover
+                    // Development
+                    // let imgSrc = 'http://localhost:8000' + album.cover
+
                     return (
                         <div key={album.id}>
                             <Link to={'/album/' + album.id}><h4>{album.name}</h4></Link>
                             {album.date_of_release}<br />
-                            <img src={'http://localhost:8000' + album.cover} alt={album.name} height="100px" width="100px" />&nbsp;
+                            <img src={imgSrc} alt={album.name} height="100px" width="100px" />&nbsp;
                             <p>{album.description}</p>
                         </div>
                     )

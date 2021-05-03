@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: '70px',
         },
         img: {
-            objectFit: 'cover',
+            // objectFit: 'cover',
         },
         tile: {
             height: '300px !important',
@@ -114,82 +114,108 @@ const Home = () => {
     if (typeof (tracks) !== 'undefined') {
         return (
             <>
-            <Helmet>
-                <title>Главная страница</title>
-            </Helmet>
-            <div className={classes.root}>
-                <div className={classes.item}>
-                    Популярные треки:
-                    <GridList className={classes.gridList} cols={3.5}>
-                        {tracks.map((track: obj) => (
-                            <GridListTile className={classes.tile} component={Link} to={'/track/' + track.id} key={track.id}>
-                                <img src={'http://localhost:8000' + track.cover} alt={track.title} />
-                                <GridListTileBar
-                                    title={track.title}
-                                    classes={{
-                                        root: classes.titleBar,
-                                        title: classes.title,
-                                    }}
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
-                </div>
+                <Helmet>
+                    <title>Главная страница</title>
+                </Helmet>
+                <div className={classes.root}>
+                    <div className={classes.item}>
+                        Популярные треки:
+                        <GridList className={classes.gridList} cols={3.5}>
+                            {tracks.map((track: obj) => {
+                                // Production
+                                let imgSrc = track.cover
+                                // Development
+                                // let imgSrc = 'http://localhost:8000' + track.cover
+                                return (
+                                    <GridListTile className={classes.tile} component={Link} to={'/track/' + track.id} key={track.id}>
+                                        <img src={imgSrc} alt={track.title} />
+                                        <GridListTileBar
+                                            title={track.title}
+                                            classes={{
+                                                root: classes.titleBar,
+                                                title: classes.title,
+                                            }}
+                                        />
+                                    </GridListTile>
+                                )
+                            })}
+                        </GridList>
+                    </div>
 
-                <div className={classes.item}>
-                    Популярные плейлисты: <br /><br />
-                    <GridList className={classes.gridList} cols={3.5}>
-                        {playlists.map((playlist: pla) => (
-                            <GridListTile className={classes.tile} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
-                                <img src={'http://localhost:8000' + playlist.photo} alt={playlist.name} />
-                                <GridListTileBar
-                                    title={playlist.name}
-                                    classes={{
-                                        root: classes.titleBar,
-                                        title: classes.title,
-                                    }}
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
-                </div>
+                    <div className={classes.item}>
+                        Популярные плейлисты: <br /><br />
+                        <GridList className={classes.gridList} cols={3.5}>
+                            {playlists.map((playlist: pla) => {
+                                // Production
+                                let imgSrc = playlist.photo
+                                // Development
+                                // let imgSrc = 'http://localhost:8000' + playlist.photo
 
-                <div className={classes.item}>
-                    Популярные альбомы: <br /><br />
-                    <GridList className={classes.gridList} cols={3.5}>
-                        {albums.map((album: alb) => (
-                            <GridListTile className={classes.tile} component={Link} to={'/playlist/' + album.id} key={album.id}>
-                                <img src={'http://localhost:8000' + album.cover} alt={album.name} />
-                                <GridListTileBar
-                                    title={album.name}
-                                    classes={{
-                                        root: classes.titleBar,
-                                        title: classes.title,
-                                    }}
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
-                </div>
+                                return (
+                                    <GridListTile className={classes.tile} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
+                                        <img src={imgSrc} alt={playlist.name} />
+                                        <GridListTileBar
+                                            title={playlist.name}
+                                            classes={{
+                                                root: classes.titleBar,
+                                                title: classes.title,
+                                            }}
+                                        />
+                                    </GridListTile>
+                                )
+                            })}
+                        </GridList>
+                    </div>
 
-                <div className={classes.item}>
-                    Популярные артисты: <br /><br />
-                    <GridList className={classes.gridList} cols={3.5}>
-                        {artists.map((artist: art) => (
-                            <GridListTile className={classes.tile} component={Link} to={'/playlist/' + artist.id} key={artist.id}>
-                                <img src={'http://localhost:8000' + artist.photo} alt={artist.nickname} />
-                                <GridListTileBar
-                                    title={artist.nickname}
-                                    classes={{
-                                        root: classes.titleBar,
-                                        title: classes.title,
-                                    }}
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
+                    <div className={classes.item}>
+                        Популярные альбомы: <br /><br />
+                        <GridList className={classes.gridList} cols={3.5}>
+                            {albums.map((album: alb) => {
+                                // Production
+                                let imgSrc = album.cover
+                                // Development
+                                // let imgSrc = 'http://localhost:8000' + album.cover
+                                return (
+                                    <GridListTile className={classes.tile} component={Link} to={'/album/' + album.id} key={album.id}>
+                                        <img src={imgSrc} alt={album.name} />
+                                        <GridListTileBar
+                                            title={album.name}
+                                            classes={{
+                                                root: classes.titleBar,
+                                                title: classes.title,
+                                            }}
+                                        />
+                                    </GridListTile>
+                                )
+                            })}
+                        </GridList>
+                    </div>
+
+                    <div className={classes.item}>
+                        Популярные артисты: <br /><br />
+                        <GridList className={classes.gridList} cols={3.5}>
+                            {artists.map((artist: art) => {
+                                // Production
+                                let imgSrc = artist.photo
+                                // Development
+                                // let imgSrc = 'http://localhost:8000' + artist.photo
+
+                                return (
+                                    <GridListTile className={classes.tile} component={Link} to={'/artist/' + artist.id} key={artist.id}>
+                                        <img src={imgSrc} alt={artist.nickname} />
+                                        <GridListTileBar
+                                            title={artist.nickname}
+                                            classes={{
+                                                root: classes.titleBar,
+                                                title: classes.title,
+                                            }}
+                                        />
+                                    </GridListTile>
+                                )
+                            })}
+                        </GridList>
+                    </div>
                 </div>
-            </div>
             </>
         );
     } else {

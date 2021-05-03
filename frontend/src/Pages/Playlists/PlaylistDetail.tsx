@@ -69,11 +69,16 @@ const PlaylistDetail = (props: any) => {
             <button onClick={startPlaying}>Start playlist</button><br />
             {data.tracks.map((track: track) => {
                 let trackId = '' + track.id.toString()
+                // production
+                let soundtrackSrc = track.soundtrack
+
+                // development
+                // let soundtrackSrc = 'http://localhost:8000' + track.soundtrack
                 return (<span key={track.id}>
                     {track.title}: <ReactAudioPlayer
                         id={trackId}
                         onEnded={playNext}
-                        src={"http://localhost:8000" + track.soundtrack}
+                        src={soundtrackSrc}
                         controls
                     /><br />
                 </span>
@@ -81,10 +86,15 @@ const PlaylistDetail = (props: any) => {
             })}
             <img src={"http://localhost:8000" + data.photo} alt={data.name} /><br />
             {data.tracks.map((track: track) => {
+                // production
+                let imgSrc = track.cover
+
+                // development
+                // let imgSrc = 'http://localhost:8000' + track.cover
                 return (
                     <span key={track.id}>
                         <Link to={"/track/" + track.id}>{track.title}</Link><br />
-                        <img src={"http://localhost:8000" + track.cover} alt={track.title} />
+                        <img src={imgSrc} alt={track.title} />
                     </span>
                 )
             })}
