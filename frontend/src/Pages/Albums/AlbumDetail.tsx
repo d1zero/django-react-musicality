@@ -53,6 +53,7 @@ const AlbumDetail = (props: any) => {
         let imgSrc = data.cover
         // Development
         // let imgSrc = 'http://localhost:8000' + data.cover
+
         return (
             <div>
                 <Helmet>

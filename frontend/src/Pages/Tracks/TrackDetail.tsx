@@ -82,12 +82,12 @@ const TrackDetail = (props: any) => {
 
     if (typeof (data) !== 'undefined') {
         // production
-        // let imgSrc = data.cover
-        // let trackSrc = data.soundtrack
+        let imgSrc = data.cover
+        let trackSrc = data.soundtrack
 
         // development
-        let imgSrc = 'http://localhost:8000' + data.cover
-        let trackSrc = 'http://localhost:8000' + data.soundtrack
+        // let imgSrc = 'http://localhost:8000' + data.cover
+        // let trackSrc = 'http://localhost:8000' + data.soundtrack
 
         return (
             <Grid container spacing={3} className={classes.container}>

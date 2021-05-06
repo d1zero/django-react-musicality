@@ -69,11 +69,9 @@ function App() {
                         <Route path="/artist/:artistId" component={ArtistDetail} />
                     </Switch>
                 </Container>
-                <br />
-                <br />
-                <br />
-                <br />
             </div>
+            <br /><br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br />
+            <br /><br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br />
         </Router>
     );
 }

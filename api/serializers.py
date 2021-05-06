@@ -73,4 +73,4 @@ class TrackSerializer(serializers.ModelSerializer):
     genres_info = GenreSerializerForTrack(source='genres', many=True)
     class Meta:
         model = Track
-        fields = ['id', 'title', 'date_of_release', 'soundtrack', 'cover', 'artists_info', 'genres_info']
+        fields = ['id', 'title', 'date_of_release', 'soundtrack', 'cover', 'artists_info', 'genres_info', 'description']

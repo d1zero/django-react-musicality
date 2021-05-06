@@ -10,6 +10,7 @@ class Track(models.Model):
     genres = models.ManyToManyField('Genre', related_name='tracks')
     soundtrack = models.FileField(upload_to='tracks/')
     cover = models.ImageField(upload_to='images/tracks_covers')
+    description = models.TextField(verbose_name='Описание', default='')
 
     def __str__(self):
         return f"{self.title}"
@@ -41,6 +42,7 @@ class Artist(models.Model):
     last_name=  models.CharField(verbose_name='Фамилия исполнителя', max_length=40)
     date_of_birth = models.DateField(verbose_name='Дата рождения')
     photo = models.ImageField(upload_to='images/artists_photos')
+    about = models.TextField(verbose_name='Об исполнителе', default='')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

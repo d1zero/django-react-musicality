@@ -47,6 +47,7 @@ const AlbumList = () => {
                 let imgSrc = album.cover
                 // Development
                 // let imgSrc = 'http://localhost:8000' + album.cover
+
                 return (
                     <div key={album.id}>
                         <Link to={'/album/' + album.id}>{album.name}</Link><br />
