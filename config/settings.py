@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)a)t38h*&w$%*#(0ug!z!x-jl%+)qqs6yz$ikfd2n#=f7a3mw4'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -93,7 +93,7 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     #     'NAME': 'musicality_db',
     #     'USER': 'musicality',
-    #     'PASSWORD': 'devpass',
+    #     'PASSWORD': '',
     #     'HOST': '127.0.0.1',
     #     'PORT': 5432,
     # }
@@ -105,7 +105,7 @@ DATABASES = {
     #    'HOST': 'std-mysql',
     #    'PORT': 3306,
     #    'USER': 'std_1578_musicality',
-    #    'PASSWORD': '123238759',
+    #    'PASSWORD': '',
     #}
 }
 
