@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
-import { Grid, GridListTile, GridListTileBar, CircularProgress } from '@material-ui/core';
+import { Grid, GridListTile, GridListTileBar, CircularProgress, useMediaQuery } from '@material-ui/core';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
             flexWrap: 'wrap',
             justifyContent: 'space-around',
             overflow: 'hidden',
-            backgroundColor: theme.palette.background.paper,
         },
         item: {
             marginBottom: '70px',
@@ -55,6 +54,11 @@ const useStyles = makeStyles((theme: Theme) =>
             gridTemplateAreas: `'image text text''image text text'`,
             gridTemplateColumns: '300px 400px',
         },
+        carouselItemAdapt: {
+            display: 'grid',
+            gridTemplateAreas: `'image''image'`,
+            gridTemplateColumns: '300px 0px',
+        },
         image: {
             gridArea: 'image',
             minWidth: '300px',
@@ -82,11 +86,15 @@ const Home = () => {
     const [artists, setArtists]: any[] = useState([])
     const [loader, setLoader] = useState(false)
 
+
     useEffect(() => {
         const fetchData = async () => {
             setLoader(true)
             const response1 = await axios(
-                `http://localhost:8000/api/tracks/`, {
+                // Production
+                `http://musicality.std-1578.ist.mospolytech.ru/api/tracks/`, {
+                // Devepoment
+                // `http://localhost:8000/api/tracks/`, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -94,7 +102,10 @@ const Home = () => {
             await setTracks(response1.data)
 
             const response2 = await axios(
-                `http://localhost:8000/api/playlists/`, {
+                // Production
+                `http://musicality.std-1578.ist.mospolytech.ru/api/playlists/`, {
+                // Devepoment
+                // `http://localhost:8000/api/playlists/`, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -102,7 +113,10 @@ const Home = () => {
             await setPlaylists(response2.data)
 
             const response3 = await axios(
-                `http://localhost:8000/api/albums/`, {
+                // Production
+                `http://musicality.std-1578.ist.mospolytech.ru/api/albums/`, {
+                // Devepoment
+                // `http://localhost:8000/api/albums/`, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -110,7 +124,10 @@ const Home = () => {
             await setAlbums(response3.data)
 
             const response4 = await axios(
-                `http://localhost:8000/api/artists/`, {
+                // Production
+                `http://musicality.std-1578.ist.mospolytech.ru/api/artists/`, {
+                // Devepoment
+                // `http://localhost:8000/api/artists/`, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -164,6 +181,7 @@ const Home = () => {
 
     const classes = useStyles();
     const classs = classes.root + ' ' + classes.paddingBottom;
+    const matches = useMediaQuery('(min-width:770px)');
 
     if (typeof (tracks) !== 'undefined') {
         if (loader) {
@@ -202,33 +220,54 @@ const Home = () => {
                                     // Development
                                     // let imgSrc = 'http://localhost:8000' + track.cover
 
-                                    return (
-                                        <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none' }}>
-                                            <Grid item className={classes.carouselItem}>
-                                                <img
-                                                    src={imgSrc}
-                                                    alt={track.title}
-                                                    className={classes.image}
-                                                />
-                                                <GridListTileBar
-                                                    title={track.title}
-                                                    classes={{
-                                                        root: classes.titleBar,
-                                                        title: classes.title,
-                                                    }}
-                                                />
-                                                <Typography className={classes.typography}>
-                                                    <h3>Исполнители: {track.artists_info.map((artist: art) => {
-                                                        return (<span>{artist.nickname} </span>)
-                                                    }
-                                                    )}
-                                                    </h3>
-                                                    <h4>Дата выпуска: {track.date_of_release}</h4><br />
-                                                    <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
-                                                </Typography>
-                                            </Grid>
-                                        </GridListTile>
-                                    )
+                                    if (matches) {
+                                        return (
+                                            <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none' }}>
+                                                <Grid item className={classes.carouselItem}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={track.title}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={track.title}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                    <Typography className={classes.typography}>
+                                                        <h3>Исполнители: {track.artists_info.map((artist: art) => {
+                                                            return (<span>{artist.nickname} </span>)
+                                                        }
+                                                        )}
+                                                        </h3>
+                                                        <h4>Дата выпуска: {track.date_of_release}</h4><br />
+                                                        <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                    </Typography>
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    } else {
+                                        return (
+                                            <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none' }}>
+                                                <Grid item className={classes.carouselItemAdapt}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={track.title}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={track.title}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    }
                                 })}
                             </Carousel>
                         </div>
@@ -267,38 +306,59 @@ const Home = () => {
                                     // Development
                                     // let imgSrc = 'http://localhost:8000' + playlist.photo
 
-                                    return (
-                                        <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
-                                            <Grid item className={classes.carouselItem}>
-                                                <img
-                                                    src={imgSrc}
-                                                    alt={playlist.name}
-                                                    className={classes.image}
-                                                />
-                                                <GridListTileBar
-                                                    title={playlist.name}
-                                                    classes={{
-                                                        root: classes.titleBar,
-                                                        title: classes.title,
-                                                    }}
-                                                />
-                                                <Typography className={classes.typography}>
-                                                    <p style={{ minHeight: '164px', maxHeight: '164px', marginBottom: 0, }}>
-                                                        <strong>Треки:</strong><br />
-                                                        {tracks.map((track: string) => {
-                                                            if (track !== 'И другие...') {
-                                                                return (<>
-                                                                    &#183;{track}<br /></>)
-                                                            } else {
-                                                                return (<>{track}<br /></>)
-                                                            }
-                                                        })}
-                                                    </p>
-                                                    <p style={{ minHeight: '100px', maxHeight: '100px', marginBottom: 0, }}>{description}</p>
-                                                </Typography>
-                                            </Grid>
-                                        </GridListTile>
-                                    )
+                                    if (matches) {
+                                        return (
+                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
+                                                <Grid item className={classes.carouselItem}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={playlist.name}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={playlist.name}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                    <Typography className={classes.typography}>
+                                                        <p style={{ minHeight: '164px', maxHeight: '164px', marginBottom: 0, }}>
+                                                            <strong>Треки:</strong><br />
+                                                            {tracks.map((track: string) => {
+                                                                if (track !== 'И другие...') {
+                                                                    return (<>
+                                                                        &#183;{track}<br /></>)
+                                                                } else {
+                                                                    return (<>{track}<br /></>)
+                                                                }
+                                                            })}
+                                                        </p>
+                                                        <p style={{ minHeight: '100px', maxHeight: '100px', marginBottom: 0, }}>{description}</p>
+                                                    </Typography>
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    } else {
+                                        return (
+                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
+                                                <Grid item className={classes.carouselItemAdapt}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={playlist.name}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={playlist.name}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    }
                                 })}
                             </Carousel>
                         </div>
@@ -326,33 +386,55 @@ const Home = () => {
                                     let imgSrc = album.cover
                                     // Development
                                     // let imgSrc = 'http://localhost:8000' + album.cover
-                                    return (
-                                        <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/album/' + album.id} key={album.id}>
-                                            <Grid item className={classes.carouselItem}>
-                                                <img
-                                                    src={imgSrc}
-                                                    alt={album.name}
-                                                    className={classes.image}
-                                                />
-                                                <GridListTileBar
-                                                    title={album.name}
-                                                    classes={{
-                                                        root: classes.titleBar,
-                                                        title: classes.title,
-                                                    }}
-                                                />
-                                                <Typography className={classes.typography}>
-                                                    <h3>Дата выпуска: {album.date_of_release}</h3>
-                                                    <h4>Исполнители: {album.artists_info.map((artist: art) => {
-                                                        return (<span>{artist.nickname} </span>)
-                                                    }
-                                                    )}
-                                                    </h4><br />
-                                                    <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
-                                                </Typography>
-                                            </Grid>
-                                        </GridListTile>
-                                    )
+
+                                    if (matches) {
+                                        return (
+                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/album/' + album.id} key={album.id}>
+                                                <Grid item className={classes.carouselItem}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={album.name}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={album.name}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                    <Typography className={classes.typography}>
+                                                        <h3>Дата выпуска: {album.date_of_release}</h3>
+                                                        <h4>Исполнители: {album.artists_info.map((artist: art) => {
+                                                            return (<span>{artist.nickname} </span>)
+                                                        }
+                                                        )}
+                                                        </h4><br />
+                                                        <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                    </Typography>
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    } else {
+                                        return (
+                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/album/' + album.id} key={album.id}>
+                                                <Grid item className={classes.carouselItemAdapt}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={album.name}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={album.name}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    }
                                 })}
                             </Carousel>
                         </div>
@@ -381,34 +463,60 @@ const Home = () => {
                                     // Development
                                     // let imgSrc = 'http://localhost:8000' + artist.photo
 
-                                    return (
-                                        <GridListTile
-                                            component={Link}
-                                            to={'/artist/' + artist.id}
-                                            key={artist.id}
-                                            style={{ textDecoration: 'none' }}
-                                        >
-                                            <Grid item className={classes.carouselItem}>
-                                                <img
-                                                    src={imgSrc}
-                                                    alt={artist.nickname}
-                                                    className={classes.image}
-                                                />
-                                                <GridListTileBar
-                                                    title={artist.nickname}
-                                                    classes={{
-                                                        root: classes.titleBar,
-                                                        title: classes.title,
-                                                    }}
-                                                />
-                                                <Typography className={classes.typography}>
-                                                    <h3>{artist.first_name + ' ' + artist.last_name}</h3><br />
-                                                    <h4>Дата рождения: {artist.date_of_birth}</h4><br />
-                                                    <span style={{minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px'}}>{description}</span>
-                                                </Typography>
-                                            </Grid>
-                                        </GridListTile>
-                                    )
+                                    if (matches) {
+                                        return (
+                                            <GridListTile
+                                                component={Link}
+                                                to={'/artist/' + artist.id}
+                                                key={artist.id}
+                                                style={{ textDecoration: 'none' }}
+                                            >
+                                                <Grid item className={classes.carouselItem}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={artist.nickname}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={artist.nickname}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                    <Typography className={classes.typography}>
+                                                        <h3>{artist.first_name + ' ' + artist.last_name}</h3><br />
+                                                        <h4>Дата рождения: {artist.date_of_birth}</h4><br />
+                                                        <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                    </Typography>
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    } else {
+                                        return (
+                                            <GridListTile
+                                                component={Link}
+                                                to={'/artist/' + artist.id}
+                                                key={artist.id}
+                                                style={{ textDecoration: 'none' }}
+                                            >
+                                                <Grid item className={classes.carouselItemAdapt}>
+                                                    <img
+                                                        src={imgSrc}
+                                                        alt={artist.nickname}
+                                                        className={classes.image}
+                                                    />
+                                                    <GridListTileBar
+                                                        title={artist.nickname}
+                                                        classes={{
+                                                            root: classes.titleBar,
+                                                            title: classes.title,
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </GridListTile>
+                                        )
+                                    }
                                 })}
                             </Carousel>
                         </div>

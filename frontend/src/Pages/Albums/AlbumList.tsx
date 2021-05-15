@@ -1,7 +1,50 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
+import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography } from '@material-ui/core';
+
+const theme = createMuiTheme();
+
+theme.typography.h1 = {
+    fontSize: '6rem',
+    '@media (min-width:600px)': {
+        fontSize: '6rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+        fontSize: '2rem',
+    },
+};
+
+const useStyles = makeStyles((theme) => ({
+    mainContent: {
+        marginTop: theme.spacing(3),
+        padding: theme.spacing(6),
+        paddingBottom: theme.spacing(3)
+    },
+    media: {
+        paddingTop: "75%",
+    },
+    card: {
+        borderRadius: '10px',
+        boxShadow: '0 1px 2px rgba(0,0,0,.15)',
+        transition: 'box-shadow 10s ease-in-out:',
+        '&:hover': {
+            transition: 'box-shadow 10s ease-in-out:',
+            boxShadow: '7px 6px 8px 0px rgba(0, 0, 0, 0.3)',
+        }
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0) 40%)',
+        minHeight: '210px',
+        maxHeight: '210px',
+    },
+    paddingBottom: {
+        marginBottom: '2000px'
+    },
+}))
 
 interface art {
     id: number,
@@ -16,6 +59,7 @@ interface alb {
     description: string,
     cover: string,
     artists_info: art[],
+    type_of_album: string,
 }
 
 const AlbumList = () => {
@@ -24,7 +68,10 @@ const AlbumList = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response1 = await axios(
-                'http://localhost:8000/api/albums/', {
+                // Production
+                'http://musicality.std-1578.ist.mospolytech.ru/api/albums/', {
+                // Development
+                // 'http://localhost:8000/api/albums/', {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -34,36 +81,77 @@ const AlbumList = () => {
         fetchData()
     }, [])
 
+    const classes = useStyles()
 
     return (
         <div>
             <Helmet>
                 <title>Альбомы</title>
             </Helmet>
-            <br /><br /><br /><br />
-            <h1>Albums list</h1>
-            {data.map((album: alb) => {
-                // Production
-                let imgSrc = album.cover
-                // Development
-                // let imgSrc = 'http://localhost:8000' + album.cover
+            <div className={classes.mainContent}>
+                <Container maxWidth="md">
+                    <ThemeProvider theme={theme}>
+                        <Typography variant="h1" align="center" color="textPrimary" gutterBottom>
+                            Альбомы
+                        </Typography>
+                    </ThemeProvider>
+                    <Typography variant="h5" align="center" color="textSecondary" paragraph>
+                        На этой странице вы можете просмотреть все альбомы, доступные в нашей библиотеке на данный момент
+                    </Typography>
+                </Container>
+            </div>
+            <Container maxWidth="md" >
+                <Grid container spacing={4}>
+                    {data.map((album: alb) => {
+                        // Production
+                        let imgSrc = album.cover
+                        // Development
+                        // let imgSrc = 'http://localhost:8000' + album.cover
 
-                return (
-                    <div key={album.id}>
-                        <Link to={'/album/' + album.id}>{album.name}</Link><br />
-                        {album.artists_info.map((artist: art) => {
-                            return (
-                                <span key={artist.id}>
-                                    <Link to={'/artist/' + artist.id}>{artist.nickname}</Link>&nbsp;
-                                </span>
-                            )
-                        })}
-                        <p>{album.description}</p>
-                        <img src={imgSrc} alt={album.name} /><br />
-                    </div>
-                );
+                        let description = ''
+                        if (album.description.length < 110) {
+                            description = album.description
+                        } else {
+                            description = album.description.substring(0, 110) + '...'
+                        }
 
-            })}
+                        return (
+                            <Grid item key={album.id} xs={12} sm={6} md={4} component={Link} to={'/album/' + album.id} style={{ textDecoration: 'none' }}>
+                                <Card className={classes.card}>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={imgSrc}
+                                            title={album.name}
+                                        />
+                                        <CardContent className={classes.titleBar}>
+                                            <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '64px', maxHeight: '64px' }}>
+                                                {album.name}
+                                            </Typography>
+                                            <Typography gutterBottom variant="h6" component="h5">
+                                                {album.type_of_album}
+                                            </Typography>
+                                            <Typography gutterBottom>
+                                                {album.artists_info.map((artist: art) => {
+                                                    return (
+                                                        <span key={artist.id}>
+                                                            <Link to={'/artist/' + artist.id}>{artist.nickname}</Link>&nbsp;
+                                                        </span>
+                                                    )
+                                                })}
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                {description}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                        );
+
+                    })}
+                </Grid>
+            </Container>
         </div>
     )
 }

@@ -37,7 +37,10 @@ const ArtistDetail = (props: any) => {
     useEffect(() => {
         const fetchData = async () => {
             const response1 = await axios(
-                'http://localhost:8000/api/artists/' + artistId, {
+                // Production
+                'http://musicality.std-1578.ist.mospolytech.ru/api/artists/' + artistId, {
+                // Development
+                // 'http://localhost:8000/api/artists/' + artistId, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -57,7 +60,12 @@ const ArtistDetail = (props: any) => {
                 <h1>Artist detail</h1>
                 {data.first_name} <strong>"{data.nickname}"</strong> {data.last_name}<br />
                 {data.date_of_birth}<br />
+
+                {/* Production */}
                 <img src={'http://localhost:8000' + data.photo} alt={data.nickname} height="300px" width="300px" /><br />
+                {/* Development */}
+                {/* <img src={data.photo} alt={data.nickname} height="300px" width="300px" /><br /> */}
+
                 <h3>Треки:</h3>
                 {data.tracks.map((track: trc) => {
                     // Production
@@ -65,7 +73,7 @@ const ArtistDetail = (props: any) => {
                     let soundtrackSrc = track.soundtrack
                     // Development
                     // let imgSrc = 'http://localhost:8000' + track.cover
-                    // let soundtrackSrc = 'http://localhost:8000' + soundtrack.cover
+                    // let soundtrackSrc = 'http://localhost:8000' + track.soundtrack
 
                     return (
                         <div key={track.id}>

@@ -34,7 +34,10 @@ const AlbumDetail = (props: any) => {
     useEffect(() => {
         const fetchData = async () => {
             const response1 = await axios(
-                'http://localhost:8000/api/albums/' + albumId, {
+                // Production
+                'http://musicality.std-1578.ist.mospolytech.ru/api/albums/' + albumId, {
+                // Development
+                // 'http://localhost:8000/api/albums/' + albumId, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -76,7 +79,7 @@ const AlbumDetail = (props: any) => {
                     let imgTrackSrc= track.cover
                     let soundtrackSrc = track.soundtrack
                     // Development
-                    // let imgSrc = 'http://localhost:8000' + track.cover
+                    // let imgTrackSrc = 'http://localhost:8000' + track.cover
                     // let soundtrackSrc = 'http://localhost:8000' + track.soundtrack
                     return (
                         <div key={track.id}>

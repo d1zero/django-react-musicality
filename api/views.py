@@ -1,13 +1,9 @@
+from .models import Track, Album, Genre, Artist, Playlist
+from .serializers import TrackSerializer, ArtistSerializer, AlbumSerializer, GenreSerializer, PlaylistSerializer
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-2
-
-from django.db.models import Q
-
-from .serializers import TrackSerializer, AlbumSerializer, GenreSerializer, ArtistSerializer, PlaylistSerializer
-from .models import Track, Album, Genre, Artist, Playlist
 
 
 class TrackList(APIView):
@@ -66,20 +62,6 @@ class ArtistDetail(APIView):
         return Response(data)
 
 
-class ArtistList(APIView):
-    def get(self, request):
-        artists = Artist.objects.all()
-        data = ArtistSerializer(artists, many=True).data
-        return Response(data)
-
-
-class ArtistDetail(APIView):
-    def get(self, request, pk):
-        artist = get_object_or_404(Artist, pk=pk)
-        data = ArtistSerializer(artist).data
-        return Response(data)
-
-
 class PlaylistList(APIView):
     def get(self, request):
         playlists = Playlist.objects.all()
@@ -96,6 +78,7 @@ class PlaylistDetail(APIView):
 
 def index(request):
     return render(request, 'index.html')
+
 
 def index_pk(request, pk):
     return render(request, 'index.html')

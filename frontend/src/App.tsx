@@ -5,7 +5,7 @@ import Nav from "./Components/Nav";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from "./Pages/Home";
 import Register from "./Pages/Profile/Register";
-import { Container } from '@material-ui/core'
+import { Container, CssBaseline, Typography, Link } from '@material-ui/core'
 import TrackDetail from "./Pages/Tracks/TrackDetail";
 import TrackList from "./Pages/Tracks/TrackList";
 import Profile from './Pages/Profile/Profile';
@@ -17,6 +17,32 @@ import AlbumList from './Pages/Albums/AlbumList'
 import AlbumDetail from './Pages/Albums/AlbumDetail'
 import ArtistList from './Pages/Artists/ArtistList';
 import ArtistDetail from './Pages/Artists/ArtistDetail';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary">
+            {'Non-Copyright(ибо я не юрист) © '}
+            <Link color="inherit" href="/">
+                Musicality
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
+
+const useStyles = makeStyles((theme) => ({
+    main: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(2),
+    },
+    footer: {
+        padding: theme.spacing(3, 2),
+        marginTop: theme.spacing(10),
+    },
+}));
 
 function App() {
     const [username, setUsername]: any = useState('')
@@ -24,7 +50,10 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             const response1 = await fetch(
-                'http://localhost:8000/user/profile', {
+                // Production
+                'http://musicality.std-1578.ist.mospolytech.ru/user/profile', {
+                // Development
+                // 'http://localhost:8000/user/profile', {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
             }
@@ -40,12 +69,14 @@ function App() {
         fetchData()
     }, [])
 
+    const classes = useStyles();
 
     return (
         <Router>
             <div className="App">
                 <Container>
                     <Nav setUsername={setUsername} username={username} />
+
                     <Switch>
                         <Route path="/" exact component={Home} />
 
@@ -69,9 +100,17 @@ function App() {
                         <Route path="/artist/:artistId" component={ArtistDetail} />
                     </Switch>
                 </Container>
+
+                <CssBaseline />
+                <footer className={classes.footer}>
+                    <Container maxWidth="sm">
+                        <Typography variant="body1">
+                            Made by <Link href="https://t.me/d1z3ro" style={{'textDecoration': 'none'}} color="secondary">d1zero</Link>
+                        </Typography>
+                        <Copyright />
+                    </Container>
+                </footer>
             </div>
-            <br /><br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br />
-            <br /><br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br />
         </Router>
     );
 }

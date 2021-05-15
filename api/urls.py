@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import TrackList, TrackDetail, AlbumList, AlbumDetail, GenreList, GenreDetail, PlaylistList, PlaylistDetail, \
+from .views import TrackList, TrackDetail, AlbumList, AlbumDetail, GenreList, GenreDetail, PlaylistList, PlaylistDetail,\
     ArtistList, ArtistDetail
 
 urlpatterns = [

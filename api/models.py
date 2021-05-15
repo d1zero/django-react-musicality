@@ -6,7 +6,8 @@ import datetime
 class Track(models.Model):
     title = models.CharField(verbose_name='Название трека', max_length=40)
     artists = models.ManyToManyField('Artist', related_name='tracks')
-    date_of_release = models.DateField(verbose_name='Дата выпуска', default=timezone.now)
+    date_of_release = models.DateField(
+        verbose_name='Дата выпуска', default=timezone.now)
     genres = models.ManyToManyField('Genre', related_name='tracks')
     soundtrack = models.FileField(upload_to='tracks/')
     cover = models.ImageField(upload_to='images/tracks_covers')
@@ -24,9 +25,14 @@ class Album(models.Model):
     name = models.CharField(verbose_name='Название альбома', max_length=40)
     artists = models.ManyToManyField('Artist', related_name='albums')
     track = models.ManyToManyField('Track', related_name='album')
-    date_of_release = models.DateField(verbose_name='Дата выпуска', default=timezone.now)
+    date_of_release = models.DateField(
+        verbose_name='Дата выпуска', default=timezone.now)
     description = models.TextField(verbose_name='Описание альбома')
     cover = models.ImageField(upload_to='images/albums_covers')
+    TYPE_OF_ALBUM_CHOICES = [
+        ('Сингл', 'Сингл'), ('EP', 'EP'), ('Альбом', 'Альбом')]
+    type_of_album = models.CharField(verbose_name='Тип альбома', max_length=6, choices=(
+        TYPE_OF_ALBUM_CHOICES), default='Альбом')
 
     def __str__(self):
         return self.name
@@ -37,9 +43,12 @@ class Album(models.Model):
 
 
 class Artist(models.Model):
-    nickname = models.CharField(verbose_name='Псевдоним', max_length=40, blank=True)
-    first_name = models.CharField(verbose_name='Имя исполнителя', max_length=40)
-    last_name=  models.CharField(verbose_name='Фамилия исполнителя', max_length=40)
+    nickname = models.CharField(
+        verbose_name='Псевдоним', max_length=40, blank=True)
+    first_name = models.CharField(
+        verbose_name='Имя исполнителя', max_length=40)
+    last_name = models.CharField(
+        verbose_name='Фамилия исполнителя', max_length=40)
     date_of_birth = models.DateField(verbose_name='Дата рождения')
     photo = models.ImageField(upload_to='images/artists_photos')
     about = models.TextField(verbose_name='Об исполнителе', default='')
@@ -55,6 +64,7 @@ class Artist(models.Model):
 class Genre(models.Model):
     name = models.CharField(verbose_name='Название плейлиста', max_length=40)
     description = models.TextField(verbose_name='Описание жанра')
+    cover = models.ImageField(upload_to='images/genres_covers', blank=True)
 
     def __str__(self):
         return self.name

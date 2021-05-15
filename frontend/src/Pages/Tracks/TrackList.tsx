@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography, CircularProgress } from '@material-ui/core';
 import { Helmet } from 'react-helmet'
+
+const theme = createMuiTheme();
+
+theme.typography.h1 = {
+    fontSize: '6rem',
+    '@media (min-width:600px)': {
+        fontSize: '6rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+        fontSize: '2rem',
+    },
+};
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +55,11 @@ const TrackList = () => {
         const fetchData = async () => {
             setLoader(true)
             const response1 = await axios(
-                `http://localhost:8000/api/tracks`, {
+                // Production
+                `http://musicality.std-1578.ist.mospolytech.ru/api/tracks`, {
+                // Development
+                // `http://localhost:8000/api/tracks/`, {
+
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -88,9 +104,11 @@ const TrackList = () => {
                     <Helmet><title>Треки</title></Helmet>
                     <div className={classes.mainContent}>
                         <Container maxWidth="md">
-                            <Typography variant="h1" align="center" color="textPrimary" gutterBottom>
-                                Аудиотреки
-                            </Typography>
+                            <ThemeProvider theme={theme}>
+                                <Typography variant="h1" align="center" color="textPrimary" gutterBottom>
+                                    Аудиотреки
+                                </Typography>
+                            </ThemeProvider>
                             <Typography variant="h5" align="center" color="textSecondary" paragraph>
                                 На этой странице вы можете просмотреть все треки, доступные в нашей библиотеке на данный момент
                             </Typography>
@@ -107,10 +125,9 @@ const TrackList = () => {
                                     description = item.description.substring(0, 110) + '...'
                                 }
 
-                                // production
+                                // Production
                                 let imgSrc = item.cover
-
-                                // development
+                                // Development
                                 // let imgSrc = 'http://localhost:8000' + item.cover
 
                                 return (
