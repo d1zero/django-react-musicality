@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Login = (props: { setUsername: (username: any) => void}) => {
+const Login = (props: { setUsername: (username: any) => void }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [open, setOpen] = useState(false)
@@ -127,7 +127,7 @@ const Login = (props: { setUsername: (username: any) => void}) => {
                         <Grid item xs>
                             <Link to='#' style={{ 'textDecoration': 'none' }}>
                                 <MatUILink>
-                                   Забыли пароль?
+                                    Забыли пароль?
                                 </MatUILink>
                             </Link>
                         </Grid>
