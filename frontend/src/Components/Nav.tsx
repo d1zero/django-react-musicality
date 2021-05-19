@@ -43,10 +43,13 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
 
 
     const logout = async () => {
+        let link = ''
         // Production
-        await axios('http://musicality.std-1578.ist.mospolytech.ru/user/logout', {
+        // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/logout'
         // Development
-        // await axios('http://localhost:8000/user/logout', {
+        link = 'http://localhost:8000/user/logout'
+
+        await axios(link, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
             withCredentials: true

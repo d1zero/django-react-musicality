@@ -61,11 +61,14 @@ const ArtistList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/'
+            // Development
+            link = 'http://localhost:8000/api/artists/'
+
             const response1 = await axios(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/api/artists/', {
-                // Development
-                // 'http://localhost:8000/api/artists/', {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -96,10 +99,11 @@ const ArtistList = () => {
             <Container maxWidth="md" >
                 <Grid container spacing={4}>
                     {data.map((artist: art) => {
+                        let imgSrc = ''
                         // Production
-                        let imgSrc = artist.photo
+                        // imgSrc = artist.photo
                         // Development
-                        // let imgSrc = 'http://localhost:8000' + artist.photo
+                        imgSrc = 'http://localhost:8000' + artist.photo
 
                         let about = ''
                         if (artist.about.length < 120) {
@@ -109,7 +113,7 @@ const ArtistList = () => {
                         }
 
                         return (
-                            <Grid item key={artist.id} xs={12} sm={6} md={4} component={Link} to={'/genre/' + artist.id} style={{ textDecoration: 'none' }}>
+                            <Grid item key={artist.id} xs={12} sm={6} md={4} component={Link} to={'/artist/' + artist.id} style={{ textDecoration: 'none' }}>
                                 <Card className={classes.card}>
                                     <CardActionArea>
                                         <CardMedia

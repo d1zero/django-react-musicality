@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import ReactAudioPlayer from 'react-audio-player'
 import { Helmet } from 'react-helmet'
+import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent } from '@material-ui/core'
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
 interface alb {
     id: number,
@@ -10,14 +11,7 @@ interface alb {
     date_of_release: string,
     description: string,
     cover: string,
-}
-
-interface trc {
-    id: number,
-    title: string,
-    cover: string,
-    soundtrack: string,
-    date_of_release: string,
+    type_of_album: string,
 }
 
 interface art {
@@ -26,21 +20,77 @@ interface art {
     last_name: string,
     date_of_birth: string,
     photo: string,
-    tracks: trc[],
-    albums: alb[]
+    albums: alb[],
+    about: string,
 }
+
+const theme = createMuiTheme();
+
+theme.typography.h3 = {
+    fontSize: '6rem',
+    '@media (min-width:600px)': {
+        fontSize: '4rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+        fontSize: '2rem',
+    },
+};
+
+
+
+const useStyles = makeStyles((theme) => ({
+    artistImageSpan: {
+        display: 'grid',
+        justifyContent: 'center'
+    },
+    artistImage: {
+        width: '300px',
+        height: '300px',
+        objectFit: 'cover',
+        marginBottom: theme.spacing(3)
+    },
+    about: {
+        marginBottom: theme.spacing(5)
+    },
+    media: {
+        height: theme.spacing(25),
+        width: theme.spacing(25),
+        object: 'fit',
+    },
+    card: {
+        borderRadius: '10px',
+        maxWidth: theme.spacing(25),
+        maxHeight: theme.spacing(25),
+        margin: theme.spacing(1),
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)',
+        position: 'absolute',
+        width: 'inherit',
+        color: 'white',
+        textShadow: '1px 1px 1px #000',
+        transition: '.3s',
+        opacity: '0',
+        bottom: '-50px',
+    },
+}))
 
 const ArtistDetail = (props: any) => {
     const artistId = props.match.params.artistId;
-    const [data, setData] = useState<art>()
+    const [data, setData] = useState<art>();
+    const classes = useStyles()
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/' + artistId
+            // Development
+            link = 'http://localhost:8000/api/artists/' + artistId
+
             const response1 = await axios(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/api/artists/' + artistId, {
-                // Development
-                // 'http://localhost:8000/api/artists/' + artistId, {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -50,57 +100,176 @@ const ArtistDetail = (props: any) => {
         fetchData()
     }, [artistId])
 
-    console.log(data);
-
     if (typeof (data) !== 'undefined') {
+        let imgSrc = ''
+        // Production
+        // imgSrc = data.photo
+        // Development
+        imgSrc = 'http://localhost:8000' + data.photo
+
+        var single = data.albums.find(album => album.type_of_album === 'Сингл');
+        var ep = data.albums.find(album => album.type_of_album === 'EP');
+        var album = data.albums.find(album => album.type_of_album === 'Альбом');
+
+
         return (
             <div>
                 <Helmet><title>Исполнитель: {data.nickname}</title></Helmet>
                 <br /><br /><br /><br />
-                <h1>Artist detail</h1>
-                {data.first_name} <strong>"{data.nickname}"</strong> {data.last_name}<br />
-                {data.date_of_birth}<br />
+                <Container maxWidth="md">
+                    <ThemeProvider theme={theme}>
+                        <Typography variant="h3" align="center">
+                            {data.first_name} "{data.nickname}" {data.last_name}
+                        </Typography><br />
+                    </ThemeProvider>
 
-                {/* Production */}
-                <img src={'http://localhost:8000' + data.photo} alt={data.nickname} height="300px" width="300px" /><br />
-                {/* Development */}
-                {/* <img src={data.photo} alt={data.nickname} height="300px" width="300px" /><br /> */}
+                    <span className={classes.artistImageSpan}>
+                        <img src={imgSrc} alt={data.nickname} className={classes.artistImage} />
+                    </span>
 
-                <h3>Треки:</h3>
-                {data.tracks.map((track: trc) => {
-                    // Production
-                    let imgSrc = track.cover
-                    let soundtrackSrc = track.soundtrack
-                    // Development
-                    // let imgSrc = 'http://localhost:8000' + track.cover
-                    // let soundtrackSrc = 'http://localhost:8000' + track.soundtrack
+                    <ThemeProvider theme={theme}>
+                        <Typography gutterBottom variant="h3" align="center">Об артисте</Typography>
+                        <Typography variant="body1" className={classes.about}>{data.about}</Typography>
+                    </ThemeProvider>
 
-                    return (
-                        <div key={track.id}>
-                            <Link to={'/track/' + track.id}><h5>{track.title}</h5></Link>
-                            {track.date_of_release}<br />
-                            <img src={imgSrc} alt={track.title} height="100px" width="100px" />&nbsp;
-                            <ReactAudioPlayer controls src={soundtrackSrc} />
-                        </div>
-                    )
-                })}
-                <br /><br />
-                <h3>Альбомы:</h3>
-                {data.albums.map((album: alb) => {
-                    // Production
-                    let imgSrc = album.cover
-                    // Development
-                    // let imgSrc = 'http://localhost:8000' + album.cover
 
-                    return (
-                        <div key={album.id}>
-                            <Link to={'/album/' + album.id}><h4>{album.name}</h4></Link>
-                            {album.date_of_release}<br />
-                            <img src={imgSrc} alt={album.name} height="100px" width="100px" />&nbsp;
-                            <p>{album.description}</p>
-                        </div>
-                    )
-                })}
+
+                    <div id="single">
+                        {(typeof (single) != "undefined" && single !== null) ?
+                            <>
+                                <Typography gutterBottom variant="h4">Синглы</Typography>
+                                <Grid container spacing={3}>
+                                    {data.albums.map((album: alb) => {
+                                        let imgSrc = ''
+                                        // Production
+                                        // imgSrc = album.cover
+                                        // Development
+                                        imgSrc = 'http://localhost:8000' + album.cover
+
+                                        if (album.type_of_album === 'Сингл') {
+                                            return (
+                                                <Grid item component={Link} to={'/album/' + album.id}>
+                                                    <Card className={classes.card}>
+                                                        <CardActionArea onMouseOver={() => { document.getElementById(('content' + album.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + album.id))?.removeAttribute('style') }}>
+                                                            <CardMedia
+                                                                className={classes.media}
+
+                                                                // Production
+                                                                // image={album.cover}
+                                                                // Development
+                                                                image={'http://localhost:8000' + album.cover}
+
+                                                                title={album.name}
+                                                            />
+                                                            <CardContent className={classes.titleBar} id={"content" + album.id}>
+                                                                <Typography gutterBottom variant="h5" component="h2">
+                                                                    {album.name}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                    </Card>
+                                                </Grid>
+                                            )
+                                        }
+                                    })}
+                                </Grid></>
+                            :
+                            <Typography variant="h4">Нет синглов</Typography>
+                        }
+                    </div>
+                    <br />
+
+                    <div id="ep">
+                        {(typeof (ep) != "undefined" && ep !== null) ?
+                            <>
+                                <Typography gutterBottom variant="h4">EP</Typography>
+                                <Grid container spacing={3}>
+                                    {data.albums.map((album: alb) => {
+                                        let imgSrc = ''
+                                        // Production
+                                        // imgSrc = album.cover
+                                        // Development
+                                        imgSrc = 'http://localhost:8000' + album.cover
+
+                                        if (album.type_of_album === 'EP') {
+                                            return (
+                                                <Grid item component={Link} to={'/album/' + album.id}>
+                                                    <Card className={classes.card}>
+                                                        <CardActionArea onMouseOver={() => { document.getElementById(('content' + album.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + album.id))?.removeAttribute('style') }}>
+                                                            <CardMedia
+                                                                className={classes.media}
+
+                                                                // Production
+                                                                // image={album.cover}
+                                                                // Development
+                                                                image={'http://localhost:8000' + album.cover}
+
+                                                                title={album.name}
+                                                            />
+                                                            <CardContent className={classes.titleBar} id={"content" + album.id}>
+                                                                <Typography gutterBottom variant="h5" component="h2">
+                                                                    {album.name}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                    </Card>
+                                                </Grid>
+                                            )
+                                        }
+                                    })}
+                                </Grid>
+                            </>
+                            :
+                            <Typography variant="h4">Нет EP</Typography>
+                        }
+                    </div>
+                    <br />
+
+                    <div id="album">
+                        {(typeof (album) != "undefined" && album !== null) ?
+                            <>
+                                <Typography gutterBottom variant="h4">Альбомы</Typography>
+                                <Grid container spacing={3}>
+                                    {data.albums.map((album: alb) => {
+                                        let imgSrc = ''
+                                        // Production
+                                        // imgSrc = album.cover
+                                        // Development
+                                        imgSrc = 'http://localhost:8000' + album.cover
+
+                                        if (album.type_of_album === 'Альбом') {
+                                            return (
+                                                <Grid item component={Link} to={'/album/' + album.id}>
+                                                    <Card className={classes.card}>
+                                                        <CardActionArea onMouseOver={() => { document.getElementById(('content' + album.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + album.id))?.removeAttribute('style') }}>
+                                                            <CardMedia
+                                                                className={classes.media}
+
+                                                                // Production
+                                                                // image={album.cover}
+                                                                // Development
+                                                                image={'http://localhost:8000' + album.cover}
+
+                                                                title={album.name}
+                                                            />
+                                                            <CardContent className={classes.titleBar} id={"content" + album.id}>
+                                                                <Typography gutterBottom variant="h5" component="h2">
+                                                                    {album.name}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                    </Card>
+                                                </Grid>
+                                            )
+                                        }
+                                    })}
+                                </Grid>
+                            </>
+                            :
+                            <Typography variant="h4">Нет альбомов</Typography>
+                        }
+                    </div>
+                </Container>
             </div>
         )
     } else {

@@ -24,22 +24,13 @@ class TrackSerializer(serializers.ModelSerializer):
                   'cover', 'artists_info', 'genres_info', 'description']
 
 
-class TrackSerializerForArtist(serializers.ModelSerializer):
-    artists_info = ArtistSerializerForTrack(source='artists', many=True)
-    class Meta:
-        model = Track
-        fields = ['id', 'title',
-                  'cover', 'artists_info', 'description']
-
-
 class AlbumSerializerForArtist(serializers.ModelSerializer):
     class Meta:
         model = Album
-        fields = ['id', 'name', 'date_of_release', 'description', 'cover']
+        fields = ['id', 'name', 'date_of_release', 'description', 'cover', 'type_of_album']
 
 
 class ArtistSerializer(serializers.ModelSerializer):
-    tracks = TrackSerializerForArtist(read_only=True, many=True)
     albums = AlbumSerializerForArtist(read_only=True, many=True)
 
     class Meta:

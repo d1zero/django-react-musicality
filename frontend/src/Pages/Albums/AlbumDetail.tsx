@@ -33,11 +33,14 @@ const AlbumDetail = (props: any) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/' + albumId
+            // Development
+            link = 'http://localhost:8000/api/albums/' + albumId
+
             const response1 = await axios(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/api/albums/' + albumId, {
-                // Development
-                // 'http://localhost:8000/api/albums/' + albumId, {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -52,10 +55,11 @@ const AlbumDetail = (props: any) => {
 
 
     if (typeof (data) !== 'undefined') {
+        let imgSrc = ''
         // Production
-        let imgSrc = data.cover
+        // imgSrc = data.cover
         // Development
-        // let imgSrc = 'http://localhost:8000' + data.cover
+        imgSrc = 'http://localhost:8000' + data.cover
 
         return (
             <div>
@@ -75,12 +79,15 @@ const AlbumDetail = (props: any) => {
                     );
                 })}<br />
                 {data.tracks_info.map((track: trc) => {
+                    let imgTrackSrc = ''
+                    let soundtrackSrc = ''
                     // Production
-                    let imgTrackSrc= track.cover
-                    let soundtrackSrc = track.soundtrack
+                    // imgTrackSrc = track.cover
+                    // soundtrackSrc = track.soundtrack
                     // Development
-                    // let imgTrackSrc = 'http://localhost:8000' + track.cover
-                    // let soundtrackSrc = 'http://localhost:8000' + track.soundtrack
+                    imgTrackSrc = 'http://localhost:8000' + track.cover
+                    soundtrackSrc = 'http://localhost:8000' + track.soundtrack
+
                     return (
                         <div key={track.id}>
                             <Link to={'/track/' + track.id}><h5>{track.title}</h5></Link>

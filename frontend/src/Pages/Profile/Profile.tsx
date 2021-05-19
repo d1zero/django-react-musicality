@@ -62,11 +62,14 @@ const Profile = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/profile'
+            // Development
+            link = 'http://localhost:8000/user/profile'
+
             const response1 = await fetch(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/user/profile', {
-                // Development
-                // 'http://localhost:8000/user/profile', {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
             }
@@ -78,17 +81,15 @@ const Profile = () => {
                 if (typeof (data.avatar) !== 'object') {
 
                     // Production
-                    await setAvatarLink(data.avatar)
+                    // setAvatarLink(data.avatar)
                     // Development
-                    // let link = "http://localhost:8000" + data.avatar
-                    // await setAvatarLink(link)
+                    setAvatarLink("http://localhost:8000" + data.avatar)
 
                 } else {
                     // Production
-                    await setAvatarLink('/media/images/users_avatars/d1zero.jpg')
+                    // setAvatarLink('/media/images/users_avatars/d1zero.jpg')
                     // Development
-                    // let link = "http://localhost:8000/media/images/users_avatars/d1zero.jpg"
-                    // await setAvatarLink(link)
+                    setAvatarLink("http://localhost:8000/media/images/users_avatars/d1zero.jpg")
                 }
             } else {
                 console.log(222)

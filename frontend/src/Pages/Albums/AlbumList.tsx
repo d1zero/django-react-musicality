@@ -67,11 +67,14 @@ const AlbumList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
+            // Development
+            link = 'http://localhost:8000/api/albums/'
+
             const response1 = await axios(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/api/albums/', {
-                // Development
-                // 'http://localhost:8000/api/albums/', {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -103,10 +106,11 @@ const AlbumList = () => {
             <Container maxWidth="md" >
                 <Grid container spacing={4}>
                     {data.map((album: alb) => {
+                        let imgSrc = ''
                         // Production
-                        let imgSrc = album.cover
+                        // imgSrc = album.cover
                         // Development
-                        // let imgSrc = 'http://localhost:8000' + album.cover
+                        imgSrc = 'http://localhost:8000' + album.cover
 
                         let description = ''
                         if (album.description.length < 110) {

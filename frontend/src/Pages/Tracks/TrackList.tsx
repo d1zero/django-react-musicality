@@ -54,12 +54,15 @@ const TrackList = () => {
     useEffect(() => {
         const fetchData = async () => {
             setLoader(true)
-            const response1 = await axios(
-                // Production
-                `http://musicality.std-1578.ist.mospolytech.ru/api/tracks`, {
-                // Development
-                // `http://localhost:8000/api/tracks/`, {
 
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks'
+            // Development
+            link = 'http://localhost:8000/api/tracks/'
+
+            const response1 = await axios(
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -125,10 +128,11 @@ const TrackList = () => {
                                     description = item.description.substring(0, 110) + '...'
                                 }
 
+                                let imgSrc = ''
                                 // Production
-                                let imgSrc = item.cover
+                                // imgSrc = item.cover
                                 // Development
-                                // let imgSrc = 'http://localhost:8000' + item.cover
+                                imgSrc = 'http://localhost:8000' + item.cover
 
                                 return (
                                     <Grid item key={item.id} xs={12} sm={6} md={4} component={Link} to={'/track/' + item.id} style={{ textDecoration: 'none' }}>

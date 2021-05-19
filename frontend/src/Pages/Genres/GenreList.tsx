@@ -52,11 +52,14 @@ const GenreList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/genres/'
+            // Development
+            link = 'http://localhost:8000/api/genres/'
+
             const response1 = await axios(
-                // Production
-                `http://musicality.std-1578.ist.mospolytech.ru/api/genres/`, {
-                // Development
-                // `http://localhost:8000/api/genres/`, {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -94,11 +97,11 @@ const GenreList = () => {
             <Container maxWidth="md" >
                 <Grid container spacing={4}>
                     {data.map((genre: obj) => {
-
+                        let imgSrc = ''
                         // Production
-                        let imgSrc = genre.cover
+                        // imgSrc = genre.cover
                         // Development
-                        // let imgSrc = 'http://localhost:8000' + genre.cover
+                        imgSrc = 'http://localhost:8000' + genre.cover
 
                         return (
                             <Grid item key={genre.id} xs={12} sm={6} md={4} component={Link} to={'/genre/' + genre.id} style={{ textDecoration: 'none' }}>

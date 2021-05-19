@@ -51,10 +51,14 @@ const Login = (props: { setUsername: (username: any) => void }) => {
             'Content-Type': 'application/json',
             'X-CSRFToken': '' + Cookies.get('csrftoken')
         }
+
+        let link = ''
         // Production
-        const response = await fetch('http://musicality.std-1578.ist.mospolytech.ru/user/login', {
+        // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/login'
         // Development
-        // const response = await fetch('http://localhost:8000/user/login', {
+        link = 'http://localhost:8000/user/login'
+
+        const response = await fetch(link, {
             method: 'POST',
             headers: headers,
             credentials: 'include',

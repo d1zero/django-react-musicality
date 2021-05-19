@@ -49,11 +49,14 @@ function App() {
 
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/profile'
+            // Development
+            link = 'http://localhost:8000/user/profile'
+
             const response1 = await fetch(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/user/profile', {
-                // Development
-                // 'http://localhost:8000/user/profile', {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include'
             }
@@ -105,7 +108,7 @@ function App() {
                 <footer className={classes.footer}>
                     <Container maxWidth="sm">
                         <Typography variant="body1">
-                            Made by <Link href="https://t.me/d1z3ro" style={{'textDecoration': 'none'}} color="secondary">d1zero</Link>
+                            Made by <Link href="https://t.me/d1z3ro" style={{ 'textDecoration': 'none' }} color="secondary">d1zero</Link>
                         </Typography>
                         <Copyright />
                     </Container>

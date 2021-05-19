@@ -58,10 +58,13 @@ const Register = () => {
             setOpen(true)
         }
         else if (password === psw2) {
+            let link = ''
             // Production
-            const response = await fetch('http://musicality.std-1578.ist.mospolytech.ru/user/register', {
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/register'
             // Development
-            // const response = await fetch('http://localhost:8000/user/register', {
+            link = 'http://localhost:8000/user/register'
+
+            const response = await fetch(link, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

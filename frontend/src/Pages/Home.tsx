@@ -90,44 +90,57 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             setLoader(true)
+
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks/'
+            // Development
+            link = 'http://localhost:8000/api/tracks/'
+
             const response1 = await axios(
-                // Production
-                `http://musicality.std-1578.ist.mospolytech.ru/api/tracks/`, {
-                // Devepoment
-                // `http://localhost:8000/api/tracks/`, {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
             )
             await setTracks(response1.data)
 
+            let link2 = ''
+            // Production
+            // link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
+            // Development
+            link2 = 'http://localhost:8000/api/playlists/'
+
             const response2 = await axios(
-                // Production
-                `http://musicality.std-1578.ist.mospolytech.ru/api/playlists/`, {
-                // Devepoment
-                // `http://localhost:8000/api/playlists/`, {
+                link2, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
             )
             await setPlaylists(response2.data)
 
+            let link3 = ''
+            // Production
+            // link3 = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
+            // Development
+            link3 = 'http://localhost:8000/api/albums/'
+
             const response3 = await axios(
-                // Production
-                `http://musicality.std-1578.ist.mospolytech.ru/api/albums/`, {
-                // Devepoment
-                // `http://localhost:8000/api/albums/`, {
+                link3, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
             )
             await setAlbums(response3.data)
 
+            let link4 = ''
+            // Production
+            // link4 = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/'
+            // Development
+            link4 = 'http://localhost:8000/api/artists/'
+
             const response4 = await axios(
-                // Production
-                `http://musicality.std-1578.ist.mospolytech.ru/api/artists/`, {
-                // Devepoment
-                // `http://localhost:8000/api/artists/`, {
+                link4, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -215,10 +228,11 @@ const Home = () => {
                                         description = track.description.substring(0, 270) + '...'
                                     }
 
+                                    let imgSrc = ''
                                     // Production
-                                    let imgSrc = track.cover
+                                    // imgSrc = track.cover
                                     // Development
-                                    // let imgSrc = 'http://localhost:8000' + track.cover
+                                    imgSrc = 'http://localhost:8000' + track.cover
 
                                     if (matches) {
                                         return (
@@ -301,10 +315,11 @@ const Home = () => {
                                         tracks = tracks.splice(0, tracks.length)
                                     }
 
+                                    let imgSrc = ''
                                     // Production
-                                    let imgSrc = playlist.photo
+                                    // imgSrc = playlist.photo
                                     // Development
-                                    // let imgSrc = 'http://localhost:8000' + playlist.photo
+                                    imgSrc = 'http://localhost:8000' + playlist.photo
 
                                     if (matches) {
                                         return (
@@ -382,10 +397,11 @@ const Home = () => {
                                         description = album.description.substring(0, 250) + '...'
                                     }
 
+                                    let imgSrc = ''
                                     // Production
-                                    let imgSrc = album.cover
+                                    // imgSrc = album.cover
                                     // Development
-                                    // let imgSrc = 'http://localhost:8000' + album.cover
+                                    imgSrc = 'http://localhost:8000' + album.cover
 
                                     if (matches) {
                                         return (
@@ -458,10 +474,11 @@ const Home = () => {
                                         description = artist.about.substring(0, 260) + '...'
                                     }
 
+                                    let imgSrc = ''
                                     // Production
-                                    let imgSrc = artist.photo
+                                    // imgSrc = artist.photo
                                     // Development
-                                    // let imgSrc = 'http://localhost:8000' + artist.photo
+                                    imgSrc = 'http://localhost:8000' + artist.photo
 
                                     if (matches) {
                                         return (

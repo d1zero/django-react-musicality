@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Grid, Typography, Card, CardActionArea, CardMedia, CardContent, Container } from '@material-ui/core'
 import { Helmet } from 'react-helmet'
 
+const theme = createMuiTheme();
+
+theme.typography.h1 = {
+    fontSize: '6rem',
+    '@media (min-width:600px)': {
+        fontSize: '6rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+        fontSize: '2rem',
+    },
+};
+
+
 const useStyles = makeStyles((theme) => ({
-    container: {
+    root: {
         marginTop: theme.spacing(11.5),
     },
     media: {
@@ -67,11 +80,14 @@ const GenreDetail = (props: any) => {
     })
     useEffect(() => {
         const fetchData = async () => {
+            let link = ''
+            // Production
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/genres/' + genreId
+            // Development
+            link = 'http://localhost:8000/api/genres/' + genreId
+
             const response1 = await axios(
-                // Production
-                'http://musicality.std-1578.ist.mospolytech.ru/api/genres/' + genreId, {
-                // Development
-                // 'http://localhost:8000/api/genres/' + genreId, {
+                link, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -87,24 +103,28 @@ const GenreDetail = (props: any) => {
     const classes = useStyles();
 
     return (
-        <div>
+        <div className={classes.root}>
             <Helmet><title>Жанры: {data.name}</title></Helmet>
             <Container maxWidth="md">
-                <Grid container spacing={3} className={classes.container}></Grid>
-                <Typography component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
-                    <strong>
-                        {data.name}
-                    </strong>
-                </Typography>
+                <ThemeProvider theme={theme}>
+                    <Typography component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
+                        <strong>
+                            {data.name}
+                        </strong>
+                    </Typography>
+                </ThemeProvider>
                 <span className={classes.genreImageSpan}>
                     <img
                         className={classes.genreImage}
+
+                        // Production
+                        // src={data.cover}
+                        // Development
                         src={'http://localhost:8000' + data.cover}
                     />
                 </span>
                 <br />
                 <Typography align="center" variant='body2'>{data.description}</Typography><br /><br />
-
                 <Grid container spacing={4}>
                     {data.tracks.map((track: track) => {
                         iter += 1;
@@ -114,7 +134,12 @@ const GenreDetail = (props: any) => {
                                     <CardActionArea onMouseOver={() => { document.getElementById(('content' + track.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + track.id))?.removeAttribute('style') }}>
                                         <CardMedia
                                             className={classes.media}
+
+                                            // Production
+                                            // image={track.cover}
+                                            // Development
                                             image={'http://localhost:8000' + track.cover}
+
                                             title={track.title}
                                         />
                                         <CardContent className={classes.titleBar} id={"content" + track.id}>
