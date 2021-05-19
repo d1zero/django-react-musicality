@@ -43,7 +43,7 @@ class TrackSerializerForAlbum(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = ['id', 'title',
-                  'cover', 'description']
+                  'cover', 'description', 'soundtrack']
 
 
 class ArtistSerializerForAlbum(serializers.ModelSerializer):
