@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent } from '@material-ui/core'
+import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery } from '@material-ui/core'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 
 interface alb {
@@ -100,6 +100,8 @@ const ArtistDetail = (props: any) => {
         fetchData()
     }, [artistId])
 
+    const matches = useMediaQuery(theme.breakpoints.down('md'))
+
     if (typeof (data) !== 'undefined') {
         let imgSrc = ''
         // Production
@@ -161,7 +163,10 @@ const ArtistDetail = (props: any) => {
 
                                                                 title={album.name}
                                                             />
-                                                            <CardContent className={classes.titleBar} id={"content" + album.id}>
+                                                            <CardContent style={{
+                                                                'opacity': matches ? '1' : '0',
+                                                                'bottom': matches ? '-10px' : '',
+                                                            }} className={classes.titleBar} id={"content" + album.id}>
                                                                 <Typography gutterBottom variant="h5" component="h2">
                                                                     {album.name}
                                                                 </Typography>
@@ -206,7 +211,10 @@ const ArtistDetail = (props: any) => {
 
                                                                 title={album.name}
                                                             />
-                                                            <CardContent className={classes.titleBar} id={"content" + album.id}>
+                                                            <CardContent style={{
+                                                                'opacity': matches ? '1' : '0',
+                                                                'bottom': matches ? '-10px' : '',
+                                                            }} className={classes.titleBar} id={"content" + album.id}>
                                                                 <Typography gutterBottom variant="h5" component="h2">
                                                                     {album.name}
                                                                 </Typography>
@@ -252,7 +260,10 @@ const ArtistDetail = (props: any) => {
 
                                                                 title={album.name}
                                                             />
-                                                            <CardContent className={classes.titleBar} id={"content" + album.id}>
+                                                            <CardContent style={{
+                                                                'opacity': matches ? '1' : '0',
+                                                                'bottom': matches ? '-10px' : '',
+                                                            }} className={classes.titleBar} id={"content" + album.id}>
                                                                 <Typography gutterBottom variant="h5" component="h2">
                                                                     {album.name}
                                                                 </Typography>

@@ -3,6 +3,8 @@ import './App.css';
 import Login from "./Pages/Profile/Login";
 import Nav from "./Components/Nav";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import axios from 'axios'
+
 import Home from "./Pages/Home";
 import Register from "./Pages/Profile/Register";
 import { Container, CssBaseline, Typography, Link } from '@material-ui/core'
@@ -55,19 +57,17 @@ function App() {
             // Development
             link = 'http://localhost:8000/user/profile'
 
-            const response1 = await fetch(
+            await axios.get(
                 link, {
                 headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
+                withCredentials: true
             }
-            )
-            const content = await response1.json()
-
-            if (response1.status === 200) {
-                await setUsername(content.username)
-            } else {
-                console.log(222)
-            }
+            ).then(res => {
+                const content = res.data
+                setUsername(content.username)
+            }).catch(error => {
+                console.log(error.message)
+            })
         }
         fetchData()
     }, [])
