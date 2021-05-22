@@ -45,9 +45,9 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
     const logout = async () => {
         let link = ''
         // Production
-        // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/logout'
+        link = 'http://musicality.std-1578.ist.mospolytech.ru/user/logout'
         // Development
-        link = 'http://localhost:8000/user/logout'
+        // link = 'http://localhost:8000/user/logout'
 
         await axios(link, {
             method: 'POST',

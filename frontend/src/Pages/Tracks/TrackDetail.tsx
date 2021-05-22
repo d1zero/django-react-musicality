@@ -108,9 +108,9 @@ const TrackDetail = (props: any) => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/track/' + trackId
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/track/' + trackId
             // Development
-            link = 'http://localhost:8000/api/track/' + trackId
+            // link = 'http://localhost:8000/api/track/' + trackId
 
             const response1 = await axios(
                 link, {
@@ -187,11 +187,11 @@ const TrackDetail = (props: any) => {
         let imgSrc = ''
         let trackSrc = ''
         // Production
-        // imgSrc = data.cover
-        // trackSrc = data.soundtrack
+        imgSrc = data.cover
+        trackSrc = data.soundtrack
         // Development
-        imgSrc = 'http://localhost:8000' + data.cover
-        trackSrc = 'http://localhost:8000' + data.soundtrack
+        // imgSrc = 'http://localhost:8000' + data.cover
+        // trackSrc = 'http://localhost:8000' + data.soundtrack
 
         return (
             <Grid container spacing={3} className={classes.container}>

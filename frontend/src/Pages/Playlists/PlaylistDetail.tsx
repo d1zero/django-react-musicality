@@ -91,9 +91,9 @@ const PlaylistDetail = (props: any) => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/' + playlistId
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/' + playlistId
             // Development
-            link = 'http://localhost:8000/api/playlists/' + playlistId
+            // link = 'http://localhost:8000/api/playlists/' + playlistId
 
             const response1 = await axios(
                 link, {
@@ -104,9 +104,9 @@ const PlaylistDetail = (props: any) => {
             await setData(response1.data)
 
             // Production
-            // setNowImgSrc(data.photo)
+            setNowImgSrc(data.photo)
             // Development
-            setNowImgSrc("http://localhost:8000" + response1.data.photo)
+            // setNowImgSrc("http://localhost:8000" + response1.data.photo)
         }
         fetchData()
     }, [playlistId])
@@ -139,9 +139,9 @@ const PlaylistDetail = (props: any) => {
             setNowArtists(artists)
 
             // Production
-            // setNowImgSrc(data.tracks[id].cover)
+            setNowImgSrc(data.tracks[id].cover)
             // Development
-            setNowImgSrc("http://localhost:8000" + data.tracks[id].cover)
+            // setNowImgSrc("http://localhost:8000" + data.tracks[id].cover)
 
             next.volume = volume / 100
             next.play()
@@ -194,9 +194,9 @@ const PlaylistDetail = (props: any) => {
                         setNowArtists(artists)
 
                         // Production
-                        // setNowImgSrc(data.tracks[i - 1].cover)
+                        setNowImgSrc(data.tracks[i - 1].cover)
                         // Development
-                        setNowImgSrc("http://localhost:8000" + data.tracks[i - 1].cover)
+                        // setNowImgSrc("http://localhost:8000" + data.tracks[i - 1].cover)
 
                     }
 
@@ -241,9 +241,9 @@ const PlaylistDetail = (props: any) => {
                     setNowArtists(artists)
 
                     // Production
-                    // setNowImgSrc(data.tracks[i + 1].cover)
+                    setNowImgSrc(data.tracks[i + 1].cover)
                     // Development
-                    setNowImgSrc("http://localhost:8000" + data.tracks[i + 1].cover)
+                    // setNowImgSrc("http://localhost:8000" + data.tracks[i + 1].cover)
 
                 } else {
                     elems[0].volume = volume / 100
@@ -252,9 +252,9 @@ const PlaylistDetail = (props: any) => {
                     setPlaying(true)
 
                     // Production
-                    // setNowImgSrc(data.tracks[0].cover)
+                    setNowImgSrc(data.tracks[0].cover)
                     // Development
-                    setNowImgSrc("http://localhost:8000" + data.tracks[0].cover)
+                    // setNowImgSrc("http://localhost:8000" + data.tracks[0].cover)
 
                 }
             }
@@ -274,9 +274,9 @@ const PlaylistDetail = (props: any) => {
         setNowArtists(artists)
 
         // Production
-        // setNowImgSrc(data.tracks[trackId].cover)
+        setNowImgSrc(data.tracks[trackId].cover)
         // Development
-        setNowImgSrc("http://localhost:8000" + data.tracks[trackId].cover)
+        // setNowImgSrc("http://localhost:8000" + data.tracks[trackId].cover)
 
     }
 
@@ -359,11 +359,11 @@ const PlaylistDetail = (props: any) => {
                 let soundtrackSrc = ''
 
                 // Production
-                // imgSrc = track.cover
-                // soundtrackSrc = track.soundtrack
+                imgSrc = track.cover
+                soundtrackSrc = track.soundtrack
                 // Development
-                imgSrc = 'http://localhost:8000' + track.cover
-                soundtrackSrc = 'http://localhost:8000' + track.soundtrack
+                // imgSrc = 'http://localhost:8000' + track.cover
+                // soundtrackSrc = 'http://localhost:8000' + track.soundtrack
 
 
                 return (

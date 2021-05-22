@@ -54,9 +54,9 @@ const Login = (props: { setUsername: (username: any) => void }) => {
 
         let link = ''
         // Production
-        // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/login'
+        link = 'http://musicality.std-1578.ist.mospolytech.ru/user/login'
         // Development
-        link = 'http://localhost:8000/user/login'
+        // link = 'http://localhost:8000/user/login'
 
         const response = await fetch(link, {
             method: 'POST',

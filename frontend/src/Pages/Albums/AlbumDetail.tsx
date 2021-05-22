@@ -80,9 +80,9 @@ const AlbumDetail = (props: any) => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/' + albumId
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/' + albumId
             // Development
-            link = 'http://localhost:8000/api/albums/' + albumId
+            // link = 'http://localhost:8000/api/albums/' + albumId
 
             const response1 = await axios(
                 link, {
@@ -102,9 +102,9 @@ const AlbumDetail = (props: any) => {
     if (typeof (data) !== 'undefined') {
         let imgSrc = ''
         // Production
-        // imgSrc = data.cover
+        imgSrc = data.cover
         // Development
-        imgSrc = 'http://localhost:8000' + data.cover
+        // imgSrc = 'http://localhost:8000' + data.cover
 
         return (
             <div className={classes.root}>
@@ -139,11 +139,11 @@ const AlbumDetail = (props: any) => {
                                 let imgTrackSrc = ''
                                 let soundtrackSrc = ''
                                 // Production
-                                // imgTrackSrc = track.cover
-                                // soundtrackSrc = track.soundtrack
+                                imgTrackSrc = track.cover
+                                soundtrackSrc = track.soundtrack
                                 // Development
-                                imgTrackSrc = 'http://localhost:8000' + track.cover
-                                soundtrackSrc = 'http://localhost:8000' + track.soundtrack
+                                // imgTrackSrc = 'http://localhost:8000' + track.cover
+                                // soundtrackSrc = 'http://localhost:8000' + track.soundtrack
 
                                 return (
                                         <Grid item component={Link} to={'/track/' + track.id}>
@@ -153,9 +153,9 @@ const AlbumDetail = (props: any) => {
                                                         className={classes.media}
 
                                                         // Production
-                                                        // image={track.cover}
+                                                        image={track.cover}
                                                         // Development
-                                                        image={'http://localhost:8000' + track.cover}
+                                                        // image={'http://localhost:8000' + track.cover}
 
                                                         title={track.title}
                                                     />

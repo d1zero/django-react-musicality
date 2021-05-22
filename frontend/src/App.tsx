@@ -53,9 +53,9 @@ function App() {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/profile'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/user/profile'
             // Development
-            link = 'http://localhost:8000/user/profile'
+            // link = 'http://localhost:8000/user/profile'
 
             await axios.get(
                 link, {

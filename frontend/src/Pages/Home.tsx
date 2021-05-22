@@ -93,9 +93,9 @@ const Home = () => {
 
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks/'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks/'
             // Development
-            link = 'http://localhost:8000/api/tracks/'
+            // link = 'http://localhost:8000/api/tracks/'
 
             const response1 = await axios(
                 link, {
@@ -107,9 +107,9 @@ const Home = () => {
 
             let link2 = ''
             // Production
-            // link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
+            link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
             // Development
-            link2 = 'http://localhost:8000/api/playlists/'
+            // link2 = 'http://localhost:8000/api/playlists/'
 
             const response2 = await axios(
                 link2, {
@@ -121,9 +121,9 @@ const Home = () => {
 
             let link3 = ''
             // Production
-            // link3 = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
+            link3 = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
             // Development
-            link3 = 'http://localhost:8000/api/albums/'
+            // link3 = 'http://localhost:8000/api/albums/'
 
             const response3 = await axios(
                 link3, {
@@ -135,9 +135,9 @@ const Home = () => {
 
             let link4 = ''
             // Production
-            // link4 = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/'
+            link4 = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/'
             // Development
-            link4 = 'http://localhost:8000/api/artists/'
+            // link4 = 'http://localhost:8000/api/artists/'
 
             const response4 = await axios(
                 link4, {
@@ -230,9 +230,9 @@ const Home = () => {
 
                                     let imgSrc = ''
                                     // Production
-                                    // imgSrc = track.cover
+                                    imgSrc = track.cover
                                     // Development
-                                    imgSrc = 'http://localhost:8000' + track.cover
+                                    // imgSrc = 'http://localhost:8000' + track.cover
 
                                     if (matches) {
                                         return (
@@ -317,9 +317,9 @@ const Home = () => {
 
                                     let imgSrc = ''
                                     // Production
-                                    // imgSrc = playlist.photo
+                                    imgSrc = playlist.photo
                                     // Development
-                                    imgSrc = 'http://localhost:8000' + playlist.photo
+                                    // imgSrc = 'http://localhost:8000' + playlist.photo
 
                                     if (matches) {
                                         return (
@@ -399,9 +399,9 @@ const Home = () => {
 
                                     let imgSrc = ''
                                     // Production
-                                    // imgSrc = album.cover
+                                    imgSrc = album.cover
                                     // Development
-                                    imgSrc = 'http://localhost:8000' + album.cover
+                                    // imgSrc = 'http://localhost:8000' + album.cover
 
                                     if (matches) {
                                         return (
@@ -476,9 +476,9 @@ const Home = () => {
 
                                     let imgSrc = ''
                                     // Production
-                                    // imgSrc = artist.photo
+                                    imgSrc = artist.photo
                                     // Development
-                                    imgSrc = 'http://localhost:8000' + artist.photo
+                                    // imgSrc = 'http://localhost:8000' + artist.photo
 
                                     if (matches) {
                                         return (

@@ -57,9 +57,9 @@ const TrackList = () => {
 
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks'
             // Development
-            link = 'http://localhost:8000/api/tracks/'
+            // link = 'http://localhost:8000/api/tracks/'
 
             const response1 = await axios(
                 link, {
@@ -130,9 +130,9 @@ const TrackList = () => {
 
                                 let imgSrc = ''
                                 // Production
-                                // imgSrc = item.cover
+                                imgSrc = item.cover
                                 // Development
-                                imgSrc = 'http://localhost:8000' + item.cover
+                                // imgSrc = 'http://localhost:8000' + item.cover
 
                                 return (
                                     <Grid item key={item.id} xs={12} sm={6} md={4} component={Link} to={'/track/' + item.id} style={{ textDecoration: 'none' }}>

@@ -85,9 +85,9 @@ const ArtistDetail = (props: any) => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/' + artistId
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/' + artistId
             // Development
-            link = 'http://localhost:8000/api/artists/' + artistId
+            // link = 'http://localhost:8000/api/artists/' + artistId
 
             const response1 = await axios(
                 link, {
@@ -105,9 +105,9 @@ const ArtistDetail = (props: any) => {
     if (typeof (data) !== 'undefined') {
         let imgSrc = ''
         // Production
-        // imgSrc = data.photo
+        imgSrc = data.photo
         // Development
-        imgSrc = 'http://localhost:8000' + data.photo
+        // imgSrc = 'http://localhost:8000' + data.photo
 
         var single = data.albums.find(album => album.type_of_album === 'Сингл');
         var ep = data.albums.find(album => album.type_of_album === 'EP');
@@ -144,9 +144,9 @@ const ArtistDetail = (props: any) => {
                                     {data.albums.map((album: alb) => {
                                         let imgSrc = ''
                                         // Production
-                                        // imgSrc = album.cover
+                                        imgSrc = album.cover
                                         // Development
-                                        imgSrc = 'http://localhost:8000' + album.cover
+                                        // imgSrc = 'http://localhost:8000' + album.cover
 
                                         if (album.type_of_album === 'Сингл') {
                                             return (
@@ -157,9 +157,9 @@ const ArtistDetail = (props: any) => {
                                                                 className={classes.media}
 
                                                                 // Production
-                                                                // image={album.cover}
+                                                                image={album.cover}
                                                                 // Development
-                                                                image={'http://localhost:8000' + album.cover}
+                                                                // image={'http://localhost:8000' + album.cover}
 
                                                                 title={album.name}
                                                             />
@@ -192,9 +192,9 @@ const ArtistDetail = (props: any) => {
                                     {data.albums.map((album: alb) => {
                                         let imgSrc = ''
                                         // Production
-                                        // imgSrc = album.cover
+                                        imgSrc = album.cover
                                         // Development
-                                        imgSrc = 'http://localhost:8000' + album.cover
+                                        // imgSrc = 'http://localhost:8000' + album.cover
 
                                         if (album.type_of_album === 'EP') {
                                             return (
@@ -205,9 +205,9 @@ const ArtistDetail = (props: any) => {
                                                                 className={classes.media}
 
                                                                 // Production
-                                                                // image={album.cover}
+                                                                image={album.cover}
                                                                 // Development
-                                                                image={'http://localhost:8000' + album.cover}
+                                                                // image={'http://localhost:8000' + album.cover}
 
                                                                 title={album.name}
                                                             />
@@ -241,9 +241,9 @@ const ArtistDetail = (props: any) => {
                                     {data.albums.map((album: alb) => {
                                         let imgSrc = ''
                                         // Production
-                                        // imgSrc = album.cover
+                                        imgSrc = album.cover
                                         // Development
-                                        imgSrc = 'http://localhost:8000' + album.cover
+                                        // imgSrc = 'http://localhost:8000' + album.cover
 
                                         if (album.type_of_album === 'Альбом') {
                                             return (
@@ -254,9 +254,9 @@ const ArtistDetail = (props: any) => {
                                                                 className={classes.media}
 
                                                                 // Production
-                                                                // image={album.cover}
+                                                                image={album.cover}
                                                                 // Development
-                                                                image={'http://localhost:8000' + album.cover}
+                                                                // image={'http://localhost:8000' + album.cover}
 
                                                                 title={album.name}
                                                             />

@@ -69,9 +69,9 @@ const AlbumList = () => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
             // Development
-            link = 'http://localhost:8000/api/albums/'
+            // link = 'http://localhost:8000/api/albums/'
 
             const response1 = await axios(
                 link, {
@@ -108,9 +108,9 @@ const AlbumList = () => {
                     {data.map((album: alb) => {
                         let imgSrc = ''
                         // Production
-                        // imgSrc = album.cover
+                        imgSrc = album.cover
                         // Development
-                        imgSrc = 'http://localhost:8000' + album.cover
+                        // imgSrc = 'http://localhost:8000' + album.cover
 
                         let description = ''
                         if (album.description.length < 110) {

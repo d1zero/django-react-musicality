@@ -53,9 +53,9 @@ const PlaylistList = () => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
             // Development
-            link = 'http://localhost:8000/api/playlists/'
+            // link = 'http://localhost:8000/api/playlists/'
 
             const response1 = await axios(
                 link, {
@@ -101,9 +101,9 @@ const PlaylistList = () => {
 
                         let imgSrc = ''
                         // Production
-                        // imgSrc = playlist.photo
+                        imgSrc = playlist.photo
                         // Development
-                        imgSrc = 'http://localhost:8000' + playlist.photo
+                        // imgSrc = 'http://localhost:8000' + playlist.photo
 
                         return (
                             <Grid item key={playlist.id} xs={12} sm={6} md={4} component={Link} to={'/playlist/' + playlist.id} style={{ textDecoration: 'none' }}>

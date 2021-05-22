@@ -54,9 +54,9 @@ const GenreList = () => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/genres/'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/genres/'
             // Development
-            link = 'http://localhost:8000/api/genres/'
+            // link = 'http://localhost:8000/api/genres/'
 
             const response1 = await axios(
                 link, {
@@ -99,9 +99,9 @@ const GenreList = () => {
                     {data.map((genre: obj) => {
                         let imgSrc = ''
                         // Production
-                        // imgSrc = genre.cover
+                        imgSrc = genre.cover
                         // Development
-                        imgSrc = 'http://localhost:8000' + genre.cover
+                        // imgSrc = 'http://localhost:8000' + genre.cover
 
                         return (
                             <Grid item key={genre.id} xs={12} sm={6} md={4} component={Link} to={'/genre/' + genre.id} style={{ textDecoration: 'none' }}>

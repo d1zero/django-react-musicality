@@ -60,9 +60,9 @@ const Register = () => {
         else if (password === psw2) {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/register'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/user/register'
             // Development
-            link = 'http://localhost:8000/user/register'
+            // link = 'http://localhost:8000/user/register'
 
             const response = await fetch(link, {
                 method: 'POST',

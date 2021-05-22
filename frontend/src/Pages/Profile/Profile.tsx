@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
+import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
-import { Grid, Tooltip, Button, Dialog, DialogTitle, Input, InputLabel, Box } from '@material-ui/core';
+import { Grid, Tooltip, Button, Dialog, DialogTitle, Input, InputLabel, Box, Typography, Snackbar } from '@material-ui/core';
+import MuiAlert from "@material-ui/lab/Alert";
 import EditIcon from '@material-ui/icons/Edit';
+
+function Alert(props: any) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const theme = createMuiTheme({
     palette: {
@@ -55,18 +61,32 @@ const Profile = () => {
     const [avatarLink, setAvatarLink]: any = useState('');
     const [open, setOpen] = useState(false)
 
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [failedChangeOpen, setFailedChangeOpen] = useState(false)
+    const [successChangeOpen, setSuccessChangeOpen] = useState(false)
+    const [errMsg, setErrMsg] = useState('')
+    const [redirect, setRedirect] = useState(false)
+
     const handleClose = () => {
         setOpen(false)
     }
 
+    const handleFailedChange = () => {
+        setFailedChangeOpen(false)
+    }
+
+    const handleSuccessChangeClose = () => {
+        setSuccessChangeOpen(false)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/user/profile'
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/user/profile'
             // Development
-            link = 'http://localhost:8000/user/profile'
+            // link = 'http://localhost:8000/user/profile'
 
             const response1 = await fetch(
                 link, {
@@ -81,15 +101,15 @@ const Profile = () => {
                 if (typeof (data.avatar) !== 'object') {
 
                     // Production
-                    // setAvatarLink(data.avatar)
+                    setAvatarLink(data.avatar)
                     // Development
-                    setAvatarLink("http://localhost:8000" + data.avatar)
+                    // setAvatarLink("http://localhost:8000" + data.avatar)
 
                 } else {
                     // Production
-                    // setAvatarLink('/media/images/users_avatars/d1zero.jpg')
+                    setAvatarLink('/media/images/users_avatars/d1zero.jpg')
                     // Development
-                    setAvatarLink("http://localhost:8000/media/images/users_avatars/d1zero.jpg")
+                    // setAvatarLink("http://localhost:8000/media/images/users_avatars/d1zero.jpg")
                 }
             } else {
                 console.log(222)
@@ -98,8 +118,121 @@ const Profile = () => {
         fetchData()
     }, [data.date_joined, data.avatar])
 
+    const submit = async (e: any) => {
+        e.preventDefault();
+        let link = ''
+        // Production
+        link = 'http://musicality.std-1578.ist.mospolytech.ru/user/update'
+        // Development
+        // link = 'http://localhost:8000/user/update'
+
+        let bodyData
+        let file = e.target[2].files[0]
+
+        if (username === '' && email === '' && typeof (file) === 'undefined') {
+            console.log(typeof (file));
+
+            setErrMsg('Ни одно из полей не изменено!')
+            setFailedChangeOpen(true)
+        } else {
+            if (username !== '' && email !== '') {
+                bodyData = JSON.stringify({
+                    email, username
+                })
+            } else if (username !== '' && email === '') {
+                bodyData = JSON.stringify({
+                    username
+                })
+            } else if (username === '' && email !== '') {
+                bodyData = JSON.stringify({
+                    email
+                })
+            }
+            const response = await fetch(link, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: bodyData,
+            })
+
+            interface obj {
+                message: string
+            }
+
+            const content: obj = await response.json()
+
+            console.log(content);
+
+            if (content.message === 'success') {
+                let inputs = document.getElementsByTagName('input')
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].setAttribute('disabled', 'disabled')
+                }
+                if (typeof (e.target[2].files[0]) !== 'undefined') {
+                    sendImage(e);
+                }
+                setSuccessChangeOpen(true)
+                setTimeout(() => {
+                    setOpen(false)
+                    setRedirect(true)
+                }, 5000);
+            } else {
+                setErrMsg('Данный email/username занят')
+                setFailedChangeOpen(true)
+            }
+        }
+
+    }
+
+    const sendImage = async (e: any) => {
+        e.preventDefault();
+        let link = ''
+        // Production
+        link = 'http://musicality.std-1578.ist.mospolytech.ru/user/update'
+        // Development
+        // link = 'http://localhost:8000/user/update'
+
+
+        console.log(e.target[2].files[0]);
+
+        let file = e.target[2].files[0]
+        let formdata = new FormData()
+        formdata.append('image', file)
+
+        const response = await fetch(link, {
+            method: 'PATCH',
+            body: formdata
+        })
+
+        interface obj {
+            message: string
+        }
+
+        const content: obj = await response.json()
+
+        console.log(content);
+
+        // if (content.message === 'success') {
+        //     setSuccessChangeOpen(true)
+        //     // setTimeout(() => {
+        //     //     setOpen(false)
+        //     //     setRedirect(true)
+        //     // }, 5000);
+        // } else {
+        //     setErrMsg('Не удалось загрузить фото')
+        //     setFailedChangeOpen(true)
+        // }
+    }
+
 
     const classes = useStyles()
+
+    if (redirect) {
+        return (
+            <Redirect to='/' />
+        )
+    }
+
+
 
     return (
         <div className={classes.root}>
@@ -108,22 +241,28 @@ const Profile = () => {
                 <Grid container spacing={5}>
                     <Dialog open={open} onClose={handleClose}>
                         <span className={classes.dialog}>
+                            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                open={failedChangeOpen} autoHideDuration={5000} onClose={handleFailedChange}>
+                                <Alert severity="error">{errMsg}</Alert>
+                            </Snackbar>
+                            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                open={successChangeOpen} autoHideDuration={5000} onClose={handleSuccessChangeClose}>
+                                <Alert severity="success">Данные успешно изменены</Alert>
+                            </Snackbar>
                             <DialogTitle>Изменение профиля</DialogTitle>
-                            <form onSubmit={() => {
-                                console.log(1);
-                            }}>
+                            <form onSubmit={submit}>
+                                <InputLabel>Аватар <br /><Typography variant="caption">* нажмите на изображение, чтобы загрузить новое</Typography></InputLabel>
                                 <img
                                     src={avatarLink}
                                     alt={data.username}
                                     style={{ 'borderRadius': '100px', 'width': '200px', 'height': '200px', 'objectFit': 'cover', 'marginBottom': '20px' }}
                                     onClick={() => document.getElementById('imgInput')?.click()}
-
                                 />
                                 <InputLabel>Никнейм</InputLabel>
-                                <Input placeholder={data.username} type="text" style={{ 'marginBottom': '20px' }} />
+                                <Input placeholder={data.username} type="text" name="username" style={{ 'marginBottom': '20px' }} onChange={e => { setUsername(e.target.value) }} />
                                 <InputLabel>Email</InputLabel>
-                                <Input placeholder={data.email} type="email" style={{ 'marginBottom': '20px' }} />
-                                <Input type="file" id="imgInput" style={{ 'visibility': 'hidden' }} />
+                                <Input placeholder={data.email} type="email" name="email" style={{ 'marginBottom': '20px' }} onChange={e => { setEmail(e.target.value) }} /><br />
+                                <input type="file" accept="image/png, image/jpeg" id="imgInput" style={{ 'visibility': 'hidden', 'maxWidth': '200px' }} />
                                 <Box>
                                     <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>Отменить изменения</Button>
                                     <Button variant="contained" color="primary" type="submit">Сохранить изменения</Button>

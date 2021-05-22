@@ -2,7 +2,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-import jwt, datetime
+from rest_framework.generics import UpdateAPIView
+from rest_framework import status
+from django.db import IntegrityError
+import jwt
+import datetime
 
 from .serializers import UserSerializer
 from .models import User
@@ -74,5 +78,38 @@ class LogoutView(APIView):
         response.data = {
             'message': 'success'
         }
-        print(response)
+
+        return response
+
+
+class UpdateView(APIView):
+    def patch(self, request, *args, **kwargs):
+        user = User.objects.get(id=21)
+        data = request.data
+
+        response = Response()
+
+        try:
+            try:
+                avatar = request.FILES['image']
+                user.avatar = avatar
+                user.save()
+            except KeyError:
+                print(KeyError)
+                print('No image attached')
+            user.username = data.get('username', user.username)
+            user.email = data.get('email', user.email)
+            print(user)
+
+            user.save()
+            serializer = UserSerializer(user)
+
+            response.data = {
+            'message': 'success'
+            }
+        except IntegrityError:
+            response.data = {
+            'message': 'failed'
+            }
+
         return response

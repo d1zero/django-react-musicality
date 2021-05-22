@@ -82,9 +82,9 @@ const GenreDetail = (props: any) => {
         const fetchData = async () => {
             let link = ''
             // Production
-            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/genres/' + genreId
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/genres/' + genreId
             // Development
-            link = 'http://localhost:8000/api/genres/' + genreId
+            // link = 'http://localhost:8000/api/genres/' + genreId
 
             const response1 = await axios(
                 link, {
@@ -118,9 +118,9 @@ const GenreDetail = (props: any) => {
                         className={classes.genreImage}
 
                         // Production
-                        // src={data.cover}
+                        src={data.cover}
                         // Development
-                        src={'http://localhost:8000' + data.cover}
+                        // src={'http://localhost:8000' + data.cover}
                     />
                 </span>
                 <br />
@@ -136,9 +136,9 @@ const GenreDetail = (props: any) => {
                                             className={classes.media}
 
                                             // Production
-                                            // image={track.cover}
+                                            image={track.cover}
                                             // Development
-                                            image={'http://localhost:8000' + track.cover}
+                                            // image={'http://localhost:8000' + track.cover}
 
                                             title={track.title}
                                         />
