@@ -68,8 +68,6 @@ const PlaylistList = () => {
         fetchData()
     }, [])
 
-    console.log(data);
-
     interface pla {
         id: number,
         name: string,
@@ -97,9 +95,8 @@ const PlaylistList = () => {
             <Container maxWidth="md" >
                 <Grid container spacing={4}>
                     {data.map((playlist: pla) => {
-                        console.log(playlist);
-
                         let imgSrc = ''
+
                         // Production
                         imgSrc = playlist.photo
                         // Development

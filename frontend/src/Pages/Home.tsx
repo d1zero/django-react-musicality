@@ -307,7 +307,10 @@ const Home = () => {
                                     }
                                     let tracks = Array<string>()
 
-                                    { playlist.tracks.map((track: obj) => tracks.push(track.title)) }
+                                    playlist.tracks.map((track: obj) => {
+                                        tracks.push(track.title)
+                                        return('')
+                                    })
                                     if (tracks.length > 5) {
                                         tracks = tracks.splice(0, 5);
                                         tracks.push('И другие...')

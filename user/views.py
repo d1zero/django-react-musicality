@@ -2,8 +2,6 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.generics import UpdateAPIView
-from rest_framework import status
 from django.db import IntegrityError
 import jwt
 import datetime
@@ -84,7 +82,17 @@ class LogoutView(APIView):
 
 class UpdateView(APIView):
     def patch(self, request, *args, **kwargs):
-        user = User.objects.get(id=21)
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        user = User.objects.get(id=payload['id'])
         data = request.data
 
         response = Response()
@@ -95,21 +103,47 @@ class UpdateView(APIView):
                 user.avatar = avatar
                 user.save()
             except KeyError:
-                print(KeyError)
-                print('No image attached')
+                pass
             user.username = data.get('username', user.username)
             user.email = data.get('email', user.email)
-            print(user)
 
             user.save()
             serializer = UserSerializer(user)
 
             response.data = {
-            'message': 'success'
+                'message': 'success'
             }
         except IntegrityError:
             response.data = {
-            'message': 'failed'
+                'message': 'failed'
             }
 
+        return response
+
+
+class ResetPasswordView(APIView):
+    def patch(self, request, *args, **kwargs):
+        data = request.data
+        response = Response()
+        try:
+            user = User.objects.get(username=data.get('username'))
+            if (user.username == data.get('username') and user.email == data.get('email')):
+                user.set_password(data.get('new_password'))
+                user.save()
+                serializer = UserSerializer(user)
+                response.data = {
+                    'message': 'success'
+                }
+            elif (user.email != data.get('email')):
+                response.data = {
+                    'message': 'User not found'
+                }
+            else:
+                response.data = {
+                    'message': 'failed'
+                }
+        except User.DoesNotExist:
+            response.data = {
+                'message': 'User not found'
+            }
         return response

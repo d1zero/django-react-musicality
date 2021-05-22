@@ -20,6 +20,7 @@ import AlbumDetail from './Pages/Albums/AlbumDetail'
 import ArtistList from './Pages/Artists/ArtistList';
 import ArtistDetail from './Pages/Artists/ArtistDetail';
 import { makeStyles } from '@material-ui/core/styles';
+import ResetPassword from './Pages/Profile/ResetPassword';
 
 
 function Copyright() {
@@ -65,9 +66,7 @@ function App() {
             ).then(res => {
                 const content = res.data
                 setUsername(content.username)
-            }).catch(error => {
-                console.log(error.message)
-            })
+            }).catch(error => {})
         }
         fetchData()
     }, [])
@@ -86,6 +85,7 @@ function App() {
                         <Route path="/login/" component={() => <Login setUsername={setUsername} />} />
                         <Route path="/register/" component={Register} />
                         <Route path="/profile/" component={Profile} />
+                        <Route path="/reset-password/" component={ResetPassword} />
 
                         <Route path="/tracks/" component={TrackList} />
                         <Route path="/track/:trackId" component={TrackDetail} />

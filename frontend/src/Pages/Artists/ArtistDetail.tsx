@@ -155,12 +155,7 @@ const ArtistDetail = (props: any) => {
                                                         <CardActionArea onMouseOver={() => { document.getElementById(('content' + album.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + album.id))?.removeAttribute('style') }}>
                                                             <CardMedia
                                                                 className={classes.media}
-
-                                                                // Production
-                                                                image={album.cover}
-                                                                // Development
-                                                                // image={'http://localhost:8000' + album.cover}
-
+                                                                image={imgSrc}
                                                                 title={album.name}
                                                             />
                                                             <CardContent style={{
@@ -175,6 +170,8 @@ const ArtistDetail = (props: any) => {
                                                     </Card>
                                                 </Grid>
                                             )
+                                        } else {
+                                            return ('')
                                         }
                                     })}
                                 </Grid></>
@@ -203,12 +200,7 @@ const ArtistDetail = (props: any) => {
                                                         <CardActionArea onMouseOver={() => { document.getElementById(('content' + album.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + album.id))?.removeAttribute('style') }}>
                                                             <CardMedia
                                                                 className={classes.media}
-
-                                                                // Production
-                                                                image={album.cover}
-                                                                // Development
-                                                                // image={'http://localhost:8000' + album.cover}
-
+                                                                image={imgSrc}
                                                                 title={album.name}
                                                             />
                                                             <CardContent style={{
@@ -223,7 +215,7 @@ const ArtistDetail = (props: any) => {
                                                     </Card>
                                                 </Grid>
                                             )
-                                        }
+                                        } else { return ('') }
                                     })}
                                 </Grid>
                             </>
@@ -252,12 +244,7 @@ const ArtistDetail = (props: any) => {
                                                         <CardActionArea onMouseOver={() => { document.getElementById(('content' + album.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + album.id))?.removeAttribute('style') }}>
                                                             <CardMedia
                                                                 className={classes.media}
-
-                                                                // Production
-                                                                image={album.cover}
-                                                                // Development
-                                                                // image={'http://localhost:8000' + album.cover}
-
+                                                                image={imgSrc}
                                                                 title={album.name}
                                                             />
                                                             <CardContent style={{
@@ -272,6 +259,8 @@ const ArtistDetail = (props: any) => {
                                                     </Card>
                                                 </Grid>
                                             )
+                                        } else {
+                                            return ('')
                                         }
                                     })}
                                 </Grid>

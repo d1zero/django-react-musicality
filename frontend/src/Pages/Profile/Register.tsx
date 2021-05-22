@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MuiAlert from "@material-ui/lab/Alert";
 import { Helmet } from 'react-helmet';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Cookies from "js-cookie"
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -64,9 +65,15 @@ const Register = () => {
             // Development
             // link = 'http://localhost:8000/user/register'
 
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '' + Cookies.get('csrftoken')
+            }
+
             const response = await fetch(link, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
+                credentials: 'include',
                 body: JSON.stringify({
                     email, username, password
                 })

@@ -1,31 +1,16 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Tooltip, Button, Dialog, DialogTitle, Input, InputLabel, Box, Typography, Snackbar } from '@material-ui/core';
 import MuiAlert from "@material-ui/lab/Alert";
 import EditIcon from '@material-ui/icons/Edit';
+import Cookies from "js-cookie";
+import axios from 'axios'
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#757ce8',
-            main: '#3f50b5',
-            dark: '#002884',
-            contrastText: '#fff',
-        },
-        secondary: {
-            light: '#ff7961',
-            main: '#f44336',
-            dark: '#ba000d',
-            contrastText: '#000',
-        },
-    },
-});
 
 interface datas {
     id: any,
@@ -126,12 +111,15 @@ const Profile = () => {
         // Development
         // link = 'http://localhost:8000/user/update'
 
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '' + Cookies.get('csrftoken')
+        }
+
         let bodyData
         let file = e.target[2].files[0]
 
         if (username === '' && email === '' && typeof (file) === 'undefined') {
-            console.log(typeof (file));
-
             setErrMsg('Ни одно из полей не изменено!')
             setFailedChangeOpen(true)
         } else {
@@ -150,7 +138,8 @@ const Profile = () => {
             }
             const response = await fetch(link, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
+                credentials: 'include',
                 body: bodyData,
             })
 
@@ -159,8 +148,6 @@ const Profile = () => {
             }
 
             const content: obj = await response.json()
-
-            console.log(content);
 
             if (content.message === 'success') {
                 let inputs = document.getElementsByTagName('input')
@@ -191,36 +178,38 @@ const Profile = () => {
         // Development
         // link = 'http://localhost:8000/user/update'
 
-
-        console.log(e.target[2].files[0]);
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken': '' + Cookies.get('csrftoken')
+        }
 
         let file = e.target[2].files[0]
         let formdata = new FormData()
         formdata.append('image', file)
 
-        const response = await fetch(link, {
+        const response = await axios(link, {
             method: 'PATCH',
-            body: formdata
+            headers: headers,
+            withCredentials: true,
+            data: formdata,
         })
 
         interface obj {
             message: string
         }
 
-        const content: obj = await response.json()
+        const content: obj = await response.data
 
-        console.log(content);
-
-        // if (content.message === 'success') {
-        //     setSuccessChangeOpen(true)
-        //     // setTimeout(() => {
-        //     //     setOpen(false)
-        //     //     setRedirect(true)
-        //     // }, 5000);
-        // } else {
-        //     setErrMsg('Не удалось загрузить фото')
-        //     setFailedChangeOpen(true)
-        // }
+        if (content.message === 'success') {
+            setSuccessChangeOpen(true)
+            // setTimeout(() => {
+            //     setOpen(false)
+            //     setRedirect(true)
+            // }, 5000);
+        } else {
+            setErrMsg('Не удалось загрузить фото')
+            setFailedChangeOpen(true)
+        }
     }
 
 
@@ -276,7 +265,6 @@ const Profile = () => {
                                 src={avatarLink}
                                 alt={data.username}
                                 style={{ 'borderRadius': '100px', 'width': '200px', 'height': '200px', 'objectFit': 'cover' }}
-                                onClick={() => console.log('Click')}
                             />
                         </Tooltip>
                     </Grid>

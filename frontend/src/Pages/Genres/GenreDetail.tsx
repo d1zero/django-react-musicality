@@ -97,8 +97,7 @@ const GenreDetail = (props: any) => {
         fetchData()
     }, [genreId])
 
-
-    var iter = 0
+    // let iter = 0
 
     const classes = useStyles();
 
@@ -121,13 +120,15 @@ const GenreDetail = (props: any) => {
                         src={data.cover}
                         // Development
                         // src={'http://localhost:8000' + data.cover}
+
+                        alt={data.name}
                     />
                 </span>
                 <br />
                 <Typography align="center" variant='body2'>{data.description}</Typography><br /><br />
                 <Grid container spacing={4}>
                     {data.tracks.map((track: track) => {
-                        iter += 1;
+                        // iter += 1;
                         return (
                             <Grid item key={track.id} xs={12} sm={6} md={4} lg={3} component={Link} to={'/track/' + track.id} className={classes.gridItem}>
                                 <Card className={classes.card}>

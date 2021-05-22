@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import ReactAudioPlayer from 'react-audio-player';
 import { Helmet } from 'react-helmet'
 import { Card, CardContent, CardMedia, IconButton, Typography, Slider, Grid } from '@material-ui/core'
-import { makeStyles, createStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
@@ -85,7 +84,6 @@ const PlaylistDetail = (props: any) => {
     const [volume, setVolume] = useState<number>(10)
 
     const classes = useStyles();
-    const theme = useTheme();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -104,7 +102,7 @@ const PlaylistDetail = (props: any) => {
             await setData(response1.data)
 
             // Production
-            setNowImgSrc(data.photo)
+            setNowImgSrc(response1.data.photo)
             // Development
             // setNowImgSrc("http://localhost:8000" + response1.data.photo)
         }
@@ -125,9 +123,10 @@ const PlaylistDetail = (props: any) => {
     };
 
     const playNext = (e: any) => {
+        let id
         if (!repeat) {
             if (e.target) {
-                var id = e.target.id;
+                id = e.target.id;
             }
             let elems = document.getElementsByTagName('audio')
             let now = elems[id - 1]
@@ -139,15 +138,15 @@ const PlaylistDetail = (props: any) => {
             setNowArtists(artists)
 
             // Production
-            setNowImgSrc(data.tracks[id].cover)
+            // setNowImgSrc(data.tracks[id].cover)
             // Development
-            // setNowImgSrc("http://localhost:8000" + data.tracks[id].cover)
+            setNowImgSrc("http://localhost:8000" + data.tracks[id].cover)
 
             next.volume = volume / 100
             next.play()
         } else {
             if (e.target) {
-                var id = e.target.id;
+                id = e.target.id;
             }
             let elems = document.getElementsByTagName('audio')
             let now = elems[id - 1]
@@ -230,7 +229,6 @@ const PlaylistDetail = (props: any) => {
                         let pause = element.paused
                         if (!pause) {
                             let el = document.getElementById((j + 1).toString()) as HTMLAudioElement
-                            console.log(el);
                             el.volume = volume / 100
                         }
                     }
@@ -355,14 +353,11 @@ const PlaylistDetail = (props: any) => {
 
             {data.tracks.map((track: track) => {
                 iter++;
-                let imgSrc = ''
-                let soundtrackSrc = ''
+                let soundtrackSrc
 
                 // Production
-                imgSrc = track.cover
                 soundtrackSrc = track.soundtrack
                 // Development
-                // imgSrc = 'http://localhost:8000' + track.cover
                 // soundtrackSrc = 'http://localhost:8000' + track.soundtrack
 
 

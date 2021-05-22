@@ -75,8 +75,6 @@ const TrackList = () => {
         fetchData()
     }, [])
 
-    console.log(data);
-
     interface art {
         id: number,
         nickname: string,

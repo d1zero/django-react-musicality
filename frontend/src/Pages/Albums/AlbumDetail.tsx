@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import ReactAudioPlayer from 'react-audio-player';
 import { Helmet } from 'react-helmet'
 import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery } from '@material-ui/core'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
@@ -95,8 +94,6 @@ const AlbumDetail = (props: any) => {
         fetchData()
     }, [albumId])
 
-    console.log(data);
-
     const matches = useMediaQuery(theme.breakpoints.down('md'))
 
     if (typeof (data) !== 'undefined') {
@@ -136,14 +133,12 @@ const AlbumDetail = (props: any) => {
                     <div className="tracks">
                         <Grid spacing={3} container>
                             {data.tracks_info.map((track: trc) => {
-                                let imgTrackSrc = ''
-                                let soundtrackSrc = ''
+                                let imgTrackSrc
+
                                 // Production
                                 imgTrackSrc = track.cover
-                                soundtrackSrc = track.soundtrack
                                 // Development
                                 // imgTrackSrc = 'http://localhost:8000' + track.cover
-                                // soundtrackSrc = 'http://localhost:8000' + track.soundtrack
 
                                 return (
                                         <Grid item component={Link} to={'/track/' + track.id}>
@@ -152,10 +147,7 @@ const AlbumDetail = (props: any) => {
                                                     <CardMedia
                                                         className={classes.media}
 
-                                                        // Production
-                                                        image={track.cover}
-                                                        // Development
-                                                        // image={'http://localhost:8000' + track.cover}
+                                                        image={imgTrackSrc}
 
                                                         title={track.title}
                                                     />

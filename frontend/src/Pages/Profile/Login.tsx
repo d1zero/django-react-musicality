@@ -129,7 +129,7 @@ const Login = (props: { setUsername: (username: any) => void }) => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to='#' style={{ 'textDecoration': 'none' }}>
+                            <Link to='/reset-password' style={{ 'textDecoration': 'none' }}>
                                 <MatUILink>
                                     Забыли пароль?
                                 </MatUILink>
@@ -138,7 +138,7 @@ const Login = (props: { setUsername: (username: any) => void }) => {
                         <Grid item>
                             <Link to="/register" style={{ 'textDecoration': 'none' }}>
                                 <MatUILink>
-                                    Нет аккаунта? зарегистрируйтесь
+                                    Нет аккаунта? Зарегистрируйтесь
                                 </MatUILink>
                             </Link>
                         </Grid>
