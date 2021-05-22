@@ -1,5 +1,9 @@
-venv
-static
-media
-db.sqlite3
+venv/
+static/
+media/
 .idea
+api/__pycache__/serializers.cpython-39.pyc
+config/__pycache__/settings.cpython-39.pyc
+db.sqlite3
+user/__pycache__/urls.cpython-39.pyc
+user/__pycache__/views.cpython-39.pyc
