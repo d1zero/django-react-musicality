@@ -138,9 +138,9 @@ const PlaylistDetail = (props: any) => {
             setNowArtists(artists)
 
             // Production
-            // setNowImgSrc(data.tracks[id].cover)
+            setNowImgSrc(data.tracks[id].cover)
             // Development
-            setNowImgSrc("http://localhost:8000" + data.tracks[id].cover)
+            // setNowImgSrc("http://localhost:8000" + data.tracks[id].cover)
 
             next.volume = volume / 100
             next.play()

@@ -82,3 +82,7 @@ def index(request):
 
 def index_pk(request, pk):
     return render(request, 'index.html')
+
+
+def index_code(request, code):
+    return render(request, 'index.html')

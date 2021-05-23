@@ -40,6 +40,7 @@ class User(AbstractBaseUser):
     date_joined = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='Последний вход', auto_now=True)
     avatar = models.ImageField(upload_to='images/users_avatars/', verbose_name='Аваратка', blank=True)
+    confirmed = models.BooleanField(verbose_name='Активированный аккаунт', default=False)
 
     def get_image(self):
         if self.avatar:

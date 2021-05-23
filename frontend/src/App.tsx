@@ -21,6 +21,8 @@ import ArtistList from './Pages/Artists/ArtistList';
 import ArtistDetail from './Pages/Artists/ArtistDetail';
 import { makeStyles } from '@material-ui/core/styles';
 import ResetPassword from './Pages/Profile/ResetPassword';
+import ConfirmRegister from './Pages/Profile/ConfirmRegister';
+import ConfirmResetPassword from './Pages/Profile/ConfirmResetPassword';
 
 
 function Copyright() {
@@ -84,8 +86,10 @@ function App() {
 
                         <Route path="/login/" component={() => <Login setUsername={setUsername} />} />
                         <Route path="/register/" component={Register} />
+                        <Route path="/confirm-register/:confirmCode" component={ConfirmRegister} />
                         <Route path="/profile/" component={Profile} />
                         <Route path="/reset-password/" component={ResetPassword} />
+                        <Route path="/confirm-reset-password/:confirmCode" component={ConfirmResetPassword} />
 
                         <Route path="/tracks/" component={TrackList} />
                         <Route path="/track/:trackId" component={TrackDetail} />

@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    successRegisterAlert: {
+        marginTop: theme.spacing(16),
+    },
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
@@ -37,7 +40,6 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [psw2, setPsw2] = useState('')
     const [open, setOpen] = useState(false)
-    const [redirect, setRedirect] = useState(false)
     const [successRegister, setSuccessRegister] = useState(false)
     const classes = useStyles();
 
@@ -46,8 +48,6 @@ const Register = () => {
     }
 
     const handleSuccessRegisterClose: any = () => {
-        setSuccessRegister(false)
-        setRedirect(true)
     }
 
     const [errMsg, setErrMsg] = useState('')
@@ -117,105 +117,109 @@ const Register = () => {
         }
     }
 
-    if (redirect) {
+    if (!successRegister) {
         return (
-            <Redirect to='/login' />
+            <Container component="main" maxWidth="xs">
+                <Helmet><title>Регистрация</title></Helmet>
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Зарегистрироваться
+                    </Typography>
+                    <form className={classes.form} onSubmit={submit}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email"
+                                    name="email"
+                                    autoFocus
+                                    onChange={e => setEmail(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="username"
+                                    label="Имя пользователя"
+                                    type="text"
+                                    id="username"
+                                    onChange={e => setUsername(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="password"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="password"
+                                    label="Пароль"
+                                    onChange={e => setPassword(e.target.value)}
+                                    type="password"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="psw2"
+                                    label="Пароль снова"
+                                    name="psw2"
+                                    onChange={e => setPsw2(e.target.value)}
+                                    type="password"
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            id="btnSubmit"
+                        >
+                            Зарегистрироваться
+                        </Button>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <Link to="/login" style={{ 'textDecoration': 'none' }}>
+                                    <MatUILink variant="body2">
+                                        Уже есть аккаунт? Авторизуйтесь
+                                    </MatUILink>
+                                </Link>
+                            </Grid>
+                        </Grid>
+                        <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            open={open} autoHideDuration={5000} onClose={handleClose}>
+                            <Alert severity="error">{errMsg}</Alert>
+                        </Snackbar>
+                        <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            open={successRegister} autoHideDuration={5000} onClose={handleSuccessRegisterClose}>
+                            <Alert severity="success">Сейчас вы будете перенаправлены на страницу авторизации</Alert>
+                        </Snackbar>
+                    </form>
+                </div>
+            </Container>
+        );
+    } else {
+        return (
+            <Container component="main" maxWidth="xs" className={classes.successRegisterAlert}>
+                <Helmet><title>Регистрация</title></Helmet>
+                <CssBaseline />
+                <Alert severity="info">Подтвердите регистрацию в письме, которое было отправлено на указанный email</Alert>
+            </Container>
         )
     }
-
-    return (
-        <Container component="main" maxWidth="xs">
-            <Helmet><title>Регистрация</title></Helmet>
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Зарегистрироваться
-                </Typography>
-                <form className={classes.form} onSubmit={submit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email"
-                                name="email"
-                                autoFocus
-                                onChange={e => setEmail(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="username"
-                                label="Имя пользователя"
-                                type="text"
-                                id="username"
-                                onChange={e => setUsername(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                name="password"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="password"
-                                label="Пароль"
-                                onChange={e => setPassword(e.target.value)}
-                                type="password"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="psw2"
-                                label="Пароль снова"
-                                name="psw2"
-                                onChange={e => setPsw2(e.target.value)}
-                                type="password"
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        id="btnSubmit"
-                    >
-                        Зарегистрироваться
-                    </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link to="/login" style={{ 'textDecoration': 'none' }}>
-                                <MatUILink variant="body2">
-                                    Уже есть аккаунт? Авторизуйтесь
-                                </MatUILink>
-                            </Link>
-                        </Grid>
-                    </Grid>
-                    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                        open={open} autoHideDuration={5000} onClose={handleClose}>
-                        <Alert severity="error">{errMsg}</Alert>
-                    </Snackbar>
-                    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                        open={successRegister} autoHideDuration={5000} onClose={handleSuccessRegisterClose}>
-                        <Alert severity="success">Сейчас вы будете перенаправлены на страницу авторизации</Alert>
-                    </Snackbar>
-                </form>
-            </div>
-        </Container>
-    );
 }
     ;
 
