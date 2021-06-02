@@ -129,8 +129,8 @@ const AlbumList = () => {
                                             title={album.name}
                                         />
                                         <CardContent className={classes.titleBar}>
-                                            <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '64px', maxHeight: '64px' }}>
-                                                {album.name}
+                                            <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '32px', maxHeight: '32px' }}>
+                                                {album.name.substring(0,20)} {(album.name.length < 20) ? '' : '...'}
                                             </Typography>
                                             <Typography gutterBottom variant="h6" component="h5">
                                                 {album.type_of_album}
@@ -138,9 +138,9 @@ const AlbumList = () => {
                                             <Typography gutterBottom>
                                                 {album.artists_info.map((artist: art) => {
                                                     return (
-                                                        <span key={artist.id}>
-                                                            <Link to={'/artist/' + artist.id}>{artist.nickname}</Link>&nbsp;
-                                                        </span>
+                                                        <Typography variant="button" key={artist.id}>
+                                                            <Link to={'/artist/' + artist.id} style={{textDecoration: 'none', color: '#D32F2F'}}><i>{artist.nickname}</i></Link>&nbsp;
+                                                        </Typography>
                                                     )
                                                 })}
                                             </Typography>

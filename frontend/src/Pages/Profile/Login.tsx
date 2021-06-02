@@ -70,7 +70,7 @@ const Login = (props: { setUsername: (username: any) => void }) => {
 
         const content = await response.json()
 
-        if (content.detail !== 'Incorrect password' && content.detail !== 'User not found') {
+        if (content.detail !== 'Incorrect password' && content.detail !== 'User not found' && content.detail !== 'Not activated') {
             setRedirect(true);
             await props.setUsername(content.username)
         } else {
@@ -145,7 +145,7 @@ const Login = (props: { setUsername: (username: any) => void }) => {
                     </Grid>
                     <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                         open={open} autoHideDuration={5000} onClose={handleClose}>
-                        <Alert severity="error">Неверная связка логин/пароль</Alert>
+                        <Alert severity="error">Неверная связка логин/пароль или аккаунт не активирован</Alert>
                     </Snackbar>
                 </form>
             </div>

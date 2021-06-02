@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-import datetime
+from user.models import User
 
 
 class Track(models.Model):
@@ -19,6 +19,11 @@ class Track(models.Model):
     class Meta:
         verbose_name = 'Трек'
         verbose_name_plural = 'Треки'
+
+
+class FavoriteTracks(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    track = models.ForeignKey(Track, on_delete=models.CASCADE)
 
 
 class Album(models.Model):
@@ -42,6 +47,11 @@ class Album(models.Model):
         verbose_name_plural = 'Альбомы'
 
 
+class FavoriteAlbums(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+
 class Artist(models.Model):
     nickname = models.CharField(
         verbose_name='Псевдоним', max_length=40, blank=True)
@@ -61,6 +71,11 @@ class Artist(models.Model):
         verbose_name_plural = 'Артисты'
 
 
+class FavoriteArtists(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+
+
 class Genre(models.Model):
     name = models.CharField(verbose_name='Название плейлиста', max_length=40)
     description = models.TextField(verbose_name='Описание жанра')
@@ -72,6 +87,11 @@ class Genre(models.Model):
     class Meta:
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
+
+
+class FavoriteGenres(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
 
 
 class Playlist(models.Model):
@@ -86,3 +106,8 @@ class Playlist(models.Model):
     class Meta:
         verbose_name = 'Плейлист'
         verbose_name_plural = 'Плейлист'
+
+
+class FavoritePlaylists(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)

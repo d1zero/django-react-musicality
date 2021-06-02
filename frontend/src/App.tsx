@@ -68,7 +68,7 @@ function App() {
             ).then(res => {
                 const content = res.data
                 setUsername(content.username)
-            }).catch(error => {})
+            }).catch(error => { })
         }
         fetchData()
     }, [])
@@ -87,29 +87,31 @@ function App() {
                         <Route path="/login/" component={() => <Login setUsername={setUsername} />} />
                         <Route path="/register/" component={Register} />
                         <Route path="/confirm-register/:confirmCode" component={ConfirmRegister} />
-                        <Route path="/profile/" component={Profile} />
+                        <Route path="/profile/" component={() => <Profile setUsername={setUsername} username={username} />} />
                         <Route path="/reset-password/" component={ResetPassword} />
                         <Route path="/confirm-reset-password/:confirmCode" component={ConfirmResetPassword} />
 
                         <Route path="/tracks/" component={TrackList} />
-                        <Route path="/track/:trackId" component={TrackDetail} />
+                        <Route path="/track/:trackId" component={(props: any)=><TrackDetail {...props} username={username}/>} />
 
                         <Route path="/genres/" component={GenreList} />
-                        <Route path="/genre/:genreId" component={GenreDetail} />
+                        <Route path="/genre/:genreId" component={(props:any)=><GenreDetail {...props} username={username} />} />
 
                         <Route path="/playlists/" component={PlaylistList} />
-                        <Route path="/playlist/:playlistId" component={PlaylistDetail} />
+                        <Route path="/playlist/:playlistId" component={(props:any)=><PlaylistDetail {...props} username={username} />} />
 
                         <Route path="/albums/" component={AlbumList} />
-                        <Route path="/album/:albumId" component={AlbumDetail} />
+                        <Route path="/album/:albumId" component={(props:any)=><AlbumDetail {...props} username={username} />} />
 
                         <Route path="/artists/" component={ArtistList} />
-                        <Route path="/artist/:artistId" component={ArtistDetail} />
+                        <Route path="/artist/:artistId" component={(props:any)=><ArtistDetail {...props} username={username} />} />
                     </Switch>
                 </Container>
 
                 <CssBaseline />
+                <br/><br/><br/><br/><br/><br/>
                 <footer className={classes.footer}>
+
                     <Container maxWidth="sm">
                         <Typography variant="body1">
                             Made by <Link href="https://t.me/d1z3ro" style={{ 'textDecoration': 'none' }} color="secondary">d1zero</Link>

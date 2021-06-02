@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
     card: {
         borderRadius: '10px',
         boxShadow: '0 1px 2px rgba(0,0,0,.15)',
-        transition: 'box-shadow 10s ease-in-out:',
+        transition: 'box-shadow .3s ease-in-out',
         '&:hover': {
-            transition: 'box-shadow 10s ease-in-out:',
+            transition: 'box-shadow .3s ease-in-out',
             boxShadow: '7px 6px 8px 0px rgba(0, 0, 0, 0.3)',
         }
     },
@@ -142,16 +142,17 @@ const TrackList = () => {
                                                     title={item.title}
                                                 />
                                                 <CardContent className={classes.titleBar}>
-                                                    <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '64px', maxHeight: '64px' }}>
-                                                        {item.title}
+                                                    <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '32px', maxHeight: '32px' }}>
+                                                        {item.title.substring(0, 14)}
+                                                        {item.title.length < 15 ? '' : '...'}
                                                     </Typography>
-                                                    <Typography gutterBottom variant="body2" component="h5" style={{ marginBottom: '15px' }} >
+                                                    <Typography gutterBottom variant="body2" component="h5" style={{ paddingBottom: '0', marginBottom: 0 }} >
                                                         Исполнители:<br /> {item.artists_info.map((artist: art) => {
                                                             return (
                                                                 <span key={artist.id}>
-                                                                    <Link to={'/artist/' + artist.id.toString()} key={artist.id} style={{ textDecoration: 'none' }}>
-                                                                        {artist.nickname}
-                                                                    </Link>&nbsp;
+                                                                    <Link to={'/artist/' + artist.id.toString()} key={artist.id} style={{ textDecoration: 'none', color: '#d32f2f' }}>
+                                                                        <Typography variant="subtitle1" component="p"><i>{artist.nickname}</i></Typography>
+                                                                    </Link>
                                                                 </span>
                                                             )
                                                         })}

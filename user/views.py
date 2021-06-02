@@ -138,7 +138,7 @@ class LoginView(APIView):
 
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=5),
             'iat': datetime.datetime.utcnow()
         }
 
@@ -325,4 +325,27 @@ class ConfirmResetPasswordView(APIView):
             response.data = {
                 'message': 'failed'
             }
+        return response
+
+
+class DeleteView(APIView):
+    def delete(self, request):
+        data = request.data
+        response = Response()
+        token = request.COOKIES.get('jwt')
+
+        payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        user = User.objects.get(id=payload['id'])
+
+        if (user.check_password(data.get('password')) and user.username == data.get('username')):
+            user.delete()
+            response.delete_cookie('jwt')
+            response.data = {
+                'message': 'success'
+            }
+        else:
+            response.data = {
+                'message': 'failed'
+            }
+
         return response

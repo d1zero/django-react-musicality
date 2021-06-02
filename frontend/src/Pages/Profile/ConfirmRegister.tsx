@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ConfirmRegister = (props: any) => {
     const code = props.match.params.confirmCode;
-    console.log(code);
 
     const classes = useStyles();
     const [redirect, setRedirect] = useState(false)

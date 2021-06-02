@@ -1,6 +1,6 @@
 from baton.autodiscover import admin
 from django.urls import path, include
-from api.views import index, index_pk, index_code
+from api.views.index_views import index, index_pk, index_code
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url

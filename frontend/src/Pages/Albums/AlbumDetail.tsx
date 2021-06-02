@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, SyntheticEvent } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery } from '@material-ui/core'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery, Snackbar, IconButton } from '@material-ui/core'
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Cookies from "js-cookie"
+import MuiAlert from "@material-ui/lab/Alert";
+
+
+function Alert(props: any) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 interface art {
     id: number,
@@ -64,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         textShadow: '1px 1px 1px #000',
         transition: '.3s',
-        opacity: '0',
-        bottom: '-50px',
+        opacity: '1',
+        bottom: '-10px',
     },
 }))
 
@@ -74,6 +83,12 @@ const AlbumDetail = (props: any) => {
     const albumId = props.match.params.albumId;
     const [data, setData] = useState<alb>();
     const classes = useStyles();
+    const [open, setOpen] = useState(false)
+    const [favorite, setFavorite] = useState(false)
+
+    const handleClose: any = (e: SyntheticEvent) => {
+        setOpen(false)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,9 +105,53 @@ const AlbumDetail = (props: any) => {
             }
             )
             await setData(response1.data)
+
+            if (props.username !== '') {
+                // Production
+                link = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-albums/' + albumId
+                // Development
+                // link = 'http://localhost:8000/api/get-favorite-albums/' + albumId
+
+                const response2 = await axios(
+                    link, {
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    withCredentials: true,
+                }
+                )
+                if (response2.data.message === 'success') {
+                    setFavorite(true)
+                }
+            }
         }
         fetchData()
     }, [albumId])
+
+    const addToFavorite = async (albumId: number) => {
+        let heart = document.getElementById('favorite')
+        if (props.username !== '') {
+            if (favorite) {
+                setFavorite(false)
+            } else {
+                setFavorite(true)
+            }
+
+            let link = ''
+            // Production
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/add-album-to-favorite/' + albumId.toString()
+            // Development
+            // link = 'http://localhost:8000/api/add-album-to-favorite/' + albumId.toString()
+
+            await fetch(
+                link, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                credentials: 'include',
+                body: JSON.stringify({ 'username': props.username })
+            })
+        } else {
+            setOpen(true)
+        }
+    }
 
     const matches = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -109,6 +168,10 @@ const AlbumDetail = (props: any) => {
                     <title>Альбомы: {data.name}</title>
                 </Helmet>
                 <Container maxWidth="md">
+                    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                        open={open} autoHideDuration={5000} onClose={handleClose}>
+                        <Alert severity="warning">Авторизуйтесь или зарегистрируйтесь, чтобы добавлять в избранное</Alert>
+                    </Snackbar>
                     <ThemeProvider theme={theme}>
                         <Typography gutterBottom variant="h1" align="center">{data.name}</Typography>
                     </ThemeProvider>
@@ -116,16 +179,26 @@ const AlbumDetail = (props: any) => {
                     <Grid container direction="row">
                         <img src={imgSrc} alt={data.name} style={{ 'width': '400px', 'height': '400px', 'borderRadius': '10px', 'objectFit': 'cover', 'marginRight': theme.spacing(3) }} />
                         <Grid direction="column">
-                            <Typography gutterBottom variant="body2" style={{ wordWrap: "break-word", 'maxWidth': '480px' }}>{data.description}</Typography>
-                            <Typography gutterBottom variant="body2">Исполнители: {data.artists_info.map((artist: art) => {
+                            <Typography gutterBottom variant="h6">Об альбоме:</Typography>
+                            <Typography gutterBottom variant="body1" style={{ wordWrap: "break-word", maxWidth: '480px' }}>{data.description}</Typography>
+                            <Typography gutterBottom variant="h6">Исполнители: {data.artists_info.map((artist: art) => {
                                 return (
-                                    <span key={artist.id}>
-                                        <Link to={'/artist/' + artist.id}>{artist.nickname}</Link>&nbsp;
-                                    </span>
+                                    <Typography style={{ textDecoration: 'none', color: '#D32F2F' }} component={Link} to={'/artist/' + artist.id} key={artist.id}>
+                                        <i>{artist.nickname}</i>&nbsp;
+                                    </Typography>
                                 );
                             })}
                             </Typography>
-                            <Typography variant="body2">Дата выхода: {data.date_of_release}</Typography>
+                            <span style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline' }}>
+                                <Typography variant="h6">Дата выхода:&nbsp;</Typography>
+                                <Typography>{data.date_of_release}</Typography>
+                            </span>
+                            <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '32px' }}>
+                                {favorite ? <Typography variant="h6">В избранном</Typography> : <Typography variant="h6">Добавить в избранное</Typography>}
+                                <IconButton aria-label="add to favorites" id="favorite">
+                                    {favorite ? <FavoriteIcon style={{ 'color': 'red' }} onClick={() => { addToFavorite(data.id) }} /> : <FavoriteBorderIcon onClick={() => { addToFavorite(data.id) }} />}
+                                </IconButton>
+                            </span>
                         </Grid>
                     </Grid>
                     <br />
@@ -141,27 +214,24 @@ const AlbumDetail = (props: any) => {
                                 // imgTrackSrc = 'http://localhost:8000' + track.cover
 
                                 return (
-                                        <Grid item component={Link} to={'/track/' + track.id}>
-                                            <Card className={classes.card}>
-                                                <CardActionArea onMouseOver={() => { document.getElementById(('content' + track.id))?.setAttribute('style', 'opacity: 1; bottom: -10px') }} onMouseOut={() => { document.getElementById(('content' + track.id))?.removeAttribute('style') }}>
-                                                    <CardMedia
-                                                        className={classes.media}
+                                    <Grid item component={Link} to={'/track/' + track.id}>
+                                        <Card className={classes.card}>
+                                            <CardActionArea>
+                                                <CardMedia
+                                                    className={classes.media}
 
-                                                        image={imgTrackSrc}
+                                                    image={imgTrackSrc}
 
-                                                        title={track.title}
-                                                    />
-                                                    <CardContent style={{
-                                                        'opacity': matches ? '1' : '0',
-                                                        'bottom': matches ? '-10px' : '',
-                                                    }} className={classes.titleBar} id={"content" + track.id}>
-                                                        <Typography gutterBottom variant="h5" component="h2">
-                                                            {track.title}
-                                                        </Typography>
-                                                    </CardContent>
-                                                </CardActionArea>
-                                            </Card>
-                                        </Grid>
+                                                    title={track.title}
+                                                />
+                                                <CardContent className={classes.titleBar}>
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        {track.title}
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </Grid>
                                 )
                             })}
                         </Grid>

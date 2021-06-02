@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Tooltip, Button, Dialog, DialogTitle, Input, InputLabel, Box, Typography, Snackbar } from '@material-ui/core';
+import {Grid, Tooltip, Button, Dialog, DialogTitle, Input, InputLabel, Box, Typography, Snackbar} from '@material-ui/core';
 import MuiAlert from "@material-ui/lab/Alert";
 import EditIcon from '@material-ui/icons/Edit';
 import Cookies from "js-cookie";
 import axios from 'axios'
+import FavoriteTracks from './Favorite/FavoriteTracks';
+import FavoriteGenres from './Favorite/FavoriteGenres';
+import FavoritePlaylists from './Favorite/FavoritePlaylists';
+import FavoriteAlbums from './Favorite/FavoriteAlbums';
+import FavoriteArtists from './Favorite/FavoriteArtists';
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -30,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     edit: {
         color: theme.palette.primary.main,
         '&:hover': {
-            color: theme.palette.secondary.main,
+            color: '#2196f3',
         }
     },
     dialog: {
@@ -38,20 +43,53 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'center',
         padding: theme.spacing(2),
-    }
+    },
+    media: {
+        height: theme.spacing(25),
+        width: theme.spacing(25),
+        objectFit: 'cover',
+    },
+    card: {
+        borderRadius: '10px',
+        maxWidth: theme.spacing(25),
+        maxHeight: theme.spacing(25),
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)',
+        position: 'absolute',
+        width: 'inherit',
+        color: 'white',
+        textShadow: '1px 1px 1px #000',
+        transition: '.3s',
+        opacity: '0',
+        bottom: '-50px',
+    },
+    gridItem: {
+        textDecoration: 'none',
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+        minWidth: '300px',
+
+    },
 }));
 
-const Profile = () => {
+const Profile = (props: { setUsername: (username: any) => void, username: string }) => {
     const [data, setData] = useState<datas>({ id: '', email: '', username: '', avatar: '', date_joined: '', })
-    const [avatarLink, setAvatarLink]: any = useState('');
+    const [avatarLink, setAvatarLink] = useState('');
     const [open, setOpen] = useState(false)
+    const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [successDeleteOpen, setSuccessDeleteOpen] = useState(false)
     const [failedChangeOpen, setFailedChangeOpen] = useState(false)
     const [successChangeOpen, setSuccessChangeOpen] = useState(false)
     const [errMsg, setErrMsg] = useState('')
     const [redirect, setRedirect] = useState(false)
+
 
     const handleClose = () => {
         setOpen(false)
@@ -65,6 +103,10 @@ const Profile = () => {
         setSuccessChangeOpen(false)
     }
 
+    const handleCloseDeleteModal = () => {
+        setFailedChangeOpen(false)
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             let link = ''
@@ -73,13 +115,13 @@ const Profile = () => {
             // Development
             // link = 'http://localhost:8000/user/profile'
 
-            const response1 = await fetch(
+            const response1 = await axios(
                 link, {
                 headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
+                withCredentials: true,
             }
             )
-            const content = await response1.json()
+            const content = await response1.data
 
             if (response1.status === 200) {
                 await setData(content)
@@ -101,6 +143,8 @@ const Profile = () => {
             }
         }
         fetchData()
+
+
     }, [data.date_joined, data.avatar])
 
     const submit = async (e: any) => {
@@ -170,6 +214,47 @@ const Profile = () => {
 
     }
 
+    const deleteAccount = async (e: any) => {
+        e.preventDefault();
+        let link = ''
+        // Production
+        link = 'http://musicality.std-1578.ist.mospolytech.ru/user/delete'
+        // Development
+        // link = 'http://localhost:8000/user/delete'
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '' + Cookies.get('csrftoken')
+        }
+
+        let bodyData
+
+        if (password !== '') {
+            bodyData = JSON.stringify({
+                username: data.username, password,
+            })
+
+            const response = await fetch(link, {
+                method: 'DELETE',
+                headers: headers,
+                credentials: 'include',
+                body: bodyData,
+            })
+
+            interface obj {
+                message: string
+            }
+
+            const content: obj = await response.json()
+
+            if (content.message === 'success') {
+                setOpenDeleteModal(false)
+                setSuccessDeleteOpen(true)
+                props.setUsername('')
+            }
+        }
+    }
+
     const sendImage = async (e: any) => {
         e.preventDefault();
         let link = ''
@@ -210,6 +295,8 @@ const Profile = () => {
             setErrMsg('Не удалось загрузить фото')
             setFailedChangeOpen(true)
         }
+
+
     }
 
 
@@ -217,71 +304,131 @@ const Profile = () => {
 
     if (redirect) {
         return (
-            <Redirect to='/' />
+            <Redirect to='/register' />
         )
     }
 
 
+    if (!successDeleteOpen) {
+        return (
+            <div className={classes.root}>
+                <Helmet><title>Профиль</title></Helmet>
+                {data.id ?
+                    <Grid container spacing={5}>
+                        <Dialog open={open} onClose={handleClose}>
+                            <span className={classes.dialog}>
+                                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                    open={failedChangeOpen} autoHideDuration={5000} onClose={handleFailedChange}>
+                                    <Alert severity="error">{errMsg}</Alert>
+                                </Snackbar>
+                                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                    open={successChangeOpen} autoHideDuration={5000} onClose={handleSuccessChangeClose}>
+                                    <Alert severity="success">Данные успешно изменены</Alert>
+                                </Snackbar>
+                                <DialogTitle>Изменение профиля</DialogTitle>
+                                <form onSubmit={submit}>
+                                    <InputLabel>Аватар <br /><Typography variant="caption">* нажмите на изображение, чтобы загрузить новое</Typography></InputLabel>
+                                    <img
+                                        src={avatarLink}
+                                        alt={data.username}
+                                        style={{ 'borderRadius': '100px', 'width': '200px', 'height': '200px', 'objectFit': 'cover', 'marginBottom': '20px' }}
+                                        onClick={() => document.getElementById('imgInput')?.click()}
+                                    />
+                                    <InputLabel>Никнейм</InputLabel>
+                                    <Input placeholder={data.username} type="text" name="username" style={{ 'marginBottom': '20px' }} onChange={e => { setUsername(e.target.value) }} />
+                                    <InputLabel>Email</InputLabel>
+                                    <Input placeholder={data.email} type="email" name="email" style={{ 'marginBottom': '20px' }} onChange={e => { setEmail(e.target.value) }} /><br />
+                                    <input type="file" accept="image/png, image/jpeg" id="imgInput" style={{ 'visibility': 'hidden', 'maxWidth': '200px' }} />
+                                    <Box>
+                                        <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>Отменить изменения</Button>
+                                        <Button variant="contained" color="primary" type="submit">Сохранить изменения</Button>
+                                    </Box>
+                                </form>
+                            </span>
+                        </Dialog>
 
-    return (
-        <div className={classes.root}>
-            <Helmet><title>Профиль</title></Helmet>
-            {data.id ?
-                <Grid container spacing={5}>
-                    <Dialog open={open} onClose={handleClose}>
-                        <span className={classes.dialog}>
-                            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                                open={failedChangeOpen} autoHideDuration={5000} onClose={handleFailedChange}>
-                                <Alert severity="error">{errMsg}</Alert>
-                            </Snackbar>
-                            <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                                open={successChangeOpen} autoHideDuration={5000} onClose={handleSuccessChangeClose}>
-                                <Alert severity="success">Данные успешно изменены</Alert>
-                            </Snackbar>
-                            <DialogTitle>Изменение профиля</DialogTitle>
-                            <form onSubmit={submit}>
-                                <InputLabel>Аватар <br /><Typography variant="caption">* нажмите на изображение, чтобы загрузить новое</Typography></InputLabel>
+                        <Dialog open={openDeleteModal} onClose={handleCloseDeleteModal}>
+                            <span className={classes.dialog}>
+                                <DialogTitle>Удаление аккаунта</DialogTitle>
+                                <form onSubmit={deleteAccount}>
+                                    <InputLabel>Пароль</InputLabel>
+                                    <Input type="password" name="password" style={{ 'marginBottom': '20px' }} onChange={e => { setPassword(e.target.value) }} />
+                                    <input type="file" accept="image/png, image/jpeg" id="imgInput" style={{ 'visibility': 'hidden', 'maxWidth': '200px' }} />
+                                    <Box>
+                                        <Button variant="contained" color="secondary" type="submit">Удалить аккаунт</Button>
+                                    </Box>
+                                </form>
+                            </span>
+                        </Dialog>
+
+                        <Grid item sm={6} xs={12} style={{ 'display': 'flex', 'justifyContent': 'flex-end' }}>
+                            <Tooltip title="Аватар" aria-label="add">
                                 <img
                                     src={avatarLink}
                                     alt={data.username}
-                                    style={{ 'borderRadius': '100px', 'width': '200px', 'height': '200px', 'objectFit': 'cover', 'marginBottom': '20px' }}
-                                    onClick={() => document.getElementById('imgInput')?.click()}
+                                    style={{ 'borderRadius': '100px', 'width': '200px', 'height': '200px', 'objectFit': 'cover' }}
                                 />
-                                <InputLabel>Никнейм</InputLabel>
-                                <Input placeholder={data.username} type="text" name="username" style={{ 'marginBottom': '20px' }} onChange={e => { setUsername(e.target.value) }} />
-                                <InputLabel>Email</InputLabel>
-                                <Input placeholder={data.email} type="email" name="email" style={{ 'marginBottom': '20px' }} onChange={e => { setEmail(e.target.value) }} /><br />
-                                <input type="file" accept="image/png, image/jpeg" id="imgInput" style={{ 'visibility': 'hidden', 'maxWidth': '200px' }} />
-                                <Box>
-                                    <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>Отменить изменения</Button>
-                                    <Button variant="contained" color="primary" type="submit">Сохранить изменения</Button>
-                                </Box>
-                            </form>
-                        </span>
-                    </Dialog>
-                    <Grid item sm={6} xs={12} style={{ 'display': 'flex', 'justifyContent': 'flex-end' }}>
-                        <Tooltip title="Аватар" aria-label="add">
-                            <img
-                                src={avatarLink}
-                                alt={data.username}
-                                style={{ 'borderRadius': '100px', 'width': '200px', 'height': '200px', 'objectFit': 'cover' }}
-                            />
-                        </Tooltip>
-                    </Grid>
+                            </Tooltip>
+                        </Grid>
 
-                    <Grid item sm={6} xs={12}>
-                        <div style={{ 'display': 'flex', 'alignItems': 'center', 'height': '200px' }}>
-                            Никнейм: {data.username}<br />
-                            Email: {data.email}<br />
-                            Дата регистрации: {data.date_joined.split('T')[0].toString()}<br />
-                        </div>
-                        <Button variant="outlined" className={classes.edit} onClick={() => setOpen(true)}><EditIcon />Редактировать</Button>
+                        <Grid item sm={6} xs={12}>
+                            <div style={{ 'display': 'flex', 'flexDirection': 'column', 'maxHeight': '200px', 'minHeight': '200px' }}>
+                                <span style={{ 'display': 'flex', 'flexDirection': 'row', 'alignItems': 'center' }}>
+                                    <h3>Никнейм:</h3>&nbsp;{data.username}
+                                </span>
+                                <span style={{ 'display': 'flex', 'flexDirection': 'row', 'alignItems': 'center' }}>
+                                    <h3>Email:</h3>&nbsp;{data.email}
+                                </span>
+                                <span style={{ 'display': 'flex', 'flexDirection': 'row', 'alignItems': 'center' }}>
+                                    <h3>Дата регистрации:</h3>&nbsp;{data.date_joined.split('T')[0].toString()}
+                                </span>
+                            </div>
+                        </Grid>
+
+                        <Grid container style={{ justifyContent: 'center' }}>
+                            <Grid item style={{ marginRight: '4px' }}>
+                                <Button variant="outlined" className={classes.edit} onClick={() => setOpen(true)}><EditIcon />Редактировать</Button>
+                            </Grid>
+                            <Grid item style={{ marginLeft: '4px' }}>
+                                <Button variant="outlined" color="secondary" onClick={() => setOpenDeleteModal(true)}><EditIcon />Удалить аккаунт</Button>
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <FavoriteTracks />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <FavoriteGenres />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <FavoritePlaylists />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <FavoriteAlbums />
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <FavoriteArtists />
+                        </Grid>
                     </Grid>
-                </Grid>
-                : <h1>Вы не авторизованы</h1>
-            }
-        </div>
-    );
+                    : <Typography variant="h1">Вы не авторизованы</Typography>
+                }
+            </div>
+        );
+    } else {
+        return (
+            <div className={classes.root}>
+                <Helmet><title>Профиль</title></Helmet>
+                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    open={successDeleteOpen} autoHideDuration={5000} onClose={handleSuccessChangeClose}>
+                    <Alert severity="success">Аккаунт успешно удалён</Alert>
+                </Snackbar>
+            </div>
+        )
+    }
 }
 
 export default Profile;

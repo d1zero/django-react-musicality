@@ -43,9 +43,9 @@ const useStyles = makeStyles((theme: Theme) =>
         carousel: {
             borderRadius: '10px',
             boxShadow: '0 1px 2px rgba(0,0,0,.15)',
-            transition: 'box-shadow 10s ease-in-out:',
+            transition: 'box-shadow .3s ease-in-out',
             '&:hover': {
-                transition: 'box-shadow 10s ease-in-out:',
+                transition: 'box-shadow .3s ease-in-out',
                 boxShadow: '7px 6px 8px 0px rgba(0, 0, 0, 0.3)',
             }
         },
@@ -225,7 +225,7 @@ const Home = () => {
                                     if (track.description.length < 270) {
                                         description = track.description
                                     } else {
-                                        description = track.description.substring(0, 270) + '...'
+                                        description = track.description.substring(0, 180) + '...'
                                     }
 
                                     let imgSrc = ''
@@ -236,7 +236,7 @@ const Home = () => {
 
                                     if (matches) {
                                         return (
-                                            <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none' }}>
+                                            <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none', maxHeight: '300px' }}>
                                                 <Grid item className={classes.carouselItem}>
                                                     <img
                                                         src={imgSrc}
@@ -257,14 +257,14 @@ const Home = () => {
                                                         )}
                                                         </h3>
                                                         <h4>Дата выпуска: {track.date_of_release}</h4><br />
-                                                        <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                        <span style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
                                         )
                                     } else {
                                         return (
-                                            <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none' }}>
+                                            <GridListTile component={Link} to={'/track/' + track.id} key={track.id} style={{ textDecoration: 'none', maxHeight: '300px' }}>
                                                 <Grid item className={classes.carouselItemAdapt}>
                                                     <img
                                                         src={imgSrc}
@@ -303,7 +303,7 @@ const Home = () => {
                                     if (playlist.description.length < 170) {
                                         description = playlist.description
                                     } else {
-                                        description = playlist.description.substring(0, 170) + '...'
+                                        description = playlist.description.substring(0, 190) + '...'
                                     }
                                     let tracks = Array<string>()
 
@@ -326,7 +326,7 @@ const Home = () => {
 
                                     if (matches) {
                                         return (
-                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
+                                            <GridListTile component={Link} to={'/playlist/' + playlist.id} key={playlist.id} style={{ textDecoration: 'none', maxHeight: '300px' }}>
                                                 <Grid item className={classes.carouselItem}>
                                                     <img
                                                         src={imgSrc}
@@ -341,7 +341,7 @@ const Home = () => {
                                                         }}
                                                     />
                                                     <Typography className={classes.typography}>
-                                                        <p style={{ minHeight: '164px', maxHeight: '164px', marginBottom: 0, }}>
+                                                        <p style={{ minHeight: '130px', maxHeight: '130px', marginBottom: 0, }}>
                                                             <strong>Треки:</strong><br />
                                                             {tracks.map((track: string) => {
                                                                 if (track !== 'И другие...') {
@@ -359,7 +359,7 @@ const Home = () => {
                                         )
                                     } else {
                                         return (
-                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
+                                            <GridListTile style={{ textDecoration: 'none', maxHeight: '300px' }} component={Link} to={'/playlist/' + playlist.id} key={playlist.id}>
                                                 <Grid item className={classes.carouselItemAdapt}>
                                                     <img
                                                         src={imgSrc}
@@ -397,7 +397,7 @@ const Home = () => {
                                     if (album.description.length < 250) {
                                         description = album.description
                                     } else {
-                                        description = album.description.substring(0, 250) + '...'
+                                        description = album.description.substring(0, 190) + '...'
                                     }
 
                                     let imgSrc = ''
@@ -408,7 +408,7 @@ const Home = () => {
 
                                     if (matches) {
                                         return (
-                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/album/' + album.id} key={album.id}>
+                                            <GridListTile style={{ textDecoration: 'none', maxHeight: '300px' }} component={Link} to={'/album/' + album.id} key={album.id}>
                                                 <Grid item className={classes.carouselItem}>
                                                     <img
                                                         src={imgSrc}
@@ -429,14 +429,14 @@ const Home = () => {
                                                         }
                                                         )}
                                                         </h4><br />
-                                                        <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                        <span style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
                                         )
                                     } else {
                                         return (
-                                            <GridListTile style={{ textDecoration: 'none' }} component={Link} to={'/album/' + album.id} key={album.id}>
+                                            <GridListTile style={{ textDecoration: 'none', maxHeight: '300px' }} component={Link} to={'/album/' + album.id} key={album.id}>
                                                 <Grid item className={classes.carouselItemAdapt}>
                                                     <img
                                                         src={imgSrc}
@@ -489,7 +489,7 @@ const Home = () => {
                                                 component={Link}
                                                 to={'/artist/' + artist.id}
                                                 key={artist.id}
-                                                style={{ textDecoration: 'none' }}
+                                                style={{ textDecoration: 'none', maxHeight: '300px' }}
                                             >
                                                 <Grid item className={classes.carouselItem}>
                                                     <img
@@ -507,7 +507,7 @@ const Home = () => {
                                                     <Typography className={classes.typography}>
                                                         <h3>{artist.first_name + ' ' + artist.last_name}</h3><br />
                                                         <h4>Дата рождения: {artist.date_of_birth}</h4><br />
-                                                        <span style={{ minHeight: '164px', maxHeight: '164px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                        <span style={{ minHeight: '120px', maxHeight: '120px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>

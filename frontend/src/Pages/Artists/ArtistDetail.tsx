@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, SyntheticEvent } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery } from '@material-ui/core'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery, Snackbar, IconButton } from '@material-ui/core'
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Cookies from "js-cookie"
+import MuiAlert from "@material-ui/lab/Alert";
+
+
+function Alert(props: any) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 interface alb {
     id: number,
@@ -15,6 +24,7 @@ interface alb {
 }
 
 interface art {
+    id: number,
     first_name: string,
     nickname: string,
     last_name: string,
@@ -79,7 +89,14 @@ const useStyles = makeStyles((theme) => ({
 const ArtistDetail = (props: any) => {
     const artistId = props.match.params.artistId;
     const [data, setData] = useState<art>();
-    const classes = useStyles()
+    const classes = useStyles();
+    const [open, setOpen] = useState(false)
+    const [favorite, setFavorite] = useState(false)
+
+    const handleClose: any = (e: SyntheticEvent) => {
+        setOpen(false)
+    }
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -96,9 +113,54 @@ const ArtistDetail = (props: any) => {
             }
             )
             await setData(response1.data)
+
+            if (props.username !== '') {
+                // Production
+                link = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-artists/' + artistId
+                // Development
+                // link = 'http://localhost:8000/api/get-favorite-artists/' + artistId
+
+                const response2 = await axios(
+                    link, {
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    withCredentials: true,
+                }
+                )
+                if (response2.data.message === 'success') {
+                    setFavorite(true)
+                }
+            }
         }
         fetchData()
     }, [artistId])
+
+
+    const addToFavorite = async (artistId: number) => {
+        let heart = document.getElementById('favorite')
+        if (props.username !== '') {
+            if (favorite) {
+                setFavorite(false)
+            } else {
+                setFavorite(true)
+            }
+
+            let link = ''
+            // Production
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/add-artist-to-favorite/' + artistId.toString()
+            // Development
+            // link = 'http://localhost:8000/api/add-artist-to-favorite/' + artistId.toString()
+
+            await fetch(
+                link, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                credentials: 'include',
+                body: JSON.stringify({ 'username': props.username })
+            })
+        } else {
+            setOpen(true)
+        }
+    }
 
     const matches = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -117,11 +179,18 @@ const ArtistDetail = (props: any) => {
         return (
             <div>
                 <Helmet><title>Исполнитель: {data.nickname}</title></Helmet>
+                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    open={open} autoHideDuration={5000} onClose={handleClose}>
+                    <Alert severity="warning">Авторизуйтесь или зарегистрируйтесь, чтобы добавлять в избранное</Alert>
+                </Snackbar>
                 <br /><br /><br /><br />
                 <Container maxWidth="md">
                     <ThemeProvider theme={theme}>
                         <Typography variant="h3" align="center">
-                            {data.first_name} "{data.nickname}" {data.last_name}
+                            {data.first_name} {data.last_name}
+                        </Typography>
+                        <Typography variant="h3" align="center">
+                            "{data.nickname}"
                         </Typography><br />
                     </ThemeProvider>
 
@@ -129,10 +198,18 @@ const ArtistDetail = (props: any) => {
                         <img src={imgSrc} alt={data.nickname} className={classes.artistImage} />
                     </span>
 
+                    <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {favorite ? <Typography variant="h6">В избранном</Typography> : <Typography variant="h6">Добавить в избранное</Typography>}
+                        <IconButton aria-label="add to favorites" id="favorite">
+                            {favorite ? <FavoriteIcon style={{ 'color': 'red' }} onClick={() => { addToFavorite(data.id) }} /> : <FavoriteBorderIcon onClick={() => { addToFavorite(data.id) }} />}
+                        </IconButton>
+                    </span><br />
+
                     <ThemeProvider theme={theme}>
                         <Typography gutterBottom variant="h3" align="center">Об артисте</Typography>
                         <Typography variant="body1" className={classes.about}>{data.about}</Typography>
                     </ThemeProvider>
+
 
 
 

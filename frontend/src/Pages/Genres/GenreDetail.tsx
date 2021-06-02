@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, SyntheticEvent } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Grid, Typography, Card, CardActionArea, CardMedia, CardContent, Container } from '@material-ui/core'
-import { Helmet } from 'react-helmet'
+import { Grid, Typography, Card, CardActionArea, CardMedia, CardContent, Container, Snackbar, IconButton } from '@material-ui/core'
+import { Helmet } from 'react-helmet';
+import Cookies from 'js-cookie'
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import MuiAlert from "@material-ui/lab/Alert";
+
+
+function Alert(props: any) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const theme = createMuiTheme();
 
@@ -78,6 +87,13 @@ const GenreDetail = (props: any) => {
             { id: 0, title: '', cover: '' }
         ]
     })
+    const [open, setOpen] = useState(false)
+    const [favorite, setFavorite] = useState(false)
+
+    const handleClose: any = (e: SyntheticEvent) => {
+        setOpen(false)
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             let link = ''
@@ -93,11 +109,53 @@ const GenreDetail = (props: any) => {
             }
             )
             await setData(response1.data)
+
+            if (props.username !== '') {
+                // Production
+                link = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-genres/' + genreId
+                // Development
+                // link = 'http://localhost:8000/api/get-favorite-genres/' + genreId
+                const response2 = await axios(
+                    link, {
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    withCredentials: true,
+                }
+                )
+                if (response2.data.message === 'success') {
+                    setFavorite(true)
+                }
+            }
         }
         fetchData()
     }, [genreId])
 
-    // let iter = 0
+    const addToFavorite = async (genreId: number) => {
+        let heart = document.getElementById('favorite')
+        if (props.username !== '') {
+            if (favorite) {
+                setFavorite(false)
+            } else {
+                setFavorite(true)
+            }
+
+            let link = ''
+            // Production
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/add-genre-to-favorite/' + genreId.toString()
+            // Development
+            // link = 'http://localhost:8000/api/add-genre-to-favorite/' + genreId.toString()
+
+            await fetch(
+                link, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                credentials: 'include',
+                body: JSON.stringify({ 'username': props.username })
+            })
+        } else {
+            setOpen(true)
+        }
+    }
+
 
     const classes = useStyles();
 
@@ -105,8 +163,12 @@ const GenreDetail = (props: any) => {
         <div className={classes.root}>
             <Helmet><title>Жанры: {data.name}</title></Helmet>
             <Container maxWidth="md">
+                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    open={open} autoHideDuration={5000} onClose={handleClose}>
+                    <Alert severity="warning">Авторизуйтесь или зарегистрируйтесь, чтобы добавлять в избранное</Alert>
+                </Snackbar>
                 <ThemeProvider theme={theme}>
-                    <Typography component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
+                    <Typography component="body" variant="h2" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
                         <strong>
                             {data.name}
                         </strong>
@@ -125,6 +187,12 @@ const GenreDetail = (props: any) => {
                     />
                 </span>
                 <br />
+                <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {favorite ? <Typography variant="h6">В избранном</Typography> : <Typography variant="h6">Добавить в избранное</Typography>}
+                    <IconButton aria-label="add to favorites" id="favorite">
+                        {favorite ? <><FavoriteIcon style={{ 'color': 'red' }} onClick={() => { addToFavorite(data.id) }} /></> : <><FavoriteBorderIcon onClick={() => { addToFavorite(data.id) }} /></>}
+                    </IconButton>
+                </span><br/>
                 <Typography align="center" variant='body2'>{data.description}</Typography><br /><br />
                 <Grid container spacing={4}>
                     {data.tracks.map((track: track) => {

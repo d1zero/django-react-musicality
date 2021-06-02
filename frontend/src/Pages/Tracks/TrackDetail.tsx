@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, SyntheticEvent } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Slider } from '@material-ui/core';
+import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Slider, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import LoopIcon from '@material-ui/icons/Loop';
-import VolumeDown from '@material-ui/icons/VolumeDown';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import VolumeUp from '@material-ui/icons/VolumeUp';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Cookies from "js-cookie"
+import MuiAlert from "@material-ui/lab/Alert";
+
+
+function Alert(props: any) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     trackInfo: {
@@ -29,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         marginTop: theme.spacing(8),
+        justifyContent: 'center',
     },
     trackDescription: {
 
@@ -53,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
         paddingLeft: 0,
+        borderRadius: theme.spacing(3)
     },
     details: {
         display: 'flex',
@@ -64,18 +75,25 @@ const useStyles = makeStyles((theme) => ({
     },
     controlsDiv: {
         justifyContent: 'center',
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(4),
         paddingBottom: '0',
     }
 }))
 
 const TrackDetail = (props: any) => {
     const trackId = props.match.params.trackId;
+
     const [playing, setPlaying] = useState<boolean>(false)
     const [repeat, setRepeat] = useState<boolean>(false)
-    const [volume, setVolume] = useState<number>(10)
+    const [volume, setVolume] = useState<number>(80)
     const [time, setTime] = useState<number>(0)
     const [fullTime, setFullTime] = useState<string>('0:00')
+    const [open, setOpen] = useState(false)
+    const [favorite, setFavorite] = useState(false)
+
+    const handleClose: any = (e: SyntheticEvent) => {
+        setOpen(false)
+    }
 
     interface gen {
         id: number,
@@ -122,9 +140,53 @@ const TrackDetail = (props: any) => {
             await setData(response1.data)
             response1.data.artists_ids = []
             response1.data.artists_ids = response1.data.artists
+
+            if (props.username !== '') {
+                // Production
+                link = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-tracks/' + trackId
+                // Development
+                // link = 'http://localhost:8000/api/get-favorite-tracks/' + trackId
+                const response2 = await axios(
+                    link, {
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    withCredentials: true,
+                }
+                )
+                if (response2.data.message === 'success') {
+                    setFavorite(true)
+                }
+            }
+
         }
         fetchData()
     }, [trackId])
+
+    const addToFavorite = async (trackId: number) => {
+        let heart = document.getElementById('favorite')
+        if (props.username !== '') {
+            if (favorite) {
+                setFavorite(false)
+            } else {
+                setFavorite(true)
+            }
+
+            let link = ''
+            // Production
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/add-track-to-favorite/' + trackId.toString()
+            // Development
+            // link = 'http://localhost:8000/api/add-track-to-favorite/' + trackId.toString()
+
+            await fetch(
+                link, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                credentials: 'include',
+                body: JSON.stringify({ 'username': props.username })
+            })
+        } else {
+            setOpen(true)
+        }
+    }
 
     const repeatToggle = async () => {
         await setRepeat(!repeat)
@@ -195,8 +257,12 @@ const TrackDetail = (props: any) => {
 
         return (
             <Grid container spacing={3} className={classes.container}>
+                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    open={open} autoHideDuration={5000} onClose={handleClose}>
+                    <Alert severity="warning">Авторизуйтесь или зарегистрируйтесь, чтобы добавлять в избранное</Alert>
+                </Snackbar>
                 <Grid item style={{ 'visibility': 'hidden' }}>
-                    <ReactAudioPlayer src={trackSrc} controls onEnded={Ended} volume={volume / 100} onPlay={() =>
+                    <ReactAudioPlayer src={trackSrc} controls onEnded={Ended} volume={volume / 100} style={{ 'height': 0, 'width': 0, 'visibility': 'hidden' }} onPlay={() =>
                         setInterval(() => {
                             let elemen = document.getElementsByTagName('audio');
                             if (elemen.length > 0) {
@@ -215,7 +281,7 @@ const TrackDetail = (props: any) => {
                 </Grid>
                 <Helmet><title>Трек: {data.title}</title></Helmet>
                 <Grid item xs={12} sm={10} md={6} className={classes.trackInfo}>
-                    <Typography component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
+                    <Typography component="body" variant="h2" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
                         <strong>
                             {data.title}
                         </strong>
@@ -233,7 +299,7 @@ const TrackDetail = (props: any) => {
                                         Артисты:&nbsp;
                                         {data.artists_info.map((artist: art) => {
                                             return <span key={artist.id}>
-                                                <Link to={'/artist/' + artist.id.toString()}>{artist.nickname}</Link>&nbsp;
+                                                <Link to={'/artist/' + artist.id.toString()} style={{ textDecoration: 'none', color: '#d32f2f' }}><i>{artist.nickname}</i></Link>&nbsp;
                                             </span>
                                         })}
                                     </Typography>
@@ -243,10 +309,15 @@ const TrackDetail = (props: any) => {
                                     <Typography >
                                         Жанры:&nbsp;{data.genres_info.map((genre: gen) => {
                                             return <span key={genre.id}>
-                                                <Link to={'/genre/' + genre.id.toString()}>{genre.name}</Link>&nbsp;
+                                                <Link to={'/genre/' + genre.id.toString()} style={{ textDecoration: 'none', color: '#d32f2f' }}><i>{genre.name}</i></Link>&nbsp;
                                             </span>
                                         })}
                                     </Typography>
+                                    <span style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <IconButton aria-label="add to favorites" id="favorite">
+                                            {favorite ? <FavoriteIcon style={{ 'color': 'red' }} onClick={() => { addToFavorite(data.id) }} /> : <FavoriteBorderIcon onClick={() => { addToFavorite(data.id) }} />}
+                                        </IconButton>
+                                    </span>
                                 </CardContent>
                                 <CardContent className={classes.controlsDiv} style={{ 'paddingBottom': 0 }}>
                                     <div className={classes.volume}>
@@ -257,7 +328,7 @@ const TrackDetail = (props: any) => {
                                                     onChange={handleChangeTime}
                                                     aria-labelledby="continuous-slider"
                                                     marks={marks}
-                                                    step={0.01}
+                                                    step={0.000001}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -265,7 +336,7 @@ const TrackDetail = (props: any) => {
                                     <div className={classes.volume}>
                                         <Grid container spacing={2}>
                                             <Grid item>
-                                                <VolumeDown />
+                                                <VolumeOffIcon />
                                             </Grid>
                                             <Grid item xs>
                                                 <Slider value={volume} onChange={handleChangeVolume} aria-labelledby="continuous-slider" />
@@ -288,9 +359,13 @@ const TrackDetail = (props: any) => {
                             </div>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} className={classes.trackDescription} >
-                        {data.description}
-                    </Grid>
+                    <span style={{ display: 'flex', justifyContent: 'center' }} >
+                        <Grid item xs={11} className={classes.trackDescription} >
+                            <Typography variant="body1">
+                                {data.description}
+                            </Typography>
+                        </Grid>
+                    </span>
                 </Grid>
             </Grid>
         );

@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Track, Album, Artist, Genre, Playlist
+from .models import Track, Album, Artist, Genre, Playlist, FavoriteTracks
+
+
+
+admin.site.register(FavoriteTracks)
 
 
 class ArtistsInline(admin.TabularInline):
