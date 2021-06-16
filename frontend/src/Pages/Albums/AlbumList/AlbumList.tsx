@@ -45,7 +45,7 @@ const AlbumList = () => {
             setLoader(true)
             let link = ''
             // Production
-            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
+            // link = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
             // Development
             // link = 'http://localhost:8000/api/albums/'
 
