@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Track, Album, Artist, Genre, Playlist, FavoriteTracks
+from .models import *
 
 
 
+admin.site.register(FavoriteAlbums)
+admin.site.register(FavoriteArtists)
+admin.site.register(FavoriteGenres)
+admin.site.register(FavoritePlaylists)
 admin.site.register(FavoriteTracks)
 
 

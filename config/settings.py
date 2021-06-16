@@ -216,6 +216,35 @@ BATON = {
                 },
             )
         },
+        {
+            'type': 'app',
+            'name': 'api',
+            'label': 'Избранное',
+            'icon': 'fa fa-link',
+            'default_open': False,
+            'models': (
+                {
+                    'name': 'favoritealbums',
+                    'label': 'Избранные альбомы'
+                },
+                {
+                    'name': 'favoriteartists',
+                    'label': 'Избранные исполнители'
+                },
+                {
+                    'name': 'favoritegenres',
+                    'label': 'Избранные жанры'
+                },
+                {
+                    'name': 'favoriteplaylists',
+                    'label': 'Избранные плейлисты'
+                },
+                {
+                    'name': 'favoritetracks',
+                    'label': 'Избранные треки'
+                },
+            )
+        },
         # { 'type': 'title', 'label': 'Contents', 'apps': ('flatpages', ) },
         # { 'type': 'model', 'label': 'Pages', 'name': 'flatpage', 'app': 'flatpages' },
         # { 'type': 'free', 'label': 'Custom Link', 'url': 'http://www.google.it', 'perms': ('flatpages.add_flatpage', 'auth.change_user') },

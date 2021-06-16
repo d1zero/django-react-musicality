@@ -25,6 +25,13 @@ class FavoriteTracks(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user}"
+
+    class Meta:
+        verbose_name = 'Избранный трек'
+        verbose_name_plural = 'Избранные треки'
+
 
 class Album(models.Model):
     name = models.CharField(verbose_name='Название альбома', max_length=40)
@@ -51,6 +58,13 @@ class FavoriteAlbums(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user}"
+
+    class Meta:
+        verbose_name = 'Избранный альбом'
+        verbose_name_plural = 'Избранные альбомы'
+
 
 class Artist(models.Model):
     nickname = models.CharField(
@@ -75,6 +89,12 @@ class FavoriteArtists(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user}"
+
+    class Meta:
+        verbose_name = 'Избранный исполнитель'
+        verbose_name_plural = 'Избранные исполнители'
 
 class Genre(models.Model):
     name = models.CharField(verbose_name='Название плейлиста', max_length=40)
@@ -92,6 +112,13 @@ class Genre(models.Model):
 class FavoriteGenres(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user}"
+
+    class Meta:
+        verbose_name = 'Избранный жанр'
+        verbose_name_plural = 'Избранные жанры'
 
 
 class Playlist(models.Model):
@@ -111,3 +138,10 @@ class Playlist(models.Model):
 class FavoritePlaylists(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user}"
+
+    class Meta:
+        verbose_name = 'Избранный плейлист'
+        verbose_name_plural = 'Избранные плейлисты'
