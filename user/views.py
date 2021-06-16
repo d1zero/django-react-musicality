@@ -295,7 +295,7 @@ class ResetPasswordView(APIView):
                 </div>
             """
 
-            send_mail('Активация аккаунта Musicality', f'Привет, {user.username}! Перейди по ссылке: {link} С уважением, команда Musicality',
+            send_mail('Сброс пароля Musicality', f'Привет, {user.username}! Перейди по ссылке: {link} С уважением, команда Musicality',
                       settings.EMAIL_HOST_USER, [user.email], fail_silently=False, html_message=markup)
             response.data = {
                 'message': 'success'
