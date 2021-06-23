@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography, CircularProgress } from '@material-ui/core';
+import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography, CircularProgress, TextField } from '@material-ui/core';
 import { Helmet } from 'react-helmet'
-import { useStyles } from './TrackListStyles';
+import { listPageStyles } from '../../styles';
+import { searchDataFetch } from '../../searchDataFetch'
+import { ListDataFetch } from '../../ListDataFetch'
 
 const theme = createMuiTheme();
 
@@ -19,31 +20,12 @@ theme.typography.h1 = {
 };
 
 const TrackList = () => {
-    const [data, setData]: any[] = useState([])
     const [loader, setLoader] = useState(false)
+    const [data, setData]: any[] = useState([])
+    const [searchData, setSearchData]: any = useState()
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoader(true)
-
-            let link = ''
-            // Production
-            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks'
-            // Development
-            // link = 'http://localhost:8000/api/tracks/'
-
-            const response1 = await axios(
-                link, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-            await setData(response1.data)
-            setTimeout(() => {
-                setLoader(false)
-            }, 300);
-        }
-        fetchData()
+        ListDataFetch(setData, setLoader, 'tracks')
     }, [])
 
     interface art {
@@ -62,7 +44,7 @@ const TrackList = () => {
         description: string,
     }
 
-    const classes = useStyles();
+    const classes = listPageStyles();
 
     return (
         <main>
@@ -83,58 +65,134 @@ const TrackList = () => {
                             </Typography>
                         </Container>
                     </div>
-                    <Container maxWidth="md" >
+                    <Container maxWidth="md">
+                        <Grid container className={classes.search}>
+                            <span>
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    label="Поиск треков"
+                                    onChange={(e: any) => {
+                                        let val = e.target.value
+                                        searchDataFetch(setSearchData, 'tracks', val)
+                                    }}
+                                />
+                            </span>
+                        </Grid>
                         <Grid container spacing={4}>
-                            {data.map((item: obj) => {
-                                let description = ''
+                            {(typeof (searchData) !== 'undefined' && searchData.length > 0)
+                                ?
+                                (searchData[0].id !== 0)
+                                    ?
+                                    searchData.map((item: obj) => {
+                                        let description = ''
 
-                                if (item.description.length < 110) {
-                                    description = item.description
-                                } else {
-                                    description = item.description.substring(0, 110) + '...'
-                                }
+                                        if (item.description.length < 110) {
+                                            description = item.description
+                                        } else {
+                                            description = item.description.substring(0, 110) + '...'
+                                        }
 
-                                let imgSrc = ''
-                                // Production
-                                imgSrc = item.cover
-                                // Development
-                                // imgSrc = 'http://localhost:8000' + item.cover
+                                        let imgSrc = ''
+                                        // Production
+                                        imgSrc = item.cover
+                                        // Development
+                                        // imgSrc = 'http://localhost:8000' + item.cover
 
-                                return (
-                                    <Grid item key={item.id} xs={12} sm={6} md={4} component={Link} to={'/track/' + item.id} style={{ textDecoration: 'none' }}>
-                                        <Card className={classes.card}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    className={classes.media}
-                                                    image={imgSrc}
-                                                    title={item.title}
-                                                />
-                                                <CardContent className={classes.titleBar}>
-                                                    <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '32px', maxHeight: '32px' }}>
-                                                        {item.title.substring(0, 14)}
-                                                        {item.title.length < 15 ? '' : '...'}
-                                                    </Typography>
-                                                    <Typography gutterBottom variant="body2" component="h5" style={{ paddingBottom: '0', marginBottom: 0 }} >
-                                                        Исполнители:<br /> {item.artists_info.map((artist: art) => {
-                                                            return (
-                                                                <span key={artist.id}>
-                                                                    <Link to={'/artist/' + artist.id.toString()} key={artist.id} style={{ textDecoration: 'none', color: '#d32f2f' }}>
-                                                                        <Typography variant="subtitle1" component="p"><i>{artist.nickname}</i></Typography>
-                                                                    </Link>
-                                                                </span>
-                                                            )
-                                                        })}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p" >
-                                                        {description}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
+                                        return (
+                                            <Grid item key={item.id} xs={12} sm={6} md={4}>
+                                                <Card className={classes.card}>
+                                                    <CardActionArea>
+                                                        <CardMedia
+                                                            className={classes.media}
+                                                            image={imgSrc}
+                                                            title={item.title}
+                                                            component={Link}
+                                                            to={'/track/' + item.id}
+                                                            style={{ textDecoration: 'none' }}
+                                                        />
+                                                        <CardContent className={classes.titleBar}>
+                                                            <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '32px', maxHeight: '32px' }}>
+                                                                {item.title.substring(0, 14)}
+                                                                {item.title.length < 15 ? '' : '...'}
+                                                            </Typography>
+                                                            <Typography gutterBottom variant="body2" component="h5" style={{ paddingBottom: '0', marginBottom: 0 }} >
+                                                                Исполнители:<br /> {item.artists_info.map((artist: art) => {
+                                                                    return (
+                                                                        <span key={artist.id}>
+                                                                            <Link to={'/artist/' + artist.id.toString()} key={artist.id} style={{ textDecoration: 'none', color: '#d32f2f' }}>
+                                                                                <Typography variant="subtitle1" component="p"><i>{artist.nickname}</i></Typography>
+                                                                            </Link>
+                                                                        </span>
+                                                                    )
+                                                                })}
+                                                            </Typography>
+                                                            <Typography variant="body2" color="textSecondary" component="p" >
+                                                                {description}
+                                                            </Typography>
+                                                        </CardContent>
+                                                    </CardActionArea>
+                                                </Card>
+                                            </Grid>
+                                        )
+                                    })
+                                    :
+                                    <Grid item xs={12} style={{ 'textAlign': 'center' }}>
+                                        <h3>Ничего не найдено</h3>
                                     </Grid>
-                                )
+                                :
+                                data.map((item: obj) => {
+                                    let description = ''
 
-                            })
+                                    if (item.description.length < 110) {
+                                        description = item.description
+                                    } else {
+                                        description = item.description.substring(0, 110) + '...'
+                                    }
+
+                                    let imgSrc = ''
+                                    // Production
+                                    imgSrc = item.cover
+                                    // Development
+                                    // imgSrc = 'http://localhost:8000' + item.cover
+
+                                    return (
+                                        <Grid item key={item.id} xs={12} sm={6} md={4}>
+                                            <Card className={classes.card}>
+                                                <CardActionArea>
+                                                    <CardMedia
+                                                        className={classes.media}
+                                                        image={imgSrc}
+                                                        title={item.title}
+                                                        component={Link}
+                                                        to={'/track/' + item.id}
+                                                        style={{ textDecoration: 'none' }}
+                                                    />
+                                                    <CardContent className={classes.titleBar}>
+                                                        <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '32px', maxHeight: '32px' }}>
+                                                            {item.title.substring(0, 14)}
+                                                            {item.title.length < 15 ? '' : '...'}
+                                                        </Typography>
+                                                        <Typography gutterBottom variant="body2" component="h5" style={{ paddingBottom: '0', marginBottom: 0 }} >
+                                                            Исполнители:<br /> {item.artists_info.map((artist: art) => {
+                                                                return (
+                                                                    <span key={artist.id}>
+                                                                        <Link to={'/artist/' + artist.id.toString()} key={artist.id} style={{ textDecoration: 'none', color: '#d32f2f' }}>
+                                                                            <Typography variant="subtitle1" component="p"><i>{artist.nickname}</i></Typography>
+                                                                        </Link>
+                                                                    </span>
+                                                                )
+                                                            })}
+                                                        </Typography>
+                                                        <Typography variant="body2" color="textSecondary" component="p" >
+                                                            {description}
+                                                        </Typography>
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Card>
+                                        </Grid>
+                                    )
+                                })
                             }
                         </Grid>
                     </Container>

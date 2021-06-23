@@ -76,3 +76,13 @@ class AddGenreToFavorites(APIView):
         response = Response()
         response.data = {'message': 'success'}
         return response
+
+
+class GenreSearchAPIView(APIView):
+    def get(self, request):
+        query = request.GET.get('search')
+        genres = Genre.objects.filter(name__istartswith=query)
+        data = GenreSerializer(genres, many=True).data
+        if len(data) == 0:
+            data = {'message': 'not found'}
+        return Response(data)

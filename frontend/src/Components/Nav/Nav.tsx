@@ -13,9 +13,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import axios from "axios";
 import Cookies from "js-cookie";
-import {useStyles} from './NavStyles'
-
-
+import { useStyles } from './NavStyles'
 
 
 const Nav = (props: { setUsername: (username: any) => void, username: any }) => {
@@ -48,18 +46,18 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
         menu = (
             <>
                 <Box mr={3}>
-                    <Button color="inherit" variant="outlined" component={Link} to='/login/'>Войти</Button>
+                    <Button color="inherit" variant="outlined" className={classes.buttons} component={Link} to='/login/'>Войти</Button>
                 </Box>
-                <Button color="secondary" variant="contained" component={Link} to='/register/'>Зарегистрироваться</Button>
+                <Button color="secondary" variant="contained" className={classes.buttons} component={Link} to='/register/'>Зарегистрироваться</Button>
             </>
         )
     } else {
         menu = (
             <>
                 <Box mr={3}>
-                    <Button color="inherit" variant="outlined" component={Link} to='/profile/'>Профиль</Button>
+                    <Button color="inherit" variant="outlined" className={classes.buttons} component={Link} to='/profile/'>Профиль</Button>
                 </Box>
-                <Button color="secondary" variant="contained" onClick={logout} component={Link} to='/'>Выйти</Button>
+                <Button color="secondary" variant="contained" className={classes.buttons} onClick={logout} component={Link} to='/'>Выйти</Button>
             </>
         )
     }
@@ -122,11 +120,13 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
     return (
         <AppBar position="fixed">
             <Container fixed>
-                <Toolbar>
+                <Toolbar className={classes.appbar}>
                     <Typography variant="h4" className={classes.title} component={Link} to='/'><strong>Musicality</strong></Typography>
                     {matches ? (
                         <div>
-                            <Button onClick={() => setOpen(true)}><IconButton edge="start" aria-label="menu" style={{ color: 'white' }}><MenuIcon /></IconButton></Button>
+                            <Button onClick={() => setOpen(true)}>
+                                    <MenuIcon style={{'color': 'white'}}/>
+                            </Button>
                             <Drawer anchor={'top'} open={open} onClose={() => setOpen(false)}>
                                 {list('top')}
                             </Drawer>
@@ -140,19 +140,6 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
                             <Typography variant="h6" className={classes.title} component={Link} to='/artists/'>Исполнители</Typography>
 
                             {menu}
-                            {/* <Button color="inherit" variant="outlined" onClick={
-                                ()=> {
-                                    document.getElementById('App')?.removeAttribute('class')
-                                    document.getElementById('App')?.setAttribute('class', dark ? 'App' : 'App dark')
-                                    if (dark) {
-                                        localStorage.setItem('theme', 'light')
-                                        setDark(false)
-                                    } else {
-                                        localStorage.setItem('theme', 'dark')
-                                        setDark(true)
-                                    }
-                                }
-                        }>Смена темы</Button> */}
                         </>
                     )}
                 </Toolbar>

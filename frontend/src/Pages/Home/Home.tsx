@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, GridListTile, GridListTileBar, CircularProgress, useMediaQuery } from '@material-ui/core';
+import { Grid, GridListTile, GridListTileBar, CircularProgress, useMediaQuery, TextField } from '@material-ui/core';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import Carousel from 'react-material-ui-carousel';
 import { Typography } from '@material-ui/core';
-import {useStyles} from './HomeStyles'
+import { useStyles } from './HomeStyles'
+import { ListDataFetch } from '../ListDataFetch'
 
 const Home = () => {
     const [tracks, setTracks]: any[] = useState([])
@@ -17,70 +18,10 @@ const Home = () => {
 
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoader(true)
-
-            let link = ''
-            // Production
-            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks/'
-            // Development
-            // link = 'http://localhost:8000/api/tracks/'
-
-            const response1 = await axios(
-                link, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-            await setTracks(response1.data)
-
-            let link2 = ''
-            // Production
-            link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
-            // Development
-            // link2 = 'http://localhost:8000/api/playlists/'
-
-            const response2 = await axios(
-                link2, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-            await setPlaylists(response2.data)
-
-            let link3 = ''
-            // Production
-            link3 = 'http://musicality.std-1578.ist.mospolytech.ru/api/albums/'
-            // Development
-            // link3 = 'http://localhost:8000/api/albums/'
-
-            const response3 = await axios(
-                link3, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-            await setAlbums(response3.data)
-
-            let link4 = ''
-            // Production
-            link4 = 'http://musicality.std-1578.ist.mospolytech.ru/api/artists/'
-            // Development
-            // link4 = 'http://localhost:8000/api/artists/'
-
-            const response4 = await axios(
-                link4, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-            await setArtists(response4.data)
-            setTimeout(() => {
-                setLoader(false)
-            }, 200);
-
-        }
-        fetchData()
+        ListDataFetch(setTracks, setLoader, 'tracks')
+        ListDataFetch(setPlaylists, setLoader, 'playlists')
+        ListDataFetch(setAlbums, setLoader, 'albums')
+        ListDataFetch(setArtists, setLoader, 'artists')
     }, [])
 
     interface obj {

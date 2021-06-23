@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
-import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography, CircularProgress } from '@material-ui/core';
-import { useStyles } from './PlaylistListStyles';
+import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography, CircularProgress, TextField } from '@material-ui/core';
+import { listPageStyles } from '../../styles';
+import { searchDataFetch } from '../../searchDataFetch'
+import { ListDataFetch } from '../../ListDataFetch'
 
 const theme = createMuiTheme();
 
@@ -23,29 +24,10 @@ theme.typography.h1 = {
 const PlaylistList = () => {
     const [data, setData]: any[] = useState([])
     const [loader, setLoader] = useState(false)
+    const [searchData, setSearchData]: any = useState()
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoader(true)
-
-            let link = ''
-            // Production
-            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/playlists/'
-            // Development
-            // link = 'http://localhost:8000/api/playlists/'
-
-            const response1 = await axios(
-                link, {
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
-            }
-            )
-            await setData(response1.data)
-            setTimeout(() => {
-                setLoader(false)
-            }, 300);
-        }
-        fetchData()
+        ListDataFetch(setData, setLoader, 'playlists')
     }, [])
 
     interface pla {
@@ -55,7 +37,7 @@ const PlaylistList = () => {
         photo: string,
     }
 
-    const classes = useStyles()
+    const classes = listPageStyles()
 
     return (
         <div>
@@ -77,38 +59,89 @@ const PlaylistList = () => {
                         </Container>
                     </div>
                     <Container maxWidth="md" >
+                        <Grid container className={classes.search}>
+                            <span>
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    label="Поиск плейлистов"
+                                    onChange={(e: any) => {
+                                        let val = e.target.value
+                                        searchDataFetch(setSearchData, 'playlists', val)
+                                    }}
+                                />
+                            </span>
+                        </Grid>
                         <Grid container spacing={4}>
-                            {data.map((playlist: pla) => {
-                                let imgSrc = ''
+                            {(typeof (searchData) !== 'undefined' && searchData.length > 0)
+                                ?
+                                (searchData[0].id !== 0)
+                                    ? searchData.map((playlist: pla) => {
+                                        let imgSrc = ''
 
-                                // Production
-                                imgSrc = playlist.photo
-                                // Development
-                                // imgSrc = 'http://localhost:8000' + playlist.photo
+                                        // Production
+                                        imgSrc = playlist.photo
+                                        // Development
+                                        // imgSrc = 'http://localhost:8000' + playlist.photo
 
-                                return (
-                                    <Grid item key={playlist.id} xs={12} sm={6} md={4} component={Link} to={'/playlist/' + playlist.id} style={{ textDecoration: 'none' }}>
-                                        <Card className={classes.card}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    className={classes.media}
-                                                    image={imgSrc}
-                                                    title={playlist.name}
-                                                />
-                                                <CardContent className={classes.titleBar}>
-                                                    <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '64px', maxHeight: '64px' }}>
-                                                        {playlist.name}
-                                                    </Typography>
+                                        return (
+                                            <Grid item key={playlist.id} xs={12} sm={6} md={4} component={Link} to={'/playlist/' + playlist.id} style={{ textDecoration: 'none' }}>
+                                                <Card className={classes.card}>
+                                                    <CardActionArea>
+                                                        <CardMedia
+                                                            className={classes.media}
+                                                            image={imgSrc}
+                                                            title={playlist.name}
+                                                        />
+                                                        <CardContent className={classes.titleBar}>
+                                                            <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '64px', maxHeight: '64px' }}>
+                                                                {playlist.name}
+                                                            </Typography>
 
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        {playlist.description}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                {playlist.description}
+                                                            </Typography>
+                                                        </CardContent>
+                                                    </CardActionArea>
+                                                </Card>
+                                            </Grid>
+                                        )
+                                    })
+                                    :
+                                    <Grid item xs={12} style={{ 'textAlign': 'center' }}>
+                                        <h3>Ничего не найдено</h3>
                                     </Grid>
-                                )
-                            })}
+                                : data.map((playlist: pla) => {
+                                    let imgSrc = ''
+
+                                    // Production
+                                    imgSrc = playlist.photo
+                                    // Development
+                                    // imgSrc = 'http://localhost:8000' + playlist.photo
+
+                                    return (
+                                        <Grid item key={playlist.id} xs={12} sm={6} md={4} component={Link} to={'/playlist/' + playlist.id} style={{ textDecoration: 'none' }}>
+                                            <Card className={classes.card}>
+                                                <CardActionArea>
+                                                    <CardMedia
+                                                        className={classes.media}
+                                                        image={imgSrc}
+                                                        title={playlist.name}
+                                                    />
+                                                    <CardContent className={classes.titleBar}>
+                                                        <Typography gutterBottom variant="h5" component="h2" style={{ minHeight: '64px', maxHeight: '64px' }}>
+                                                            {playlist.name}
+                                                        </Typography>
+
+                                                        <Typography variant="body2" color="textSecondary" component="p">
+                                                            {playlist.description}
+                                                        </Typography>
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Card>
+                                        </Grid>
+                                    )
+                                })}
                         </Grid>
                     </Container>
                 </>

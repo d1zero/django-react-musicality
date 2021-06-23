@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Cookies from "js-cookie"
 import axios from 'axios'
-import {useStyles} from './RegisterStyles'
+import { useStyles } from './RegisterStyles'
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -91,7 +91,7 @@ const Register = () => {
                 }
                 else if (typeof (content.username) !== 'undefined') {
                     if (content.username.toString() === 'Пользователь с таким Имя пользователя уже существует.') {
-                        setErrMsg('Пользователь с таким Именем пользователя уже существует')
+                        setErrMsg('Пользователь с таким именем пользователя уже существует')
                         setOpen(true)
                     }
                 }
@@ -125,7 +125,9 @@ const Register = () => {
                                     label="Email"
                                     name="email"
                                     autoFocus
-                                    onChange={e => setEmail(e.target.value)}
+                                    onChange={e => { setEmail(e.target.value); setErrMsg('') }}
+                                    error={errMsg === 'Пользователь с таким Email уже существует' ? true : false}
+                                    helperText={errMsg === 'Пользователь с таким Email уже существует' ? 'Неверно заполнено поле' : ''}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -137,7 +139,9 @@ const Register = () => {
                                     label="Имя пользователя"
                                     type="text"
                                     id="username"
-                                    onChange={e => setUsername(e.target.value)}
+                                    onChange={e => { setUsername(e.target.value); setErrMsg('') }}
+                                    error={errMsg === 'Пользователь с таким именем пользователя уже существует' ? true : false}
+                                    helperText={errMsg === 'Пользователь с таким именем пользователя уже существует' ? 'Неверно заполнено поле' : ''}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -148,8 +152,14 @@ const Register = () => {
                                     fullWidth
                                     id="password"
                                     label="Пароль"
-                                    onChange={e => setPassword(e.target.value)}
+                                    onChange={e => { setPassword(e.target.value); setErrMsg('') }}
                                     type="password"
+                                    error={
+                                        errMsg === 'Пароль слишком короткий' || errMsg === 'Пароли не совпадают' ? true : false
+                                    }
+                                    helperText={
+                                        errMsg === 'Пароль слишком короткий' || errMsg === 'Пароли не совпадают'
+                                            ? 'Неверно заполнено поле' : ''}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -160,8 +170,14 @@ const Register = () => {
                                     id="psw2"
                                     label="Пароль снова"
                                     name="psw2"
-                                    onChange={e => setPsw2(e.target.value)}
+                                    onChange={e => { setPsw2(e.target.value); setErrMsg('') }}
                                     type="password"
+                                    error={
+                                        errMsg === 'Пароли не совпадают' ? true : false
+                                    }
+                                    helperText={
+                                        errMsg === 'Пароли не совпадают'
+                                            ? 'Неверно заполнено поле' : ''}
                                 />
                             </Grid>
                         </Grid>

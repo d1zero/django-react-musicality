@@ -35,7 +35,7 @@ class FavoriteTracksDetailView(APIView):
             except FavoriteTracks.DoesNotExist:
                 data = {'message': 'failed'}
         else:
-             raise AuthenticationFailed('Unauthenticated!')
+            raise AuthenticationFailed('Unauthenticated!')
         return Response(data)
 
 
@@ -81,3 +81,13 @@ class AddTrackToFavorites(APIView):
         response = Response()
         response.data = {'message': 'success'}
         return response
+
+
+class TrackSearchAPIView(APIView):
+    def get(self, request):
+        query = request.GET.get('search')
+        tracks = Track.objects.filter(title__istartswith=query)
+        data = TrackSerializer(tracks, many=True).data
+        if len(data) == 0:
+            data = {'message': 'not found'}
+        return Response(data)

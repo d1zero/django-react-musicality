@@ -77,3 +77,13 @@ class AddPlaylistToFavorites(APIView):
         response = Response()
         response.data = {'message': 'success'}
         return response
+
+
+class PlaylistSearchAPIView(APIView):
+    def get(self, request):
+        query = request.GET.get('search')
+        playlist = Playlist.objects.filter(name__istartswith=query)
+        data = PlaylistSerializer(playlist, many=True).data
+        if len(data) == 0:
+            data = {'message': 'not found'}
+        return Response(data)

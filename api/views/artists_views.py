@@ -76,3 +76,12 @@ class AddArtistToFavorites(APIView):
         response.data = {'message': 'success'}
         return response
 
+
+class ArtistSearchAPIView(APIView):
+    def get(self, request):
+        query = request.GET.get('search')
+        artists = Artist.objects.filter(nickname__istartswith=query)
+        data = ArtistSerializer(artists, many=True).data
+        if len(data) == 0:
+            data = {'message': 'not found'}
+        return Response(data)

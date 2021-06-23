@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles((theme) => ({
+export const listPageStyles = makeStyles((theme) => ({
     mainContent: {
         marginTop: theme.spacing(3),
         padding: theme.spacing(6),
@@ -30,5 +30,12 @@ export const useStyles = makeStyles((theme) => ({
             'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 60%)',
         minHeight: '200px',
         maxHeight: '200px',
+    },
+    search: {
+        position: 'relative',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: theme.spacing(5),
     },
 }))

@@ -12,6 +12,13 @@ class AlbumList(APIView):
     def get(self, request):
         albums = Album.objects.all()
         data = AlbumSerializer(albums, many=True).data
+        # if 'secret_key' in request.query_params:
+        #     if request.query_params['secret_key']=='sadasdasdsad':
+        #         return Response(data)
+        #     else:
+        #         return Response({'message': 'placeholder'})
+        # else:
+        #     return Response({'message': 'placeholder'})
         return Response(data)
 
 
@@ -77,3 +84,13 @@ class AddAlbumToFavorites(APIView):
         response = Response()
         response.data = {'message': 'success'}
         return response
+
+
+class AlbumSearchAPIView(APIView):
+    def get(self, request):
+        query = request.GET.get('search')
+        genres = Album.objects.filter(name__istartswith=query)
+        data = AlbumSerializer(genres, many=True).data
+        if len(data) == 0:
+            data = {'message': 'not found'}
+        return Response(data)

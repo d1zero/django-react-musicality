@@ -22,9 +22,9 @@ const FavoriteTracks = () => {
         const fetchFavoriteTracks = async () => {
             let link2 = ''
             // Production
-            link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-tracks/'
+            // link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-tracks/'
             // Development
-            // link2 = 'http://localhost:8000/api/get-favorite-tracks/'
+            link2 = 'http://localhost:8000/api/get-favorite-tracks/'
             const response2 = await axios(
                 link2, {
                 headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },

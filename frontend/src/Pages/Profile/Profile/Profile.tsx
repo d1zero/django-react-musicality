@@ -55,7 +55,7 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
     }
 
     const handleCloseDeleteModal = () => {
-        setFailedChangeOpen(false)
+        setOpenDeleteModal(false)
     }
 
     useEffect(() => {
@@ -352,23 +352,23 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
                                     </Grid>
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={12} sm={6} md={4}>
                                     <FavoriteTracks />
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={12} sm={6} md={4}>
                                     <FavoriteGenres />
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={12} sm={6} md={4}>
                                     <FavoritePlaylists />
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={12} sm={6} md={4}>
                                     <FavoriteAlbums />
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={12} sm={6} md={4}>
                                     <FavoriteArtists />
                                 </Grid>
                             </Grid>

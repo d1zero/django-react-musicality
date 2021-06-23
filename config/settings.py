@@ -90,14 +90,14 @@ DATABASES = {
     # }
 
     # MySQL
-    #'default': {
+    # 'default': {
     #    'ENGINE': 'django.db.backends.mysql',
     #    'NAME': 'std_1578_musicality',
     #    'HOST': 'std-mysql',
     #    'PORT': 3306,
     #    'USER': 'std_1578_musicality',
     #    'PASSWORD': '',
-    #}
+    # }
 }
 
 # Password validation
@@ -266,10 +266,8 @@ EMAIL_HOST_PASSWORD = 'hcxpofyhoksymcgh'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# EMAIL_HOST = 'smtp.yandex.ru'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = "asashek"
-# EMAIL_HOST_PASSWORD = "fjksurkqorpdoakj"
-# EMAIL_USE_TLS = False
-# EMAIL_USE_SSL = True
-
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}
