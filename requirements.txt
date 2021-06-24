@@ -8,7 +8,9 @@ Django==3.2
 django-baton==2.1.5
 django-cors-headers==3.7.0
 django-environ==0.4.5
+django-jazzmin==2.4.6
 djangorestframework==3.12.4
+djangorestframework-simplejwt==4.7.1
 drf-yasg==1.20.0
 environ==1.0
 google-api-core==1.26.3
@@ -22,6 +24,7 @@ inflection==0.5.1
 itypes==1.2.0
 Jinja2==2.11.3
 MarkupSafe==1.1.1
+mysqlclient==2.0.3
 packaging==20.9
 Pillow==8.2.0
 protobuf==3.15.8
@@ -30,6 +33,7 @@ pyasn1==0.4.8
 pyasn1-modules==0.2.8
 PyJWT==2.0.1
 pyparsing==2.4.7
+python-env==1.0.0
 pytz==2021.1
 requests==2.25.1
 rsa==4.7.2
@@ -39,3 +43,4 @@ six==1.15.0
 sqlparse==0.4.1
 uritemplate==3.0.1
 urllib3==1.26.4
+whitenoise==5.2.0
