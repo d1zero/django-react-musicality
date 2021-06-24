@@ -6,10 +6,13 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.shortcuts import get_object_or_404
 from user.models import User
 import jwt
+from .check_token import check_api_token
 
 
 class TrackList(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         tracks = Track.objects.all()
         data = TrackSerializer(tracks, many=True).data
         return Response(data)
@@ -17,6 +20,8 @@ class TrackList(APIView):
 
 class TrackDetail(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         track = get_object_or_404(Track, pk=pk)
         data = TrackSerializer(track).data
         return Response(data)
@@ -24,6 +29,8 @@ class TrackDetail(APIView):
 
 class FavoriteTracksDetailView(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         token = request.COOKIES.get('jwt')
         if token:
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
@@ -41,6 +48,8 @@ class FavoriteTracksDetailView(APIView):
 
 class FavoriteTracksView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         try:
             token = request.COOKIES.get('jwt')
             if token:
@@ -61,6 +70,8 @@ class FavoriteTracksView(APIView):
 
 class AddTrackToFavorites(APIView):
     def post(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         try:
             token = request.COOKIES.get('jwt')
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
@@ -85,6 +96,8 @@ class AddTrackToFavorites(APIView):
 
 class TrackSearchAPIView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         query = request.GET.get('search')
         tracks = Track.objects.filter(title__istartswith=query)
         data = TrackSerializer(tracks, many=True).data

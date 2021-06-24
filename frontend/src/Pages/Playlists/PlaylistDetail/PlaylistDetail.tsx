@@ -1,9 +1,8 @@
-import React, { useEffect, useState, SyntheticEvent } from 'react';
+import { useEffect, useState, SyntheticEvent } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Slider, Snackbar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -75,7 +74,7 @@ const PlaylistDetail = (props: any) => {
 
             const response1 = await axios(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                 withCredentials: true
             }
             )
@@ -90,7 +89,7 @@ const PlaylistDetail = (props: any) => {
 
                 const response2 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                     withCredentials: true,
                 }
                 )
@@ -102,10 +101,9 @@ const PlaylistDetail = (props: any) => {
         }
 
         fetchData()
-    }, [])
+    }, [playlistId, props.username])
 
     const addToFavorite = async (playlistId: number) => {
-        let heart = document.getElementById('favorite')
         if (props.username !== '') {
             if (favorite) {
                 setFavorite(false)
@@ -122,7 +120,11 @@ const PlaylistDetail = (props: any) => {
             await axios(
                 link, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '' + Cookies.get('csrftoken'),
+                    'Authorization': 'duplexMismatch'
+                },
                 withCredentials: true,
                 data: { 'username': props.username }
             })
@@ -213,9 +215,10 @@ const PlaylistDetail = (props: any) => {
     };
 
     const classes = useStyles();
+    var marks
 
     if (typeof (length) !== 'undefined') {
-        var marks = [
+        marks = [
             {
                 value: 0,
                 label: '0:00',
@@ -226,7 +229,7 @@ const PlaylistDetail = (props: any) => {
             },
         ]
     } else {
-        var marks = [
+        marks = [
             {
                 value: 0,
                 label: '0:00',

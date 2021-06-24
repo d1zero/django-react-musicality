@@ -10,3 +10,6 @@ db.sqlite3
 user/__pycache__/urls.cpython-39.pyc
 user/__pycache__/views.cpython-39.pyc
 *.pyc
+config/.env
+
+config/.env

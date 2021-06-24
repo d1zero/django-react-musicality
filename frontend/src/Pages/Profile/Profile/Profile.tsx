@@ -69,7 +69,7 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
 
             const response1 = await axios(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
             }
             )
@@ -110,7 +110,8 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
 
         const headers = {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '' + Cookies.get('csrftoken')
+            'X-CSRFToken': '' + Cookies.get('csrftoken'),
+            'Authorization': 'duplexMismatch'
         }
 
         let bodyData
@@ -178,7 +179,8 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
 
         const headers = {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '' + Cookies.get('csrftoken')
+            'X-CSRFToken': '' + Cookies.get('csrftoken'),
+            'Authorization': 'duplexMismatch'
         }
 
         let bodyData
@@ -219,7 +221,8 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
 
         const headers = {
             'Content-Type': 'multipart/form-data',
-            'X-CSRFToken': '' + Cookies.get('csrftoken')
+            'X-CSRFToken': '' + Cookies.get('csrftoken'),
+            'Authorization': 'duplexMismatch'
         }
 
         let file = e.target[2].files[0]

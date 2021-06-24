@@ -6,9 +6,13 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.shortcuts import get_object_or_404
 from user.models import User
 import jwt
+from .check_token import check_api_token
+
 
 class GenreList(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         genres = Genre.objects.all()
         data = GenreSerializer(genres, many=True).data
         return Response(data)
@@ -16,6 +20,8 @@ class GenreList(APIView):
 
 class GenreDetail(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         genre = get_object_or_404(Genre, pk=pk)
         data = GenreSerializer(genre).data
         return Response(data)
@@ -23,6 +29,8 @@ class GenreDetail(APIView):
 
 class FavoriteGenresDetailView(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         token = request.COOKIES.get('jwt')
         if token:
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
@@ -40,6 +48,8 @@ class FavoriteGenresDetailView(APIView):
 
 class FavoriteGenresView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         try:
             token = request.COOKIES.get('jwt')
             if token:
@@ -60,6 +70,8 @@ class FavoriteGenresView(APIView):
 
 class AddGenreToFavorites(APIView):
     def post(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         try:
             user = User.objects.get(username=request.data['username'])
             genre = Genre.objects.get(id=pk)
@@ -80,6 +92,8 @@ class AddGenreToFavorites(APIView):
 
 class GenreSearchAPIView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         query = request.GET.get('search')
         genres = Genre.objects.filter(name__istartswith=query)
         data = GenreSerializer(genres, many=True).data

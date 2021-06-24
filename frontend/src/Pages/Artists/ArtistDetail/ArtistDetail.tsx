@@ -1,9 +1,9 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react'
+import  { useState, useEffect, SyntheticEvent } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery, Snackbar, IconButton } from '@material-ui/core'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Cookies from "js-cookie"
@@ -73,7 +73,7 @@ const ArtistDetail = (props: any) => {
 
             const response1 = await axios(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                 withCredentials: true
             }
             )
@@ -87,7 +87,7 @@ const ArtistDetail = (props: any) => {
 
                 const response2 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                     withCredentials: true,
                 }
                 )
@@ -97,11 +97,10 @@ const ArtistDetail = (props: any) => {
             }
         }
         fetchData()
-    }, [artistId])
+    }, [artistId, props.username])
 
 
     const addToFavorite = async (artistId: number) => {
-        let heart = document.getElementById('favorite')
         if (props.username !== '') {
             if (favorite) {
                 setFavorite(false)
@@ -118,7 +117,7 @@ const ArtistDetail = (props: any) => {
             await axios(
                 link, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
                 data: { 'username': props.username }
             })

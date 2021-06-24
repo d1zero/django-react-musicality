@@ -29,7 +29,8 @@ const Login = (props: { setUsername: (username: any) => void }) => {
 
         const headers = {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '' + Cookies.get('csrftoken')
+            'X-CSRFToken': '' + Cookies.get('csrftoken'),
+            'Authorization': 'duplexMismatch'
         }
 
         let link = ''

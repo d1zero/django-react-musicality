@@ -7,13 +7,15 @@ import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.crypto import get_random_string
-
+from api.views.check_token import check_api_token
 from .serializers import UserSerializer
 from .models import User
 
 
 class RegisterView(APIView):
     def post(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -106,7 +108,8 @@ class RegisterView(APIView):
 
 class ConfirmRegisterView(APIView):
     def patch(self, request, code, *args, **kwargs):
-        data = request.data
+        if check_api_token(request):
+            return check_api_token(request)
         response = Response()
 
         payload = jwt.decode(code, 'secret', algorithms=['HS256'])
@@ -122,6 +125,8 @@ class ConfirmRegisterView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         email = request.data['email']
         password = request.data['password']
 
@@ -157,6 +162,8 @@ class LoginView(APIView):
 
 class UserView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         token = request.COOKIES.get('jwt')
 
         if not token:
@@ -176,6 +183,8 @@ class UserView(APIView):
 
 class LogoutView(APIView):
     def post(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         response = Response()
         response.delete_cookie('jwt')
         response.data = {
@@ -187,6 +196,8 @@ class LogoutView(APIView):
 
 class UpdateView(APIView):
     def patch(self, request, *args, **kwargs):
+        if check_api_token(request):
+            return check_api_token(request)
         token = request.COOKIES.get('jwt')
 
         if not token:
@@ -228,6 +239,8 @@ class UpdateView(APIView):
 
 class ResetPasswordView(APIView):
     def post(self, request, *args, **kwargs):
+        if check_api_token(request):
+            return check_api_token(request)
         data = request.data
         response = Response()
 
@@ -309,6 +322,8 @@ class ResetPasswordView(APIView):
 
 class ConfirmResetPasswordView(APIView):
     def patch(self, request, code, *args, **kwargs):
+        if check_api_token(request):
+            return check_api_token(request)
         response = Response()
 
         payload = jwt.decode(code, 'secret', algorithms=['HS256'])
@@ -330,6 +345,8 @@ class ConfirmResetPasswordView(APIView):
 
 class DeleteView(APIView):
     def delete(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         data = request.data
         response = Response()
         token = request.COOKIES.get('jwt')

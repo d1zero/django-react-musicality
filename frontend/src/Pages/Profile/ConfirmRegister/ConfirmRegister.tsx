@@ -26,7 +26,8 @@ const ConfirmRegister = (props: any) => {
 
     const headers = {
         'Content-Type': 'application/json',
-        'X-CSRFToken': '' + Cookies.get('csrftoken')
+        'X-CSRFToken': '' + Cookies.get('csrftoken'),
+        'Authorization': 'duplexMismatch'
     }
 
     const patchData = async () => {

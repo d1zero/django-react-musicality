@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { AppBar, Box, Container, Toolbar, Typography, Drawer, useMediaQuery, Button, List, Divider, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import {
+    AppBar, Box, Container, Toolbar, Typography, Drawer, useMediaQuery, Button, List, Divider, ListItem, ListItemIcon,
+    ListItemText
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AudiotrackIcon from '@material-ui/icons/Audiotrack';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
@@ -19,7 +22,6 @@ import { useStyles } from './NavStyles'
 const Nav = (props: { setUsername: (username: any) => void, username: any }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [dark, setDark] = useState(false);
 
     const logout = async () => {
         let link = ''
@@ -30,7 +32,11 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
 
         await axios(link, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '' + Cookies.get('csrftoken'),
+                'Authorization': 'duplexMismatch'
+            },
             withCredentials: true
         })
         setOpen(false);
@@ -125,7 +131,7 @@ const Nav = (props: { setUsername: (username: any) => void, username: any }) => 
                     {matches ? (
                         <div>
                             <Button onClick={() => setOpen(true)}>
-                                    <MenuIcon style={{'color': 'white'}}/>
+                                <MenuIcon style={{ 'color': 'white' }} />
                             </Button>
                             <Drawer anchor={'top'} open={open} onClose={() => setOpen(false)}>
                                 {list('top')}

@@ -14,7 +14,7 @@ from .views.index_views import AppSearchAPIView
 
 urlpatterns = [
     path('tracks/', TrackList.as_view()),
-    path('track/<int:pk>', TrackDetail.as_view()),
+    path('tracks/<int:pk>', TrackDetail.as_view()),
     path('get-favorite-tracks/<int:pk>', FavoriteTracksDetailView.as_view()),
     path('get-favorite-tracks/', FavoriteTracksView.as_view()),
     path('add-track-to-favorite/<int:pk>', AddTrackToFavorites.as_view()),

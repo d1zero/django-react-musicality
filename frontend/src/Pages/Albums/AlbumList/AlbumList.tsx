@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
 import { Container, Card, Grid, CardMedia, CardActionArea, CardContent, Typography, CircularProgress, TextField } from '@material-ui/core';
 import { listPageStyles } from '../../styles';
-import { useStyles } from './AlbumListStyles'
 import { searchDataFetch } from '../../searchDataFetch'
 import { ListDataFetch } from '../../ListDataFetch'
 
@@ -49,7 +47,6 @@ const AlbumList = () => {
     }, [])
 
     const classes = listPageStyles()
-    const customClasses = useStyles()
 
     return (
         <div>
@@ -158,7 +155,6 @@ const AlbumList = () => {
                                     } else {
                                         description = album.description.substring(0, 110) + '...'
                                     }
-                                    console.log(album);
 
                                     return (
                                         <Grid item key={album.id} xs={12} sm={6} md={4} component={Link} to={'/album/' + album.id} style={{ textDecoration: 'none' }}>
@@ -180,7 +176,7 @@ const AlbumList = () => {
                                                             {album.artists_info.map((artist: art) => {
                                                                 return (
                                                                     <Typography variant="button" key={artist.id}>
-                                                                        <Link to={'/artist/' + artist.id} style={{ textDecoration: 'none', color: '#D32F2F' }}><i>{artist.nickname}</i></Link>&nbsp;
+                                                                        {artist.nickname}
                                                                     </Typography>
                                                                 )
                                                             })}

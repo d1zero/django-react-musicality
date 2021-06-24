@@ -30,7 +30,7 @@ const FavoriteGenres = () => {
 
             const response3 = await axios(
                 link3, {
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
             })
 
@@ -45,19 +45,21 @@ const FavoriteGenres = () => {
 
                 const response3 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                     withCredentials: true
                 }
                 )
 
                 if (typeof (content3.length) !== 'undefined') {
-                    var a = new Array()
+                    var a: any[] = []
                     response3.data.map((ge: genre) => {
                         content3.map((obj: fav_genre) => {
                             if (ge.id === obj.genre) {
                                 a.push(ge)
                             }
+                            return obj
                         })
+                        return ge
                     });
                     setFavoriteGenres(a)
                 }

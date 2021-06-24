@@ -5,8 +5,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {useStyles} from './FavoritePlaylistsStyles'
-import {playlist, fav_playlist} from '../FavoriteInterfaces'
+import { useStyles } from './FavoritePlaylistsStyles'
+import { playlist, fav_playlist } from '../FavoriteInterfaces'
 
 
 const FavoritePlaylists = () => {
@@ -28,7 +28,7 @@ const FavoritePlaylists = () => {
 
             const response4 = await axios(
                 link4, {
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
             })
 
@@ -43,19 +43,21 @@ const FavoritePlaylists = () => {
 
                 const response4 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                     withCredentials: true
                 }
                 )
 
                 if (typeof (content4.length) !== 'undefined') {
-                    var a = new Array()
+                    var a: any[] = []
                     response4.data.map((pl: playlist) => {
                         content4.map((obj: fav_playlist) => {
                             if (pl.id === obj.playlist) {
                                 a.push(pl)
                             }
+                            return obj
                         })
+                        return pl
                     });
                     setFavoritePlaylists(a)
                 }

@@ -68,13 +68,13 @@ const TrackDetail = (props: any) => {
         const fetchData = async () => {
             let link = ''
             // Production
-            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/track/' + trackId
+            link = 'http://musicality.std-1578.ist.mospolytech.ru/api/tracks/' + trackId
             // Development
-            // link = 'http://localhost:8000/api/track/' + trackId
+            // link = 'http://localhost:8000/api/tracks/' + trackId
 
             const response1 = await axios(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                 withCredentials: true
             }
             )
@@ -90,7 +90,7 @@ const TrackDetail = (props: any) => {
                 // link = 'http://localhost:8000/api/get-favorite-tracks/' + trackId
                 const response2 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                     withCredentials: true,
                 }
                 )
@@ -101,10 +101,9 @@ const TrackDetail = (props: any) => {
 
         }
         fetchData()
-    }, [trackId])
+    }, [trackId, props.username])
 
     const addToFavorite = async (trackId: number) => {
-        let heart = document.getElementById('favorite')
         if (props.username !== '') {
             if (favorite) {
                 setFavorite(false)
@@ -121,7 +120,7 @@ const TrackDetail = (props: any) => {
             await axios(
                 link, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
                 data: { 'username': props.username }
             })

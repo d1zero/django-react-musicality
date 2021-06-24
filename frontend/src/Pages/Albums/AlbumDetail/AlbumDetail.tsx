@@ -1,14 +1,14 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react'
+import { useState, useEffect, SyntheticEvent } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, useMediaQuery, Snackbar, IconButton } from '@material-ui/core'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Typography, Container, Grid, Card, CardActionArea, CardMedia, CardContent, Snackbar, IconButton } from '@material-ui/core'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Cookies from "js-cookie"
 import MuiAlert from "@material-ui/lab/Alert";
-import {useStyles} from './AlbumDetailStyles'
+import { useStyles } from './AlbumDetailStyles'
 
 
 function Alert(props: any) {
@@ -50,10 +50,6 @@ theme.typography.h1 = {
 };
 
 
-
-
-
-
 const AlbumDetail = (props: any) => {
     const albumId = props.match.params.albumId;
     const [data, setData] = useState<alb>();
@@ -75,7 +71,7 @@ const AlbumDetail = (props: any) => {
 
             const response1 = await axios(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                 withCredentials: true
             }
             )
@@ -89,7 +85,11 @@ const AlbumDetail = (props: any) => {
 
                 const response2 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '' + Cookies.get('csrftoken'),
+                        'Authorization': 'duplexMismatch'
+                    },
                     withCredentials: true,
                 }
                 )
@@ -99,10 +99,9 @@ const AlbumDetail = (props: any) => {
             }
         }
         fetchData()
-    }, [albumId])
+    }, [albumId, props.username])
 
     const addToFavorite = async (albumId: number) => {
-        let heart = document.getElementById('favorite')
         if (props.username !== '') {
             if (favorite) {
                 setFavorite(false)
@@ -119,7 +118,7 @@ const AlbumDetail = (props: any) => {
             await axios(
                 link, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'),'Authorization': 'duplexMismatch' },
                 withCredentials: true,
                 data: { 'username': props.username }
             })
@@ -128,7 +127,6 @@ const AlbumDetail = (props: any) => {
         }
     }
 
-    const matches = useMediaQuery(theme.breakpoints.down('md'))
 
     if (typeof (data) !== 'undefined') {
         let imgSrc = ''

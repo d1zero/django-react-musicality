@@ -22,12 +22,12 @@ const FavoriteTracks = () => {
         const fetchFavoriteTracks = async () => {
             let link2 = ''
             // Production
-            // link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-tracks/'
+            link2 = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-tracks/'
             // Development
-            link2 = 'http://localhost:8000/api/get-favorite-tracks/'
+            // link2 = 'http://localhost:8000/api/get-favorite-tracks/'
             const response2 = await axios(
                 link2, {
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
             })
             const content2: fav_track[] = await response2.data
@@ -40,19 +40,21 @@ const FavoriteTracks = () => {
 
                 const response2 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                     withCredentials: true
                 }
                 )
 
                 if (typeof (content2.length) !== 'undefined') {
-                    var a = new Array()
+                    var a: any[] = []
                     response2.data.map((tr: track) => {
                         content2.map((obj: fav_track) => {
                             if (tr.id === obj.track) {
                                 a.push(tr)
                             }
+                            return obj
                         })
+                        return tr
                     });
                     setFavoriteTracks(a)
                 }
@@ -75,7 +77,7 @@ const FavoriteTracks = () => {
                                         className={classes.media}
 
                                         // Production
-                                        image={tr.cover}
+                                        // image={tr.cover}
                                         // Development
                                         // image={'http://localhost:8000' + tr.cover}
 

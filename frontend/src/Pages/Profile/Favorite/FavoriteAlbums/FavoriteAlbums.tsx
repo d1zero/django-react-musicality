@@ -28,7 +28,7 @@ const FavoriteAlbums = () => {
 
             const response5 = await axios(
                 link5, {
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
             })
             const content5: fav_album[] = await response5.data
@@ -41,18 +41,20 @@ const FavoriteAlbums = () => {
 
                 const response5 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                     withCredentials: true
                 }
                 )
                 if (typeof (content5.length) !== 'undefined') {
-                    var a = new Array()
+                    var a: any[] = []
                     response5.data.map((al: album) => {
                         content5.map((obj: fav_album) => {
                             if (al.id === obj.album) {
                                 a.push(al)
                             }
+                            return obj
                         })
+                        return al
                     });
                     setFavoriteAlbums(a)
                 }

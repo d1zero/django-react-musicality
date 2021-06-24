@@ -1,14 +1,14 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react'
+import { useState, useEffect, SyntheticEvent } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Grid, Typography, Card, CardActionArea, CardMedia, CardContent, Container, Snackbar, IconButton } from '@material-ui/core'
 import { Helmet } from 'react-helmet';
 import Cookies from 'js-cookie'
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import MuiAlert from "@material-ui/lab/Alert";
-import {useStyles} from './GenreDetailStyles'
+import { useStyles } from './GenreDetailStyles'
 
 
 function Alert(props: any) {
@@ -79,9 +79,10 @@ const GenreDetail = (props: any) => {
                 link = 'http://musicality.std-1578.ist.mospolytech.ru/api/get-favorite-genres/' + genreId
                 // Development
                 // link = 'http://localhost:8000/api/get-favorite-genres/' + genreId
+
                 const response2 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                     withCredentials: true,
                 }
                 )
@@ -91,10 +92,9 @@ const GenreDetail = (props: any) => {
             }
         }
         fetchData()
-    }, [genreId])
+    }, [genreId, props.username])
 
     const addToFavorite = async (genreId: number) => {
-        let heart = document.getElementById('favorite')
         if (props.username !== '') {
             if (favorite) {
                 setFavorite(false)
@@ -111,7 +111,7 @@ const GenreDetail = (props: any) => {
             await axios(
                 link, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
                 data: { 'username': props.username }
             })

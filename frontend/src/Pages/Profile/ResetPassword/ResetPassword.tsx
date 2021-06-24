@@ -1,8 +1,8 @@
-import React, { useState, SyntheticEvent } from 'react'
+import { useState, SyntheticEvent } from 'react'
 import { Container, CssBaseline, Avatar, Typography, TextField, Button, Grid, Snackbar, Link as MatUILink } from '@material-ui/core';
 import MuiAlert from "@material-ui/lab/Alert";
 import { Helmet } from 'react-helmet'
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Cookies from "js-cookie"
 import axios from 'axios';
@@ -16,7 +16,6 @@ function Alert(props: any) {
 const ResetPassword = () => {
     const [email, setEmail] = useState('');
     const [errMsg, setErrMsg] = useState('')
-    const [redirect, setRedirect] = useState(false)
 
     const [successPasswordChange, setSuccessPasswordChange] = useState(false)
     const [open, setOpen] = useState(false)
@@ -36,7 +35,8 @@ const ResetPassword = () => {
 
         const headers = {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '' + Cookies.get('csrftoken')
+            'X-CSRFToken': '' + Cookies.get('csrftoken'),
+            'Authorization': 'duplexMismatch'
         }
 
         interface obj {
@@ -58,13 +58,6 @@ const ResetPassword = () => {
             setErrMsg('Пользователь с таким E-mail не найден')
             setOpen(true)
         }
-    }
-
-
-    if (redirect) {
-        return (
-            <Redirect to='/login' />
-        )
     }
 
     if (!successPasswordChange) {

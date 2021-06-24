@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, GridListTile, GridListTileBar, CircularProgress, useMediaQuery, TextField } from '@material-ui/core';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Grid, GridListTile, GridListTileBar, CircularProgress, useMediaQuery } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import Carousel from 'react-material-ui-carousel';
@@ -117,14 +115,14 @@ const Home = () => {
                                                             title: classes.title,
                                                         }}
                                                     />
-                                                    <Typography className={classes.typography}>
-                                                        <h3>Исполнители: {track.artists_info.map((artist: art) => {
-                                                            return (<span>{artist.nickname} </span>)
+                                                    <Typography variant="caption" className={classes.typography}>
+                                                        <Typography variant="h5">Исполнители: {track.artists_info.map((artist: art) => {
+                                                            return (<span key={artist.id}>{artist.nickname} </span>)
                                                         }
                                                         )}
-                                                        </h3>
-                                                        <h4>Дата выпуска: {track.date_of_release}</h4><br />
-                                                        <span style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                        </Typography>
+                                                        <Typography variant="h6">Дата выпуска: {track.date_of_release}</Typography><br />
+                                                        <Typography variant="body1" style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
@@ -207,19 +205,18 @@ const Home = () => {
                                                             title: classes.title,
                                                         }}
                                                     />
-                                                    <Typography className={classes.typography}>
-                                                        <p style={{ minHeight: '130px', maxHeight: '130px', marginBottom: 0, }}>
-                                                            <strong>Треки:</strong><br />
-                                                            {tracks.map((track: string) => {
-                                                                if (track !== 'И другие...') {
-                                                                    return (<>
-                                                                        &#183;{track}<br /></>)
-                                                                } else {
-                                                                    return (<>{track}<br /></>)
-                                                                }
-                                                            })}
-                                                        </p>
-                                                        <p style={{ minHeight: '100px', maxHeight: '100px', marginBottom: 0, }}>{description}</p>
+                                                    <Typography variant="caption" className={classes.typography}>
+                                                        <Typography variant="h5">
+                                                            <strong>Треки:</strong>
+                                                        </Typography>
+                                                        {tracks.map((track: string) => {
+                                                            return (
+                                                                <Typography variant="body1" key={track}>
+                                                                    {track}
+                                                                </Typography>
+                                                            )
+                                                        })}
+                                                        <Typography variant="body1" style={{ minHeight: '100px', maxHeight: '100px', marginBottom: 0, }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
@@ -289,14 +286,14 @@ const Home = () => {
                                                             title: classes.title,
                                                         }}
                                                     />
-                                                    <Typography className={classes.typography}>
-                                                        <h3>Дата выпуска: {album.date_of_release}</h3>
-                                                        <h4>Исполнители: {album.artists_info.map((artist: art) => {
-                                                            return (<span>{artist.nickname} </span>)
+                                                    <Typography variant="caption" className={classes.typography}>
+                                                        <Typography variant="h5">Дата выпуска: {album.date_of_release}</Typography>
+                                                        <Typography variant="h6">Исполнители: {album.artists_info.map((artist: art) => {
+                                                            return (<span key={artist.id}>{artist.nickname} </span>)
                                                         }
                                                         )}
-                                                        </h4><br />
-                                                        <span style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                        </Typography><br />
+                                                        <Typography variant="body1" style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
@@ -371,10 +368,10 @@ const Home = () => {
                                                             title: classes.title,
                                                         }}
                                                     />
-                                                    <Typography className={classes.typography}>
-                                                        <h3>{artist.first_name + ' ' + artist.last_name}</h3><br />
-                                                        <h4>Дата рождения: {artist.date_of_birth}</h4><br />
-                                                        <span style={{ minHeight: '120px', maxHeight: '120px', minWidth: '400px', maxWidth: '400px' }}>{description}</span>
+                                                    <Typography variant="caption" className={classes.typography}>
+                                                        <Typography variant="h5">{artist.first_name + ' ' + artist.last_name}</Typography><br />
+                                                        <Typography variant="h6">Дата рождения: {artist.date_of_birth}</Typography><br />
+                                                        <Typography variant="body1" style={{ minHeight: '120px', maxHeight: '120px', minWidth: '400px', maxWidth: '400px' }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>

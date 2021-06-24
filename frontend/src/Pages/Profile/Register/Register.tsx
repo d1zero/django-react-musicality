@@ -1,5 +1,5 @@
-import React, { SyntheticEvent, useState } from 'react';
-import { Redirect, Link } from 'react-router-dom'
+import { SyntheticEvent, useState } from 'react';
+import { Link } from 'react-router-dom'
 import { Button, Snackbar, Container, CssBaseline, Grid, Avatar, TextField, Typography, Link as MatUILink } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Helmet } from 'react-helmet';
@@ -47,7 +47,8 @@ const Register = () => {
 
             const headers = {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': '' + Cookies.get('csrftoken')
+                'X-CSRFToken': '' + Cookies.get('csrftoken'),
+                'Authorization': 'duplexMismatch'
             }
 
             interface obj {

@@ -28,7 +28,7 @@ const FavoriteArtists = () => {
 
             const response6 = await axios(
                 link6, {
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken') },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
             })
 
@@ -44,18 +44,20 @@ const FavoriteArtists = () => {
 
                 const response6 = await axios(
                     link, {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                     withCredentials: true
                 }
                 )
                 if (typeof (content6.length) !== 'undefined') {
-                    var a = new Array()
+                    var a: any[] = []
                     response6.data.map((ar: artist) => {
                         content6.map((obj: fav_artist) => {
                             if (ar.id === obj.artist) {
                                 a.push(ar)
                             }
+                            return obj
                         })
+                        return ar
                     });
                     setFavoriteArtists(a)
                 }

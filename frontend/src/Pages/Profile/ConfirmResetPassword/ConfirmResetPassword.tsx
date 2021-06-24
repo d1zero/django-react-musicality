@@ -26,9 +26,6 @@ const ConfirmResetPassword = (props: any) => {
         setOpen(false)
     }
 
-    const handleSuccessRegisterClose: any = () => {
-    }
-
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         if (password.length < 8) {
@@ -38,7 +35,8 @@ const ConfirmResetPassword = (props: any) => {
         else if (password === password2) {
             const headers = {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': '' + Cookies.get('csrftoken')
+                'X-CSRFToken': '' + Cookies.get('csrftoken'),
+                'Authorization': 'duplexMismatch'
             }
 
             let link = ''

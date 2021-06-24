@@ -11,7 +11,11 @@ export const ListDataFetch = async (setData: (data: any) => void, setLoader: (lo
 
     const response1 = await axios(
         link, {
-        headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'duplexMismatch'
+        },
         withCredentials: true,
     }
     )

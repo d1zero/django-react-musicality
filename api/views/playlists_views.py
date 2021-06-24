@@ -6,9 +6,13 @@ from django.shortcuts import get_object_or_404
 from user.models import User
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
+from .check_token import check_api_token
+
 
 class PlaylistList(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         playlists = Playlist.objects.all()
         data = PlaylistSerializer(playlists, many=True).data
         return Response(data)
@@ -16,6 +20,8 @@ class PlaylistList(APIView):
 
 class PlaylistDetail(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         playlist = get_object_or_404(Playlist, pk=pk)
         data = PlaylistSerializer(playlist).data
         return Response(data)
@@ -23,23 +29,28 @@ class PlaylistDetail(APIView):
 
 class FavoritePlaylistsDetailView(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         token = request.COOKIES.get('jwt')
         if token:
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
             user = User.objects.get(id=payload['id'])
             playlist = Playlist.objects.get(id=pk)
             try:
-                fav_playlist = FavoritePlaylists.objects.get(user=user, playlist=playlist)
+                fav_playlist = FavoritePlaylists.objects.get(
+                    user=user, playlist=playlist)
                 data = {'message': 'success'}
             except FavoritePlaylists.DoesNotExist:
                 data = {'message': 'failed'}
         else:
-             raise AuthenticationFailed('Unauthenticated!')
+            raise AuthenticationFailed('Unauthenticated!')
         return Response(data)
 
 
 class FavoritePlaylistsView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         try:
             token = request.COOKIES.get('jwt')
             if token:
@@ -47,7 +58,8 @@ class FavoritePlaylistsView(APIView):
                 user = User.objects.get(id=payload['id'])
                 try:
                     fav_playlist = FavoritePlaylists.objects.filter(user=user)
-                    data = FavoritePlaylistsSerializer(fav_playlist, many=True).data
+                    data = FavoritePlaylistsSerializer(
+                        fav_playlist, many=True).data
                 except FavoritePlaylists.DoesNotExist:
                     data = {'message': 'no favorites'}
             else:
@@ -60,6 +72,8 @@ class FavoritePlaylistsView(APIView):
 
 class AddPlaylistToFavorites(APIView):
     def post(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
         try:
             print(request.data)
             user = User.objects.get(username=request.data['username'])
@@ -81,6 +95,8 @@ class AddPlaylistToFavorites(APIView):
 
 class PlaylistSearchAPIView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
         query = request.GET.get('search')
         playlist = Playlist.objects.filter(name__istartswith=query)
         data = PlaylistSerializer(playlist, many=True).data

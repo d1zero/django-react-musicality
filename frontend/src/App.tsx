@@ -18,21 +18,10 @@ import AlbumList from './Pages/Albums/AlbumList/AlbumList'
 import AlbumDetail from './Pages/Albums/AlbumDetail/AlbumDetail'
 import ArtistList from './Pages/Artists/ArtistList/ArtistList';
 import ArtistDetail from './Pages/Artists/ArtistDetail/ArtistDetail';
-import { makeStyles } from '@material-ui/core/styles';
 import ResetPassword from './Pages/Profile/ResetPassword/ResetPassword';
 import ConfirmRegister from './Pages/Profile/ConfirmRegister/ConfirmRegister';
 import ConfirmResetPassword from './Pages/Profile/ConfirmResetPassword/ConfirmResetPassword';
 import Footer from './Components/Footer/Footer'
-
-const useStyles = makeStyles((theme) => ({
-    dark: {
-        backgroundColor: '#444444'
-    },
-    main: {
-        marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(2),
-    },
-}));
 
 function App() {
     const [username, setUsername]: any = useState('')
@@ -47,7 +36,10 @@ function App() {
 
             await axios.get(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'duplexMismatch'
+                },
                 withCredentials: true
             }
             ).then(res => {
@@ -60,7 +52,6 @@ function App() {
 
     const darkStorage = localStorage.getItem('theme')
 
-    const classes = useStyles();
     return (
         <Router>
             <div className={darkStorage === 'dark' ? 'App dark' : 'App'} id="App">

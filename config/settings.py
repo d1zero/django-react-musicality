@@ -1,17 +1,23 @@
 from pathlib import Path
-import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)a)t38h*&w$%*#(0ug!z!x-jl%+)qqs6yz$ikfd2n#=f7a3mw4'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -92,11 +98,11 @@ DATABASES = {
     # MySQL
     # 'default': {
     #    'ENGINE': 'django.db.backends.mysql',
-    #    'NAME': 'std_1578_musicality',
+    #    'NAME': env('DB_NAME'),
     #    'HOST': 'std-mysql',
     #    'PORT': 3306,
-    #    'USER': 'std_1578_musicality',
-    #    'PASSWORD': '',
+    #    'USER': env('DB_USER')
+    #    'PASSWORD': env('DB_PASSWORD'),
     # }
 }
 
@@ -159,7 +165,7 @@ BATON = {
     'SITE_TITLE': 'Musicality',
     'INDEX_TITLE': 'Панель Администратора Musicality',
     'SUPPORT_HREF': 'https://t.me/d1z3ro',
-    'COPYRIGHT': 'copyright © 2021 <a href="https://t.me/d1z3ro">d1zero code</a>',  # noqa
+    'COPYRIGHT': 'copyright © 2021 <a href="https://t.me/d1z3ro">d1zero code</a>',
     'POWERED_BY': '<a href="https://t.me/d1z3ro">d1zero</a>',
     'CONFIRM_UNSAVED_CHANGES': True,
     'SHOW_MULTIPART_UPLOADING': True,
@@ -261,13 +267,13 @@ BATON = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'noreply.musicality@gmail.com'
-EMAIL_HOST_PASSWORD = 'hcxpofyhoksymcgh'
+EMAIL_HOST_USER = env('EMAIL_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
+    'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-    ],
+    ),
 }

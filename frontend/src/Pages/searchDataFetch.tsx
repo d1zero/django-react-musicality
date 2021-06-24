@@ -10,7 +10,7 @@ export const searchDataFetch = async (setData: (data: any) => void, typeOfInfo: 
 
         axios.get(
             link, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
             withCredentials: true
         }
         ).then(response => {

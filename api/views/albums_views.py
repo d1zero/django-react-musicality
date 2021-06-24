@@ -1,3 +1,4 @@
+from config.settings import BASE_DIR
 from ..models import Album, FavoriteAlbums
 from ..serializers.albums_serializers import AlbumSerializer, FavoriteAlbumsSerializer
 from rest_framework.views import APIView
@@ -6,24 +7,24 @@ from django.shortcuts import get_object_or_404
 from user.models import User
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
+from .check_token import check_api_token
 
 
 class AlbumList(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
+
         albums = Album.objects.all()
         data = AlbumSerializer(albums, many=True).data
-        # if 'secret_key' in request.query_params:
-        #     if request.query_params['secret_key']=='sadasdasdsad':
-        #         return Response(data)
-        #     else:
-        #         return Response({'message': 'placeholder'})
-        # else:
-        #     return Response({'message': 'placeholder'})
         return Response(data)
 
 
 class AlbumDetail(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
+
         album = get_object_or_404(Album, pk=pk)
         data = AlbumSerializer(album).data
         return Response(data)
@@ -31,6 +32,9 @@ class AlbumDetail(APIView):
 
 class FavoriteAlbumsDetailView(APIView):
     def get(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
+
         token = request.COOKIES.get('jwt')
         if token:
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
@@ -42,12 +46,15 @@ class FavoriteAlbumsDetailView(APIView):
             except FavoriteAlbums.DoesNotExist:
                 data = {'message': 'failed'}
         else:
-             raise AuthenticationFailed('Unauthenticated!')
+            raise AuthenticationFailed('Unauthenticated!')
         return Response(data)
 
 
 class FavoriteAlbumsView(APIView):
-   def get(self, request):
+    def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
+
         try:
             token = request.COOKIES.get('jwt')
             if token:
@@ -68,6 +75,9 @@ class FavoriteAlbumsView(APIView):
 
 class AddAlbumToFavorites(APIView):
     def post(self, request, pk):
+        if check_api_token(request):
+            return check_api_token(request)
+
         try:
             user = User.objects.get(username=request.data['username'])
             album = Album.objects.get(id=pk)
@@ -88,6 +98,9 @@ class AddAlbumToFavorites(APIView):
 
 class AlbumSearchAPIView(APIView):
     def get(self, request):
+        if check_api_token(request):
+            return check_api_token(request)
+
         query = request.GET.get('search')
         genres = Album.objects.filter(name__istartswith=query)
         data = AlbumSerializer(genres, many=True).data

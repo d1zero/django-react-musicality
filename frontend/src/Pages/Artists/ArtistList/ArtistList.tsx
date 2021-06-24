@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
