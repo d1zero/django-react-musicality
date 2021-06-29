@@ -1,8 +1,6 @@
 import axios from 'axios'
 
 export const ListDataFetch = async (setData: (data: any) => void, setLoader: (loader: boolean) => void, name: string) => {
-    setLoader(true)
-
     let link = ''
     // Production
     link = 'http://musicality.std-1578.ist.mospolytech.ru/api/' + name + '/'
@@ -20,7 +18,4 @@ export const ListDataFetch = async (setData: (data: any) => void, setLoader: (lo
     }
     )
     await setData(response1.data)
-    setTimeout(() => {
-        setLoader(false)
-    }, 300);
 }

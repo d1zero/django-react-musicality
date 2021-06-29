@@ -101,7 +101,7 @@ DATABASES = {
     #    'NAME': env('DB_NAME'),
     #    'HOST': 'std-mysql',
     #    'PORT': 3306,
-    #    'USER': env('DB_USER')
+    #    'USER': env('DB_USER'),
     #    'PASSWORD': env('DB_PASSWORD'),
     # }
 }
@@ -177,7 +177,7 @@ BATON = {
     'MENU_ALWAYS_COLLAPSED': False,
     'MENU_TITLE': 'Menu',
     'MESSAGES_TOASTS': False,
-    'GRAVATAR_DEFAULT_IMG': 'blank',
+    'GRAVATAR_DEFAULT_IMG': 'monsterid',
     'LOGIN_SPLASH': '/media/images/admin-bg.jpg',
     'MENU': (
         {

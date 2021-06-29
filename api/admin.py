@@ -3,13 +3,6 @@ from .models import *
 
 
 
-admin.site.register(FavoriteAlbums)
-admin.site.register(FavoriteArtists)
-admin.site.register(FavoriteGenres)
-admin.site.register(FavoritePlaylists)
-admin.site.register(FavoriteTracks)
-
-
 class ArtistsInline(admin.TabularInline):
     model = Track.artists.through
     extra = 1

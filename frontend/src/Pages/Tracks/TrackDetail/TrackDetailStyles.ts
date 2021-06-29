@@ -52,7 +52,6 @@ export const useStyles = makeStyles((theme) => ({
     },
     controlsDiv: {
         justifyContent: 'center',
-        marginTop: theme.spacing(4),
         paddingBottom: '0',
     }
 }))

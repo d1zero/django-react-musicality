@@ -5,12 +5,12 @@ from user.models import User
 
 class Track(models.Model):
     title = models.CharField(verbose_name='Название трека', max_length=40)
-    artists = models.ManyToManyField('Artist', related_name='tracks')
+    artists = models.ManyToManyField('Artist', related_name='tracks', verbose_name='Исполнители')
     date_of_release = models.DateField(
         verbose_name='Дата выпуска', default=timezone.now)
-    genres = models.ManyToManyField('Genre', related_name='tracks')
-    soundtrack = models.FileField(upload_to='tracks/')
-    cover = models.ImageField(upload_to='images/tracks_covers')
+    genres = models.ManyToManyField('Genre', related_name='tracks', verbose_name='Жанры')
+    soundtrack = models.FileField(verbose_name='Саундтрек', upload_to='tracks/')
+    cover = models.ImageField(verbose_name='Обложка', upload_to='images/tracks_covers')
     description = models.TextField(verbose_name='Описание', default='')
 
     def __str__(self):
@@ -35,12 +35,12 @@ class FavoriteTracks(models.Model):
 
 class Album(models.Model):
     name = models.CharField(verbose_name='Название альбома', max_length=40)
-    artists = models.ManyToManyField('Artist', related_name='albums')
-    track = models.ManyToManyField('Track', related_name='album')
+    artists = models.ManyToManyField('Artist', related_name='albums', verbose_name='Исполнители')
+    track = models.ManyToManyField('Track', related_name='album', verbose_name='Треки')
     date_of_release = models.DateField(
         verbose_name='Дата выпуска', default=timezone.now)
     description = models.TextField(verbose_name='Описание альбома')
-    cover = models.ImageField(upload_to='images/albums_covers')
+    cover = models.ImageField(verbose_name='Обложка', upload_to='images/albums_covers')
     TYPE_OF_ALBUM_CHOICES = [
         ('Сингл', 'Сингл'), ('EP', 'EP'), ('Альбом', 'Альбом')]
     type_of_album = models.CharField(verbose_name='Тип альбома', max_length=6, choices=(
@@ -74,11 +74,11 @@ class Artist(models.Model):
     last_name = models.CharField(
         verbose_name='Фамилия исполнителя', max_length=40)
     date_of_birth = models.DateField(verbose_name='Дата рождения')
-    photo = models.ImageField(upload_to='images/artists_photos')
+    photo = models.ImageField(verbose_name='Фото', upload_to='images/artists_photos')
     about = models.TextField(verbose_name='Об исполнителе', default='')
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.nickname}"
 
     class Meta:
         verbose_name = 'Артист'
@@ -99,7 +99,7 @@ class FavoriteArtists(models.Model):
 class Genre(models.Model):
     name = models.CharField(verbose_name='Название плейлиста', max_length=40)
     description = models.TextField(verbose_name='Описание жанра')
-    cover = models.ImageField(upload_to='images/genres_covers', blank=True)
+    cover = models.ImageField(verbose_name='Обложка', upload_to='images/genres_covers')
 
     def __str__(self):
         return self.name
@@ -124,8 +124,8 @@ class FavoriteGenres(models.Model):
 class Playlist(models.Model):
     name = models.CharField(verbose_name='Название плейлиста', max_length=40)
     description = models.TextField(verbose_name='Описание плейлиста')
-    photo = models.ImageField(upload_to='images/playlists_covers')
-    track = models.ManyToManyField('Track', related_name='playlist')
+    photo = models.ImageField(verbose_name='Обложка', upload_to='images/playlists_covers')
+    track = models.ManyToManyField('Track', related_name='playlist', verbose_name='Треки')
 
     def __str__(self):
         return self.name

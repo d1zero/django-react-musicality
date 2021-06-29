@@ -102,6 +102,8 @@ const AlbumList = () => {
                                             description = album.description.substring(0, 110) + '...'
                                         }
 
+                                        var iter = 0
+
                                         return (
                                             <Grid item key={album.id} xs={12} sm={6} md={4} component={Link} to={'/album/' + album.id} style={{ textDecoration: 'none' }}>
                                                 <Card className={classes.card}>
@@ -120,9 +122,11 @@ const AlbumList = () => {
                                                             </Typography>
                                                             <Typography gutterBottom>
                                                                 {album.artists_info.map((artist: art) => {
+                                                                    iter += 1
                                                                     return (
                                                                         <Typography variant="button" key={artist.id}>
-                                                                            <Link to={'/artist/' + artist.id} style={{ textDecoration: 'none', color: '#D32F2F' }}><i>{artist.nickname}</i></Link>&nbsp;
+                                                                            {artist.nickname}
+                                                                            {(album.artists_info.length > 1 && iter !== album.artists_info.length) ? ', ' : ''}
                                                                         </Typography>
                                                                     )
                                                                 })}
@@ -156,6 +160,8 @@ const AlbumList = () => {
                                         description = album.description.substring(0, 110) + '...'
                                     }
 
+                                    var iter = 0
+
                                     return (
                                         <Grid item key={album.id} xs={12} sm={6} md={4} component={Link} to={'/album/' + album.id} style={{ textDecoration: 'none' }}>
                                             <Card className={classes.card}>
@@ -174,9 +180,11 @@ const AlbumList = () => {
                                                         </Typography>
                                                         <Typography gutterBottom>
                                                             {album.artists_info.map((artist: art) => {
+                                                                iter+=1
                                                                 return (
                                                                     <Typography variant="button" key={artist.id}>
                                                                         {artist.nickname}
+                                                                        {(album.artists_info.length > 1 && iter !== album.artists_info.length) ? ', ' : ''}
                                                                     </Typography>
                                                                 )
                                                             })}

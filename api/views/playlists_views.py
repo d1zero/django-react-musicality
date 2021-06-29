@@ -75,7 +75,6 @@ class AddPlaylistToFavorites(APIView):
         if check_api_token(request):
             return check_api_token(request)
         try:
-            print(request.data)
             user = User.objects.get(username=request.data['username'])
             playlist = Playlist.objects.get(id=pk)
             favorite_playlists = FavoritePlaylists.objects.get(

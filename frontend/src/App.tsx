@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+import './App.scss';
 import Login from "./Pages/Profile/Login/Login";
 import Nav from "./Components/Nav/Nav";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -50,11 +50,9 @@ function App() {
         fetchData()
     }, [])
 
-    const darkStorage = localStorage.getItem('theme')
-
     return (
         <Router>
-            <div className={darkStorage === 'dark' ? 'App dark' : 'App'} id="App">
+            <div className='App'>
                 <Container>
                     <Nav setUsername={setUsername} username={username} />
 

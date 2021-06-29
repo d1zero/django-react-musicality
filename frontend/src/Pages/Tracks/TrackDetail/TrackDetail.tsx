@@ -196,6 +196,8 @@ const TrackDetail = (props: any) => {
         // imgSrc = 'http://localhost:8000' + data.cover
         // trackSrc = 'http://localhost:8000' + data.soundtrack
 
+        var iter = 0;
+
         return (
             <Grid container spacing={3} className={classes.container}>
                 <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -239,8 +241,10 @@ const TrackDetail = (props: any) => {
                                     <Typography variant="subtitle1">
                                         Артисты:&nbsp;
                                         {data.artists_info.map((artist: art) => {
+                                            iter += 1
                                             return <span key={artist.id}>
-                                                <Link to={'/artist/' + artist.id.toString()} style={{ textDecoration: 'none', color: '#d32f2f' }}><i>{artist.nickname}</i></Link>&nbsp;
+                                                <Link to={'/artist/' + artist.id.toString()} style={{ textDecoration: 'none', color: '#d32f2f' }}><i>{artist.nickname}</i></Link>
+                                                {(data.artists_info.length > 1 && iter !== data.artists_info.length) ? ', ' : ''}
                                             </span>
                                         })}
                                     </Typography>

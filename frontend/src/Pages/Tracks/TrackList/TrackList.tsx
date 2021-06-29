@@ -99,6 +99,8 @@ const TrackList = () => {
                                         // Development
                                         // imgSrc = 'http://localhost:8000' + item.cover
 
+                                        var iter = 0
+
                                         return (
                                             <Grid item key={item.id} xs={12} sm={6} md={4} component={Link} to={'/track/' + item.id} style={{ textDecoration: 'none' }}>
                                                 <Card className={classes.card} >
@@ -114,15 +116,17 @@ const TrackList = () => {
                                                                 {item.title.length < 15 ? '' : '...'}
                                                             </Typography>
                                                             <Typography gutterBottom variant="body2" component="h5" style={{ paddingBottom: '0', marginBottom: 0 }} >
-                                                                Исполнители:<br /> {item.artists_info.map((artist: art) => {
-                                                                    return (
-                                                                        <span key={artist.id}>
-                                                                            <Typography variant="button" key={artist.id}>
+                                                                <Typography variant="subtitle1" >
+                                                                    Исполнители: {item.artists_info.map((artist: art) => {
+                                                                        iter += 1
+                                                                        return (
+                                                                            <span key={artist.id} >
                                                                                 {artist.nickname}
-                                                                            </Typography>
-                                                                        </span>
-                                                                    )
-                                                                })}
+                                                                                {(item.artists_info.length > 1 && iter !== item.artists_info.length) ? ', ' : ''}
+                                                                            </span>
+                                                                        )
+                                                                    })}
+                                                                </Typography>
                                                             </Typography>
                                                             <Typography variant="body2" color="textSecondary" component="p" >
                                                                 {description}

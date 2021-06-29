@@ -11,7 +11,7 @@ import FavoriteGenres from '../Favorite/FavoriteGenres/FavoriteGenres';
 import FavoritePlaylists from '../Favorite/FavoritePlaylists/FavoritePlaylists';
 import FavoriteAlbums from '../Favorite/FavoriteAlbums/FavoriteAlbums';
 import FavoriteArtists from '../Favorite/FavoriteArtists/FavoriteArtists';
-import {useStyles} from './ProfileStyles'
+import { useStyles } from './ProfileStyles'
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -67,15 +67,15 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
             // Development
             // link = 'http://localhost:8000/user/profile'
 
-            const response1 = await axios(
-                link, {
-                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
-                withCredentials: true,
-            }
-            )
-            const content = await response1.data
+            try {
+                const response1 = await axios(
+                    link, {
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
+                    withCredentials: true,
+                }
+                )
+                const content = await response1.data
 
-            if (response1.status === 200) {
                 await setData(content)
                 if (typeof (data.avatar) !== 'object') {
 
@@ -90,12 +90,15 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
                     // Development
                     // setAvatarLink("http://localhost:8000/media/images/users_avatars/d1zero.jpg")
                 }
-            } else {
-                console.log(222)
+                setTimeout(() => {
+                    setLoader(false)
+                }, 300);
+
+            } catch (error) {
+                console.log("Что-то не так");
+
             }
-            setTimeout(() => {
-                setLoader(false)
-            }, 300);
+
         }
         fetchData()
     }, [data.date_joined, data.avatar])

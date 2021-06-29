@@ -329,7 +329,6 @@ class ConfirmResetPasswordView(APIView):
         payload = jwt.decode(code, 'secret', algorithms=['HS256'])
 
         user = User.objects.get(email=payload['email'])
-        print(request.data.get('password'))
         if request.data.get('password') is not None:
             user.set_password(request.data.get('password'))
             user.save()

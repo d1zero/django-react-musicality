@@ -68,7 +68,7 @@ const GenreDetail = (props: any) => {
 
             const response1 = await axios(
                 link, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'duplexMismatch' },
                 withCredentials: true
             }
             )

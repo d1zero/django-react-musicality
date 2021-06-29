@@ -118,7 +118,7 @@ const AlbumDetail = (props: any) => {
             await axios(
                 link, {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'),'Authorization': 'duplexMismatch' },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '' + Cookies.get('csrftoken'), 'Authorization': 'duplexMismatch' },
                 withCredentials: true,
                 data: { 'username': props.username }
             })
@@ -134,6 +134,7 @@ const AlbumDetail = (props: any) => {
         imgSrc = data.cover
         // Development
         // imgSrc = 'http://localhost:8000' + data.cover
+        var iter = 0
 
         return (
             <div className={classes.root}>
@@ -155,10 +156,14 @@ const AlbumDetail = (props: any) => {
                             <Typography gutterBottom variant="h6">Об альбоме:</Typography>
                             <Typography gutterBottom variant="body1" style={{ wordWrap: "break-word", maxWidth: '480px' }}>{data.description}</Typography>
                             <Typography gutterBottom variant="h6">Исполнители: {data.artists_info.map((artist: art) => {
+                                iter += 1
                                 return (
-                                    <Typography style={{ textDecoration: 'none', color: '#D32F2F' }} component={Link} to={'/artist/' + artist.id} key={artist.id}>
-                                        <i>{artist.nickname}</i>&nbsp;
-                                    </Typography>
+                                    <>
+                                        <Typography style={{ textDecoration: 'none', color: '#D32F2F' }} component={Link} to={'/artist/' + artist.id} key={artist.id}>
+                                            <i>{artist.nickname}</i>
+                                        </Typography>
+                                        {(data.artists_info.length > 1 && iter !== data.artists_info.length) ? ', ' : ''}
+                                    </>
                                 );
                             })}
                             </Typography>

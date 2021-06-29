@@ -11,7 +11,6 @@ from .views.playlists_views import PlaylistList, PlaylistDetail, AddPlaylistToFa
     FavoritePlaylistsDetailView, PlaylistSearchAPIView
 from .views.index_views import AppSearchAPIView
 
-
 urlpatterns = [
     path('tracks/', TrackList.as_view()),
     path('tracks/<int:pk>', TrackDetail.as_view()),

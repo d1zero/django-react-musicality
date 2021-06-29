@@ -70,7 +70,7 @@ const Home = () => {
             </Helmet>
             <div className={classes.root}>
 
-                {loader
+                {loader && artists.length === 0
                     ? <CircularProgress className={classes.loader} />
                     : <>
                         {/* Треки */}
@@ -84,7 +84,7 @@ const Home = () => {
                                 autoPlay
                                 indicators={false}
                             >
-                                {tracks.map((track: obj) => {
+                                {tracks?.map((track: obj) => {
                                     let description = ''
 
                                     if (track.description.length < 270) {
@@ -98,6 +98,8 @@ const Home = () => {
                                     imgSrc = track.cover
                                     // Development
                                     // imgSrc = 'http://localhost:8000' + track.cover
+
+                                    var iter = 0
 
                                     if (matches) {
                                         return (
@@ -116,13 +118,18 @@ const Home = () => {
                                                         }}
                                                     />
                                                     <Typography variant="caption" className={classes.typography}>
-                                                        <Typography variant="h5">Исполнители: {track.artists_info.map((artist: art) => {
-                                                            return (<span key={artist.id}>{artist.nickname} </span>)
+                                                        <Typography variant="h6">Исполнители: {track.artists_info.map((artist: art) => {
+                                                            iter += 1
+                                                            return (
+                                                                <span key={artist.id}>
+                                                                    {artist.nickname}
+                                                                    {(track.artists_info.length > 1 && iter !== track.artists_info.length) ? ', ' : ''}
+                                                                </span>)
                                                         }
                                                         )}
                                                         </Typography>
                                                         <Typography variant="h6">Дата выпуска: {track.date_of_release}</Typography><br />
-                                                        <Typography variant="body1" style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</Typography>
+                                                        <Typography variant="body1" style={{ minHeight: '130px', maxHeight: '130px', minWidth: '380px', maxWidth: '380px' }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
@@ -162,7 +169,7 @@ const Home = () => {
                                 autoPlay={false}
                                 indicators={false}
                             >
-                                {playlists.map((playlist: pla) => {
+                                {playlists?.map((playlist: pla) => {
                                     let description = ''
 
                                     if (playlist.description.length < 170) {
@@ -256,7 +263,7 @@ const Home = () => {
                                 autoPlay
                                 indicators={false}
                             >
-                                {albums.map((album: alb) => {
+                                {albums?.map((album: alb) => {
                                     let description = ''
                                     if (album.description.length < 250) {
                                         description = album.description
@@ -269,6 +276,8 @@ const Home = () => {
                                     imgSrc = album.cover
                                     // Development
                                     // imgSrc = 'http://localhost:8000' + album.cover
+
+                                    var iter = 0
 
                                     if (matches) {
                                         return (
@@ -289,11 +298,15 @@ const Home = () => {
                                                     <Typography variant="caption" className={classes.typography}>
                                                         <Typography variant="h5">Дата выпуска: {album.date_of_release}</Typography>
                                                         <Typography variant="h6">Исполнители: {album.artists_info.map((artist: art) => {
-                                                            return (<span key={artist.id}>{artist.nickname} </span>)
+                                                            iter += 1
+                                                            return (<span key={artist.id}>
+                                                                {artist.nickname}
+                                                                {(album.artists_info.length > 1 && iter !== album.artists_info.length) ? ', ' : ''}
+                                                            </span>)
                                                         }
                                                         )}
                                                         </Typography><br />
-                                                        <Typography variant="body1" style={{ minHeight: '130px', maxHeight: '130px', minWidth: '400px', maxWidth: '400px' }}>{description}</Typography>
+                                                        <Typography variant="body1" style={{ minHeight: '130px', maxHeight: '130px', minWidth: '380px', maxWidth: '380px' }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
@@ -333,7 +346,7 @@ const Home = () => {
                                 autoPlay
                                 indicators={false}
                             >
-                                {artists.map((artist: art) => {
+                                {artists?.map((artist: art) => {
                                     let description = ''
                                     if (artist.about.length < 260) {
                                         description = artist.about
@@ -346,6 +359,8 @@ const Home = () => {
                                     imgSrc = artist.photo
                                     // Development
                                     // imgSrc = 'http://localhost:8000' + artist.photo
+
+                                    var iter = 0
 
                                     if (matches) {
                                         return (
@@ -371,7 +386,7 @@ const Home = () => {
                                                     <Typography variant="caption" className={classes.typography}>
                                                         <Typography variant="h5">{artist.first_name + ' ' + artist.last_name}</Typography><br />
                                                         <Typography variant="h6">Дата рождения: {artist.date_of_birth}</Typography><br />
-                                                        <Typography variant="body1" style={{ minHeight: '120px', maxHeight: '120px', minWidth: '400px', maxWidth: '400px' }}>{description}</Typography>
+                                                        <Typography variant="body1" style={{ minHeight: '120px', maxHeight: '120px', minWidth: '380px', maxWidth: '380px' }}>{description}</Typography>
                                                     </Typography>
                                                 </Grid>
                                             </GridListTile>
