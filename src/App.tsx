@@ -1,114 +1,23 @@
+import { useState } from 'react'
 import './App.scss';
-import { AppBar, CardMedia, Container, Toolbar, Typography, CardActionArea, Card, CardContent, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    AppBar, CardMedia, Container, Toolbar, Typography, CardActionArea, Card, CardContent, Grid, useMediaQuery,
+    List, ListItem, ListItemIcon, ListItemText, Drawer, Button
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import { useStyles } from './AppStyles'
+import { useTheme } from '@material-ui/core/styles';
+import GroupIcon from '@material-ui/icons/Group';
+import CheckIcon from '@material-ui/icons/Check';
+import BookIcon from '@material-ui/icons/Book';
+import HorizontalSplitIcon from '@material-ui/icons/HorizontalSplit';
 
 
 function App() {
-    const useStyles = makeStyles((theme) => ({
-        appbar: {
-            minHeight: '64px',
-            '& #musicality': {
-                minWidth: '50%',
-            },
-            '& #navLinks': {
-                marginLeft: '40px',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                minWidth: '50%'
-            },
-        },
-        title: {
-            color: 'white',
-            textDecoration: 'none',
-            cursor: 'pointer',
-            lineHeight: 1,
-            flexGrow: 1,
-            "&:hover": {
-                color: '#f44336',
-            },
-        },
-        root: {
-            marginTop: '10%',
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            '& #targetText': {
-                maxWidth: '75%', textAlign: 'center'
-            },
-        },
-        media: {
-            height: '290px',
-            width: '290px',
-            objectFit: 'cover',
-        },
-        card: {
-            width: '75%',
-            minHeight: '270px',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 100px',
-            margin: '30px 0',
-        },
-        teamMember: {
-            width: '75%',
-            boxShadow: 'none',
-            minHeight: '270px',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 100px',
-            margin: '30px 0',
-            '& #cardContent': {
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column'
-            },
-            '& #person': {
-                margin: '0 auto',
-            },
-            '& #personInfo': {
-                maxWidth: '500px',
-                margin: '0 auto',
-            },
-            '& #links': {
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                marginTop: '10px',
-            },
-        },
-        teamMemberMedia: {
-            borderRadius: '145px',
-            height: '290px',
-            width: '290px',
-        },
-        projectCards: {
-            maxWidth: '95%',
-            display: 'flex',
-            flexDirection: 'row',
-        },
-        projectCard: {
-            margin: '50px 20px 0 20px',
-            borderRadius: '30px'
-        },
-        projectImage: {
-            width: '350px',
-            height: '350px',
-        },
-        footer: {
-            padding: theme.spacing(3, 2),
-            marginTop: theme.spacing(30),
-        },
-        specLink: {
-            color: '#f44336'
-        },
-        techsText: {
-            maxWidth: '300px'
-        }
-    }))
+    const classes = useStyles()
+    const [open, setOpen] = useState(false);
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('md'));
 
     function Copyright() {
         return (
@@ -121,7 +30,36 @@ function App() {
         );
     }
 
-    const classes = useStyles();
+    const list = (anchor: 'top') => (
+        <div>
+            <List className={classes.menuItems}>
+                <a href="#target">
+                    <ListItem button onClick={() => setOpen(false)}>
+                        <ListItemIcon><CheckIcon /></ListItemIcon>
+                        <ListItemText primary={'Цель проекта'} />
+                    </ListItem>
+                </a>
+                <a href="#team">
+                    <ListItem button onClick={() => setOpen(false)}>
+                        <ListItemIcon><GroupIcon /></ListItemIcon>
+                        <ListItemText primary={'Команда'} />
+                    </ListItem>
+                </a>
+                <a href="#technologies">
+                    <ListItem button onClick={() => setOpen(false)}>
+                        <ListItemIcon><HorizontalSplitIcon /></ListItemIcon>
+                        <ListItemText primary={'Технологии'} />
+                    </ListItem>
+                </a>
+                <a href="#project">
+                    <ListItem button onClick={() => setOpen(false)}>
+                        <ListItemIcon><BookIcon /></ListItemIcon>
+                        <ListItemText primary={'Проект'} />
+                    </ListItem>
+                </a>
+            </List>
+        </div >
+    );
 
     return (
         <Container className="App">
@@ -130,10 +68,24 @@ function App() {
                     <Toolbar className={classes.appbar}>
                         <Typography variant="h4" id='musicality'><strong className={classes.title} ><a href="#target">Musicality Landing</a></strong></Typography>
                         <span id='navLinks'>
-                            <Typography variant="h6" className={classes.title}><a href="#target">Цель проекта</a></Typography>
-                            <Typography variant="h6" className={classes.title}><a href="#team">Команда</a></Typography>
-                            <Typography variant="h6" className={classes.title}><a href="#technologies">Технологии</a></Typography>
-                            <Typography variant="h6" className={classes.title}><a href="#project">Проект</a></Typography>
+                            {matches ? (
+                                <>
+                                    <Button onClick={() => setOpen(true)}>
+                                        <MenuIcon style={{ 'color': 'white' }} />
+                                    </Button>
+                                    <Drawer anchor={'top'} open={open} onClose={() => setOpen(false)}>
+                                        {list('top')}
+                                    </Drawer>
+                                </>
+                            ) : (
+                                <>
+                                    <Typography variant="h6" className={classes.title}><a href="#target">Цель проекта</a></Typography>
+                                    <Typography variant="h6" className={classes.title}><a href="#team">Команда</a></Typography>
+                                    <Typography variant="h6" className={classes.title}><a href="#technologies">Технологии</a></Typography>
+                                    <Typography variant="h6" className={classes.title}><a href="#project">Проект</a></Typography>
+                                </>
+                            )}
+
                         </span>
                     </Toolbar>
                 </Container>
@@ -234,9 +186,10 @@ function App() {
             <div id="project" className={classes.root}>
                 <Typography variant="h2">Проект</Typography>
                 <Grid container className={classes.projectCards} >
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={6} lg={4}>
                         <Card className={classes.projectCard}>
-                            <CardActionArea component='a' target='_blank' rel='noreferrer' href='https://github.com/d1zero/django-react-musicality'>
+                            <CardActionArea component='a' target='_blank' rel='noreferrer'
+                                href='https://github.com/d1zero/django-react-musicality' className={classes.cardArea}>
                                 <CardMedia
                                     className={classes.projectImage}
                                     image='https://softmap.ru/upload/uf/ad5/ad574c14aa17a899fd3abbf3cbbec62f.png'
@@ -252,9 +205,10 @@ function App() {
                             </CardActionArea>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={4} >
+                    <Grid item xs={12} md={6} lg={4} >
                         <Card className={classes.projectCard} >
-                            <CardActionArea component='a' target='_blank' rel='noreferrer' href='https://www.figma.com/file/bAZBRMnrSK1oAQ2Ax6Sbv1/Musicality?node-id=0%3A1'>
+                            <CardActionArea component='a' target='_blank' rel='noreferrer'
+                                href='https://www.figma.com/file/bAZBRMnrSK1oAQ2Ax6Sbv1/Musicality?node-id=0%3A1' className={classes.cardArea}>
                                 <CardMedia
                                     className={classes.projectImage}
                                     image='https://avatars.mds.yandex.net/get-zen_doc/4347026/pub_606f3f6ea09bdc39a402c40b_606f41bfa7757313d8c4f39a/scale_1200'
@@ -270,9 +224,10 @@ function App() {
                             </CardActionArea>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={4} >
+                    <Grid item xs={12} md={6} lg={4}>
                         <Card className={classes.projectCard} >
-                            <CardActionArea component='a' target='_blank' rel='noreferrer' href='http://musicality.std-1578.ist.mospolytech.ru/'>
+                            <CardActionArea component='a' target='_blank' rel='noreferrer'
+                                href='http://musicality.std-1578.ist.mospolytech.ru/' className={classes.cardArea}>
                                 <CardMedia
                                     className={classes.projectImage}
                                     image='http://musicality.std-1578.ist.mospolytech.ru/media/images/favicon.ico'
