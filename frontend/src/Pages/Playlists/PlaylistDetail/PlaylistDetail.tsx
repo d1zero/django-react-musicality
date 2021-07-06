@@ -3,6 +3,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Slider, Snackbar } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { Helmet } from 'react-helmet'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -36,7 +37,6 @@ const PlaylistDetail = (props: any) => {
     const handleClose: any = (e: SyntheticEvent) => {
         setOpen(false)
     }
-
 
 
     interface playlist {
@@ -215,6 +215,19 @@ const PlaylistDetail = (props: any) => {
     };
 
     const classes = useStyles();
+
+    const theme = createMuiTheme();
+
+    theme.typography.h1 = {
+        fontSize: '6rem',
+        '@media (min-width:600px)': {
+            fontSize: '6rem',
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '2rem',
+        },
+    };
+
     var marks
 
     if (typeof (length) !== 'undefined') {
@@ -260,7 +273,7 @@ const PlaylistDetail = (props: any) => {
                         // trackSrc = 'http://localhost:8000' + track.soundtrack
 
                         return (
-                            <ReactAudioPlayer src={trackSrc} controls onEnded={playNext} volume={volume / 100}
+                            <ReactAudioPlayer key={track.id} src={trackSrc} controls onEnded={playNext} volume={volume / 100}
                                 onPlay={() =>
                                     setInterval(() => {
                                         let elemen = document.getElementsByTagName('audio');
@@ -283,41 +296,27 @@ const PlaylistDetail = (props: any) => {
                 </Grid>
                 <Helmet><title>Плейлист: {data.name}</title></Helmet>
                 <Grid item xs={12} sm={10} md={6} className={classes.trackInfo}>
-                    <Typography gutterBottom component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
-                        <strong>
-                            {data.name}
-                        </strong>
-                    </Typography>
+                    <ThemeProvider theme={theme}>
+                        <Typography gutterBottom component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
+                            <strong>
+                                {data.name}
+                            </strong>
+                        </Typography>
+                    </ThemeProvider>
                     <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         {favorite ? <Typography variant="h6">В избранном</Typography> : <Typography variant="h6">Добавить в избранное</Typography>}
                         <IconButton aria-label="add to favorites" id="favorite" onClick={() => { addToFavorite(data.id) }} >
                             {favorite ? <FavoriteIcon style={{ 'color': 'red' }} /> : <FavoriteBorderIcon />}
                         </IconButton>
                     </span><br />
-                    <Grid container>
-                        <Grid item xs={7} className={classes.trackDescription} >
-                            <Typography variant="h6" style={{ display: 'flex', justifyContent: 'center' }}>О плейлисте</Typography>
-                            {data.description}
-                        </Grid>
-                        <Grid item xs={5} className={classes.trackDescription} >
-                            <Typography variant="h6" style={{ display: 'flex', justifyContent: 'center' }}>Содержимое плейлиста</Typography>
-                            {data.tracks.map((tr: track, index: number) => {
-                                return (
-                                    <Typography variant="body1" className={classes.tracks} id={'track' + index.toString()}>
-                                        {tr.title}<br />
-                                    </Typography>
-                                )
-                            })}
-                        </Grid>
-                    </Grid>
                     <Grid item>
-                        <Card className={classes.root}>
+                        <Card className={classes.root} style={{maxWidth: '600px'}}>
                             <CardMedia
                                 className={classes.trackImage}
                                 image={imgSrc}
                                 title={data.name}
                             />
-                            <div className={classes.details}>
+                            <div className={classes.details} style={{minWidth: '240px'}}>
                                 <CardContent className={classes.content}>
                                     <Typography variant="h4">
                                         <Link to={'/track/' + data.tracks[trackId].id} style={{ 'textDecoration': 'none', 'color': '#D32F2F' }}><i>{data.tracks[trackId].title}</i></Link><br />
@@ -326,7 +325,7 @@ const PlaylistDetail = (props: any) => {
                                         {data.tracks[trackId].artists_info.map((art: artist) => { return (<span><Link to={'/artist/' + art.id} style={{ 'textDecoration': 'none', 'color': '#D32F2F' }}><i>{art.nickname}</i></Link><br /></span>) })}
                                     </Typography>
                                 </CardContent>
-                                <CardContent className={classes.controlsDiv} style={{ 'padding': 3, 'marginLeft': 16 }}>
+                                <CardContent className={classes.controlsDiv} style={{ 'padding': 3, 'marginLeft': 8 }}>
                                     <div className={classes.volume}>
                                         <Grid container spacing={2}>
                                             <Grid item xs>
@@ -376,6 +375,22 @@ const PlaylistDetail = (props: any) => {
                                 </CardContent>
                             </div>
                         </Card>
+                    </Grid>
+                    <Grid container>
+                        <Grid item xs={12} md={6} className={classes.trackDescription} >
+                            <Typography variant="h6" style={{ display: 'flex', justifyContent: 'center' }}>О плейлисте</Typography>
+                            <Typography gutterBottom>{data.description}</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} className={classes.trackDescription} >
+                            <Typography variant="h6" style={{ display: 'flex', justifyContent: 'center' }}>Содержимое плейлиста</Typography>
+                            {data.tracks.map((tr: track, index: number) => {
+                                return (
+                                    <Typography variant="body1" className={classes.tracks} id={'track' + index.toString()}>
+                                        {tr.title}<br />
+                                    </Typography>
+                                )
+                            })}
+                        </Grid>
                     </Grid>
                 </Grid>
 

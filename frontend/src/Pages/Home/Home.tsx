@@ -59,7 +59,6 @@ const Home = () => {
     }
 
 
-
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:770px)');
 
@@ -359,8 +358,6 @@ const Home = () => {
                                     imgSrc = artist.photo
                                     // Development
                                     // imgSrc = 'http://localhost:8000' + artist.photo
-
-                                    var iter = 0
 
                                     if (matches) {
                                         return (

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet';
 import { Grid, Tooltip, Button, Dialog, DialogTitle, Input, InputLabel, Box, Typography, Snackbar, CircularProgress } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import MuiAlert from "@material-ui/lab/Alert";
 import EditIcon from '@material-ui/icons/Edit';
 import Cookies from "js-cookie";
@@ -40,6 +41,18 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
     const [errMsg, setErrMsg] = useState('')
     const [redirect, setRedirect] = useState(false)
     const [loader, setLoader] = useState(false)
+
+    const theme = createMuiTheme();
+
+    theme.typography.h1 = {
+        fontSize: '6rem',
+        '@media (min-width:600px)': {
+            fontSize: '6rem',
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '2rem',
+        },
+    };
 
 
     const handleClose = () => {
@@ -95,7 +108,7 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
                 }, 300);
 
             } catch (error) {
-                console.log("Что-то не так");
+                console.log(error);
 
             }
 
@@ -378,7 +391,8 @@ const Profile = (props: { setUsername: (username: any) => void, username: string
                                     <FavoriteArtists />
                                 </Grid>
                             </Grid>
-                            : <Typography variant="h1">Вы не авторизованы</Typography>
+
+                            : <ThemeProvider theme={theme}><Typography variant="h1">Вы не авторизованы</Typography></ThemeProvider>
                         }
                     </>
                 }

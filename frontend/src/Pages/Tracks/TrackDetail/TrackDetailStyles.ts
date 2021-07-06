@@ -40,7 +40,7 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
         paddingLeft: 0,
-        borderRadius: theme.spacing(3)
+        borderRadius: theme.spacing(3),
     },
     details: {
         display: 'flex',

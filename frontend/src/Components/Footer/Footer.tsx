@@ -21,7 +21,7 @@ const Footer = () => {
         <footer className={classes.footer}>
             <Container maxWidth="sm">
                 <Typography variant="body1">
-                    Made by <Link href="https://t.me/d1z3ro" style={{ textDecoration: 'none' }} color="secondary">d1zero</Link>
+                    Made by <a href="https://t.me/d1z3ro" target='_blank' rel="noreferrer" style={{ textDecoration: 'none', color: '#f44336' }}>d1zero</a>
                 </Typography>
                 <Copyright />
             </Container>

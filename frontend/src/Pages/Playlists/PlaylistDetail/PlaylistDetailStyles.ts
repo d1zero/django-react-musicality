@@ -55,7 +55,6 @@ export const useStyles = makeStyles((theme) => ({
     },
     controlsDiv: {
         justifyContent: 'center',
-        marginTop: theme.spacing(8),
         paddingBottom: '0',
     },
     tracks: {

@@ -3,6 +3,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { Grid, Card, CardMedia, CardContent, Typography, IconButton, Slider, Snackbar } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -19,7 +20,6 @@ import { useStyles } from './TrackDetailStyles'
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
 
 
 const TrackDetail = (props: any) => {
@@ -129,6 +129,17 @@ const TrackDetail = (props: any) => {
         }
     }
 
+    const theme = createMuiTheme();
+    theme.typography.h1 = {
+        fontSize: '6rem',
+        '@media (min-width:600px)': {
+            fontSize: '6rem',
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '2rem',
+        },
+    };
+
     const repeatToggle = async () => {
         await setRepeat(!repeat)
     }
@@ -224,12 +235,14 @@ const TrackDetail = (props: any) => {
                 </Grid>
                 <Helmet><title>Трек: {data.title}</title></Helmet>
                 <Grid item xs={12} sm={10} md={6} className={classes.trackInfo}>
-                    <Typography component="body" variant="h2" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
-                        <strong>
-                            {data.title}
-                        </strong>
-                    </Typography>
-                    <Grid item>
+                    <ThemeProvider theme={theme}>
+                        <Typography component="body" variant="h1" align="center" style={{ 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center' }}>
+                            <strong>
+                                {data.title}
+                            </strong>
+                        </Typography>
+                    </ThemeProvider>
+                    <Grid xs={12} item style={{maxWidth: '600px'}}>
                         <Card className={classes.root}>
                             <CardMedia
                                 className={classes.trackImage}
@@ -264,7 +277,7 @@ const TrackDetail = (props: any) => {
                                         </IconButton>
                                     </span>
                                 </CardContent>
-                                <CardContent className={classes.controlsDiv} style={{ 'paddingBottom': 0 }}>
+                                <CardContent className={classes.controlsDiv} style={{ 'paddingBottom': 0, 'paddingTop': 0 }}>
                                     <div className={classes.volume}>
                                         <Grid container spacing={2}>
                                             <Grid item xs>
@@ -278,7 +291,7 @@ const TrackDetail = (props: any) => {
                                             </Grid>
                                         </Grid>
                                     </div>
-                                    <div className={classes.volume}>
+                                    <div className={classes.volume} >
                                         <Grid container spacing={2}>
                                             <Grid item>
                                                 <IconButton aria-label="soundOff" style={{ 'padding': 3 }}>
@@ -313,13 +326,11 @@ const TrackDetail = (props: any) => {
                             </div>
                         </Card>
                     </Grid>
-                    <span style={{ display: 'flex', justifyContent: 'center' }} >
-                        <Grid item xs={11}>
+                        <Grid item xs={12} md={9} style={{ display: 'flex', justifyContent: 'center' }}>
                             <Typography variant="body1">
                                 {data.description}
                             </Typography>
                         </Grid>
-                    </span>
                 </Grid>
             </Grid>
         );
