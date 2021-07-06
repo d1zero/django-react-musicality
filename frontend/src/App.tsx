@@ -22,6 +22,7 @@ import ResetPassword from './Pages/Profile/ResetPassword/ResetPassword';
 import ConfirmRegister from './Pages/Profile/ConfirmRegister/ConfirmRegister';
 import ConfirmResetPassword from './Pages/Profile/ConfirmResetPassword/ConfirmResetPassword';
 import Footer from './Components/Footer/Footer'
+import NotFound from './Pages/NotFound';
 
 function App() {
     const [username, setUsername]: any = useState('')
@@ -80,6 +81,8 @@ function App() {
 
                         <Route path="/artists/" component={ArtistList} />
                         <Route path="/artist/:artistId" component={(props: any) => <ArtistDetail {...props} username={username} />} />
+
+                        <Route path="*" component={NotFound} />
                     </Switch>
                 </Container>
                 <CssBaseline />

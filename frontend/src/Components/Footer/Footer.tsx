@@ -19,7 +19,7 @@ const Footer = () => {
     const classes = useStyles();
     return (
         <footer className={classes.footer}>
-            <Container maxWidth="sm">
+            <Container maxWidth="xs">
                 <Typography variant="body1">
                     Made by <a href="https://t.me/d1z3ro" target='_blank' rel="noreferrer" style={{ textDecoration: 'none', color: '#f44336' }}>d1zero</a>
                 </Typography>
